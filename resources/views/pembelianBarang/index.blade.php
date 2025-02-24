@@ -31,19 +31,20 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Kode Transaksi</th>
-                                <th scope="col">Kode Barang</th>
-                                <th scope="col">Nama</th>
+                                <th scope="col">Nama Barang</th>
                                 <th scope="col">Jumlah</th>
                                 <th scope="col">Harga Satuan</th>
                                 <th scope="col">Total Harga</th>
-                                <th scope="col">Tanggal</th>
+                                <th scope="col">Tanggal Pembelian</th>
+                                <th scope="col">Keterangan</th>
                                 <th scope="col">Bukti Transaksi</th>
-                                <th scope="col">Created By</th>
-                                <th scope="col">Updated By</th>
-                                @if (auth()->user()->level != 'Operator')
-                                <th scope="col">Created At</th>
-                                    <th scope="col" style="text-align: center">Action</th>
+                                @if (auth()->user()->level_id == 1)
+                                    <th scope="col">Created By</th>
+                                    <th scope="col">Updated By</th>
+                                    <th scope="col">Created At</th>
                                 @endif
+
+                                <th scope="col" style="text-align: center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -51,29 +52,37 @@
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
                                     <td>{{ $pembelianBarang->kode_transaksi }}</td>
-                                    <td>{{ $pembelianBarang->barang->kode }}</td>
-                                    <td>{{ $pembelianBarang->barang->nama }}</td>
+                                    <td>{{ $pembelianBarang->barang?->nama }}</td>
                                     <td>{{ $pembelianBarang->jumlah }}</td>
                                     <td>{{ $pembelianBarang->harga_satuan }}</td>
                                     <td>{{ $pembelianBarang->total_harga }}</td>
                                     <td>{{ $pembelianBarang->tanggal }}</td>
-                                    <td><a href="{{ env('APP_URL').'/upload/pembelianBarang/'.$pembelianBarang->bukti_transaksi }}" target="_blank">Lihat</a></td>
-                                    <td>{{ $pembelianBarang->created_by }}</td>
-                                    <td>{{ $pembelianBarang->updated_by }}</td>
+                                    <td>{{ $pembelianBarang->keterangan }}</td>
+                                    <td><a href="{{ env('APP_URL') . '/upload/pembelianBarang/' . $pembelianBarang->bukti_transaksi }}"
+                                            target="_blank">Lihat</a></td>
+                                    @if (auth()->user()->level_id == 1)
+                                        <td>{{ $pembelianBarang->created_by }}</td>
+                                        <td>{{ $pembelianBarang->updated_by }}</td>
+                                        <td>{{ $pembelianBarang->created_at }}</td>
+                                    @endif
                                     @auth
                                         @can('update', $pembelianBarang)
-                                        <td>{{ $pembelianBarang->created_at }}</td>
+
                                             <td style="display: flex; justify-content: center;">
                                                 <a href="{{ route('pembelianBarang.edit', ['pembelianBarang' => $pembelianBarang]) }}"
                                                     class="btn btn-success btn-sm">Edit</a>
 
-                                                <form action="{{ route('pembelianBarang.destroy', ['pembelianBarang' => $pembelianBarang]) }}" method="post">
+                                                <form
+                                                    action="{{ route('pembelianBarang.destroy', ['pembelianBarang' => $pembelianBarang]) }}"
+                                                    method="post">
                                                     @csrf
                                                     @method('delete')
                                                     <button class="btn btn-danger btn-sm"
                                                         onclick="return confirm('Hapus data?')">Hapus</button>
                                                 </form>
                                             </td>
+                                        @else
+                                            <td></td>
                                         @endcan
                                     @endauth
                                 </tr>

@@ -18,5 +18,6 @@ class Unit extends Model
         'harga',
         'created_by',
         'updated_by',
+        'user_id',
     ];
 }

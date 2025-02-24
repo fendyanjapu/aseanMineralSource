@@ -12,14 +12,15 @@ class PembelianBarang extends Model
     protected $fillable = [
         'kode_transaksi',
         'barang_id',
-        'nama',
         'jumlah',
         'harga_satuan',
         'total_harga',
+        'keterangan',
         'tanggal',
         'bukti_transaksi',
         'created_by',
         'updated_by',
+        'user_id',
     ];
 
     public function barang()

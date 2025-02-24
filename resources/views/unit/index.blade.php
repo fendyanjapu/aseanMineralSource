@@ -31,15 +31,18 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Kode</th>
-                                <th scope="col">No Identitas Unit</th>
+                                <th scope="col">Identitas Unit</th>
                                 <th scope="col">Spefikasi</th>
                                 <th scope="col">Merk</th>
                                 <th scope="col">Tanggal Pembelian</th>
                                 <th scope="col">Harga</th>
-                                <th scope="col">Created By</th>
-                                <th scope="col">Updated By</th>
-                                @if (auth()->user()->level != 'Operator')
-                                <th scope="col">Created At</th>
+                                @if (auth()->user()->level_id < 2)
+                                    <th scope="col">Created By</th>
+                                    <th scope="col">Updated By</th>
+                                @endif
+
+                                @if (auth()->user()->level_id < 3)
+                                    <th scope="col">Created At</th>
                                     <th scope="col" style="text-align: center">Action</th>
                                 @endif
                             </tr>
@@ -54,11 +57,14 @@
                                     <td>{{ $unit->merk }}</td>
                                     <td>{{ $unit->tanggal_pembelian }}</td>
                                     <td>{{ $unit->harga }}</td>
-                                    <td>{{ $unit->created_by }}</td>
-                                    <td>{{ $unit->updated_by }}</td>
+                                    @if (auth()->user()->level_id < 2)
+                                        <td>{{ $unit->created_by }}</td>
+                                        <td>{{ $unit->updated_by }}</td>
+                                    @endif
+
                                     @auth
                                         @can('update', $unit)
-                                        <td>{{ $unit->created_at }}</td>
+                                            <td>{{ $unit->created_at }}</td>
                                             <td style="display: flex; justify-content: center;">
                                                 <a href="{{ route('unit.edit', ['unit' => $unit]) }}"
                                                     class="btn btn-success btn-sm">Edit</a>

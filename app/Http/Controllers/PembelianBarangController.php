@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use Illuminate\Http\Request;
 use App\Models\PembelianBarang;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class PembelianBarangController extends Controller
@@ -24,8 +25,20 @@ class PembelianBarangController extends Controller
      */
     public function create()
     {
+        $query = PembelianBarang::where(DB::raw('YEAR(created_at)'), '=', date('Y'));
+        if ($query->count() == 0) {
+            $lastId = 0;
+        } else {
+            $queri = $query->get();
+            foreach ($queri as $q) {
+                $lastId = $q->id;
+            }
+        }
+        $nextId = $lastId + 1;
+        $nextKode = str_pad($nextId,5,'0',STR_PAD_LEFT);
+        $kode = 'P'.date('y').$nextKode;
         $barangs = Barang::orderBy('nama')->get();
-        return view('pembelianBarang.create', compact('barangs'));
+        return view('pembelianBarang.create', compact('barangs', 'kode'));
     }
 
     /**
@@ -39,6 +52,7 @@ class PembelianBarangController extends Controller
             'jumlah'=> 'required',
             'harga_satuan'=> 'required',
             'total_harga'=> 'required',
+            'keterangan'=> 'required',
             'tanggal'=> 'required|date',
             'bukti_transaksi' => 'required|file|mimes:jpg,jpeg,png,pdf|max:4096',
         ];
@@ -49,6 +63,7 @@ class PembelianBarangController extends Controller
 
         $validatedData = $request->validate($rules);
         $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['user_id'] = auth()->user()->id;
         $validatedData['bukti_transaksi'] = $nama_gbr;
 
         $store = PembelianBarang::create($validatedData);
@@ -90,6 +105,7 @@ class PembelianBarangController extends Controller
             'jumlah'=> 'required',
             'harga_satuan'=> 'required',
             'total_harga'=> 'required',
+            'keterangan'=> 'required',
             'tanggal'=> 'required|date',
         ];
 

@@ -10,7 +10,7 @@ class UnitPolicy
 {
     public function update(User $user, Unit $unit): bool
     {
-        return ($user->level == 'Direksi' || $user->level == 'Admin');
+        return $user->level_id < 3;
     }
 
     /**
@@ -18,6 +18,6 @@ class UnitPolicy
      */
     public function delete(User $user, Unit $unit): bool
     {
-        return ($user->level == 'Direksi' || $user->level == 'Admin');
+        return $user->level_id < 3;
     }
 }

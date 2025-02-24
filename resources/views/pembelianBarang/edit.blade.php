@@ -14,7 +14,7 @@
                 <div class="card">
                     <div class="card-body">
                         <label>Kode Transaksi</label>
-                        <input type="text" class="form-control" name="kode_transaksi" placeholder="Kode Transaksi"
+                        <input type="text" class="form-control" name="kode_transaksi" readonly
                             value="{{ $pembelianBarang->kode_transaksi }}">
                         @error('kode_transaksi')
                             <div class="text-danger">
@@ -84,11 +84,21 @@
                     </div>
                 </div>
 
-                
+                <div class="card">
+                    <div class="card-body">
+                        <label>Keterangan</label>
+                        <textarea name="keterangan" id="" class="form-control">{{ $pembelianBarang->keterangan }}</textarea>
+                        @error('keterangan')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
 
                 <div class="card">
                     <div class="card-body">
-                        <label>Tanggal</label>
+                        <label>Tanggal Pembelian</label>
                         <input type="date" class="form-control" name="tanggal" placeholder="Tanggal"
                             value="{{ $pembelianBarang->tanggal }}">
                         @error('tanggal')

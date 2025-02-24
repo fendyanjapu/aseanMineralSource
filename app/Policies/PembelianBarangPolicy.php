@@ -11,7 +11,7 @@ class PembelianBarangPolicy
     
     public function update(User $user, PembelianBarang $pembelianBarang): bool
     {
-        return ($user->level == 'Direksi' || $user->level == 'Admin');
+        return ($user->level_id < 3 || $pembelianBarang->user_id === $user->id);
     }
 
     /**
@@ -19,7 +19,7 @@ class PembelianBarangPolicy
      */
     public function delete(User $user, PembelianBarang $pembelianBarang): bool
     {
-        return ($user->level == 'Direksi' || $user->level == 'Admin');
+        return ($user->level_id < 3 || $pembelianBarang->user_id === $user->id);
     }
 
 }

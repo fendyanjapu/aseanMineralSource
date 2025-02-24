@@ -81,7 +81,8 @@
                         <select class="form-select mb-3" name="level">
                             <option value="" selected></option>
                             <option value="Direksi">Direksi</option>
-                            <option value="Admin">Admin</option>
+                            <option value="Admin">Admin IT</option>
+                            <option value="Checker">Checker</option>
                             <option value="Operator">Operator</option>
                         </select>
                         @error('level')

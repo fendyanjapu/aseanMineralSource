@@ -12,8 +12,8 @@
             <div class="col-12 col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <label>Kode</label>
-                        <input type="text" class="form-control" name="kode" placeholder="Kode" value="{{ old('kode') }}">
+                        <label>Kode Unit</label>
+                        <input type="text" class="form-control" name="kode" placeholder="Kode" value="{{ $kode }}" readonly>
                         @error('kode')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -24,7 +24,7 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <label>No Identitas Unit</label>
+                        <label>Identitas Unit</label>
                         <input type="text" class="form-control" name="no_identitas_unit" placeholder="No Identitas Unit" value="{{ old('no_identitas_unit') }}">
                         @error('no_identitas_unit')
                             <div class="text-danger">

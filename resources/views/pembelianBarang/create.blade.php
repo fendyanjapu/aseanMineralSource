@@ -13,8 +13,7 @@
                 <div class="card">
                     <div class="card-body">
                         <label>Kode Transaksi</label>
-                        <input type="text" class="form-control" name="kode_transaksi" placeholder="Kode Transaksi"
-                            value="{{ old('kode_transaksi') }}">
+                        <input type="text" class="form-control" name="kode_transaksi" value="{{ $kode }}" readonly>
                         @error('kode_transaksi')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -82,6 +81,31 @@
                 </div>
 
                 <div class="card">
+                    <div class="card-body">
+                        <label>Tanggal Pembelian</label>
+                        <input type="date" class="form-control" name="tanggal" placeholder="Tanggal"
+                            value="{{ old('tanggal') }}">
+                        @error('tanggal')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label>Keterangan</label>
+                        <textarea name="keterangan" id="" class="form-control">{{ old(key: 'keterangan') }}</textarea>
+                        @error('keterangan')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
 
                     <div class="card-body">
                         <label>Bukti Transaksi</label>
@@ -95,18 +119,7 @@
 
                 </div>
 
-                <div class="card">
-                    <div class="card-body">
-                        <label>Tanggal</label>
-                        <input type="date" class="form-control" name="tanggal" placeholder="Tanggal"
-                            value="{{ old('tanggal') }}">
-                        @error('tanggal')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
+                
 
                 <button class="btn btn-success" type="submit">Simpan</button>
                 <a href="#" onclick="self.history.back()" class="btn btn-danger">Batal</a>

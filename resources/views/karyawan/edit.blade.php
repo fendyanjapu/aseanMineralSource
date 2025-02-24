@@ -83,6 +83,7 @@
                             <option value="" selected></option>
                             <option value="Direksi" {{ $karyawan->level == 'Direksi' ? 'selected' : '' }}>Direksi</option>
                             <option value="Admin" {{ $karyawan->level == 'Admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="Checker" {{ $karyawan->level == 'Checker' ? 'selected' : '' }}>Checker</option>
                             <option value="Operator" {{ $karyawan->level == 'Operator' ? 'selected' : '' }}>Operator</option>
                         </select>
                         @error('level')

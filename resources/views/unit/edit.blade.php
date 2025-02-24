@@ -14,7 +14,7 @@
                 <div class="card">
                     <div class="card-body">
                         <label>Kode</label>
-                        <input type="text" class="form-control" name="kode" placeholder="Kode" value="{{ $unit->kode }}">
+                        <input type="text" class="form-control" name="kode" placeholder="Kode" value="{{ $unit->kode }}" readonly>
                         @error('kode')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>

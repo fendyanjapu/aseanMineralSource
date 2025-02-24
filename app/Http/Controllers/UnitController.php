@@ -27,7 +27,12 @@ class UnitController extends Controller
      */
     public function create()
     {
-        return view('unit.create');
+        $lastId = Unit::latest()->first()?->id;
+        if ($lastId == null) { $lastId = 0; }
+        $nextId = $lastId + 1;
+        $nextKode = str_pad($nextId,5,'0',STR_PAD_LEFT);
+        $kode = 'K'.$nextKode;
+        return view('unit.create', compact('kode'));
     }
 
     /**
@@ -38,6 +43,7 @@ class UnitController extends Controller
         $validatedData = $request->validate($this->rules);
         
         $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['user_id'] = auth()->user()->id;
         Unit::create($validatedData);
         return redirect()->route('unit.index')->with('success','Data berhasil ditambah');
     }
