@@ -15,5 +15,6 @@ class Site extends Model
         'penanggung_jawab',
         'created_by',
         'updated_by',
+        'user_id',
     ];
 }

@@ -111,7 +111,7 @@
 					</li>
 
 					<li class="sidebar-item">
-						<a class="sidebar-link" href="#">
+						<a class="sidebar-link" href="{{ route('pemasukan.index') }}">
 							<i class="align-middle" data-feather="external-link"></i> <span
 								class="align-middle">Pengeluaran Site</span>
 						</a>

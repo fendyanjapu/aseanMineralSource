@@ -37,12 +37,14 @@
                                 <th scope="col">Total Harga</th>
                                 <th scope="col">Tanggal</th>
                                 <th scope="col">Bukti Transaksi</th>
-                                <th scope="col">Created By</th>
-                                <th scope="col">Updated By</th>
-                                @if (auth()->user()->level != 'Operator')
-                                <th scope="col">Created At</th>
-                                    <th scope="col" style="text-align: center">Action</th>
+                                @if (auth()->user()->level_id == 1)
+                                    <th scope="col">Created By</th>
+                                    <th scope="col">Updated By</th>
+                                    <th scope="col">Created At</th>
                                 @endif
+
+                                <th scope="col" style="text-align: center">Action</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -55,23 +57,30 @@
                                     <td>{{ $perbaikanUnit->detail_perbaikan }}</td>
                                     <td>{{ $perbaikanUnit->total_harga }}</td>
                                     <td>{{ $perbaikanUnit->tanggal }}</td>
-                                    <td><a href="{{ env('APP_URL').'/upload/perbaikanUnit/'.$perbaikanUnit->bukti_transaksi }}" target="_blank">Lihat</a></td>
-                                    <td>{{ $perbaikanUnit->created_by }}</td>
-                                    <td>{{ $perbaikanUnit->updated_by }}</td>
+                                    <td><a href="{{ env('APP_URL') . '/upload/perbaikanUnit/' . $perbaikanUnit->bukti_transaksi }}"
+                                            target="_blank">Lihat</a></td>
+                                    @if (auth()->user()->level_id == 1)
+                                        <td>{{ $perbaikanUnit->created_by }}</td>
+                                        <td>{{ $perbaikanUnit->updated_by }}</td>
+                                        <td>{{ $perbaikanUnit->created_at }}</td>
+                                    @endif
                                     @auth
                                         @can('update', $perbaikanUnit)
-                                        <td>{{ $perbaikanUnit->created_at }}</td>
+
                                             <td style="display: flex; justify-content: center;">
                                                 <a href="{{ route('perbaikanUnit.edit', ['perbaikanUnit' => $perbaikanUnit]) }}"
                                                     class="btn btn-success btn-sm">Edit</a>
 
-                                                <form action="{{ route('perbaikanUnit.destroy', ['perbaikanUnit' => $perbaikanUnit]) }}" method="post">
+                                                <form action="{{ route('perbaikanUnit.destroy', ['perbaikanUnit' => $perbaikanUnit]) }}"
+                                                    method="post">
                                                     @csrf
                                                     @method('delete')
                                                     <button class="btn btn-danger btn-sm"
                                                         onclick="return confirm('Hapus data?')">Hapus</button>
                                                 </form>
                                             </td>
+                                        @else
+                                            <td></td>
                                         @endcan
                                     @endauth
                                 </tr>

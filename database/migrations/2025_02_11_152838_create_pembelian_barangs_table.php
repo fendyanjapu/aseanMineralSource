@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pembelian_barangs', function (Blueprint $table) {
             $table->id();
             $table->string('kode_transaksi');
-            $table->integer('barang_id');
+            $table->smallInteger('barang_id');
             $table->string('jumlah', 10);
             $table->string('harga_satuan', 20);
             $table->string('total_harga', 20);

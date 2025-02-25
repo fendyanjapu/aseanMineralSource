@@ -11,7 +11,7 @@ class PemasukanPolicy
     
     public function update(User $user, Pemasukan $pemasukan): bool
     {
-        return ($user->level == 'Direksi' || $user->level == 'Admin');
+        return ($user->level_id < 3 || $pemasukan->user_id === $user->id);
     }
 
     /**
@@ -19,7 +19,7 @@ class PemasukanPolicy
      */
     public function delete(User $user, Pemasukan $pemasukan): bool
     {
-        return ($user->level == 'Direksi' || $user->level == 'Admin');
+        return ($user->level_id < 3 || $pemasukan->user_id === $user->id);
     }
 
 }

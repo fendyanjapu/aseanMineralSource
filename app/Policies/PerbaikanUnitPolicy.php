@@ -11,7 +11,7 @@ class PerbaikanUnitPolicy
     
     public function update(User $user, PerbaikanUnit $perbaikanUnit): bool
     {
-        return ($user->level == 'Direksi' || $user->level == 'Admin');
+        return ($user->level_id < 3 || $perbaikanUnit->user_id === $user->id);
     }
 
     /**
@@ -19,7 +19,7 @@ class PerbaikanUnitPolicy
      */
     public function delete(User $user, PerbaikanUnit $perbaikanUnit): bool
     {
-        return ($user->level == 'Direksi' || $user->level == 'Admin');
+        return ($user->level_id < 3 || $perbaikanUnit->user_id === $user->id);
     }
 
 }

@@ -6,7 +6,7 @@
             $('#myTable').DataTable();
         });
     </script>
-    <h1 class="h3 mb-3">Data Pemasukan</h1>
+    <h1 class="h3 mb-3">Data Pengeluaran Site</h1>
 
     <div class="row">
         <div class="col-12">
@@ -31,17 +31,19 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Kode Transaksi</th>
+                                <th scope="col">Site</th>
                                 <th scope="col">Jumlah</th>
                                 <th scope="col">Sumber Dana</th>
                                 <th scope="col">Mode Transaksi</th>
                                 <th scope="col">Bukti Transaksi</th>
                                 <th scope="col">Tanggal</th>
-                                <th scope="col">Created By</th>
-                                <th scope="col">Updated By</th>
-                                @if (auth()->user()->level != 'Operator')
-                                <th scope="col">Created At</th>
-                                    <th scope="col" style="text-align: center">Action</th>
+                                @if (auth()->user()->level_id == 1)
+                                    <th scope="col">Created By</th>
+                                    <th scope="col">Updated By</th>
+                                    <th scope="col">Created At</th>
                                 @endif
+                                <th scope="col" style="text-align: center">Action</th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -49,27 +51,34 @@
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
                                     <td>{{ $pemasukan->kode_transaksi }}</td>
+                                    <td>{{ $pemasukan->site?->nama_site }}</td>
                                     <td>{{ $pemasukan->jumlah }}</td>
                                     <td>{{ $pemasukan->sumber_dana }}</td>
                                     <td>{{ $pemasukan->metode_transaksi }}</td>
-                                    <td><a href="{{ env('APP_URL').'/upload/pemasukan/'.$pemasukan->bukti_transaksi }}" target="_blank">Lihat</a></td>
+                                    <td><a href="{{ env('APP_URL') . '/upload/pemasukan/' . $pemasukan->bukti_transaksi }}"
+                                            target="_blank">Lihat</a></td>
                                     <td>{{ $pemasukan->tanggal }}</td>
-                                    <td>{{ $pemasukan->created_by }}</td>
-                                    <td>{{ $pemasukan->updated_by }}</td>
+                                    @if (auth()->user()->level_id == 1)
+                                        <td>{{ $pemasukan->created_by }}</td>
+                                        <td>{{ $pemasukan->updated_by }}</td>
+                                        <td>{{ $pemasukan->created_at }}</td>
+                                    @endif
                                     @auth
                                         @can('update', $pemasukan)
-                                        <td>{{ $pemasukan->created_at }}</td>
                                             <td style="display: flex; justify-content: center;">
                                                 <a href="{{ route('pemasukan.edit', ['pemasukan' => $pemasukan]) }}"
                                                     class="btn btn-success btn-sm">Edit</a>
 
-                                                <form action="{{ route('pemasukan.destroy', ['pemasukan' => $pemasukan]) }}" method="post">
+                                                <form action="{{ route('pemasukan.destroy', ['pemasukan' => $pemasukan]) }}"
+                                                    method="post">
                                                     @csrf
                                                     @method('delete')
                                                     <button class="btn btn-danger btn-sm"
                                                         onclick="return confirm('Hapus data?')">Hapus</button>
                                                 </form>
                                             </td>
+                                        @else
+                                            <td></td>
                                         @endcan
                                     @endauth
                                 </tr>

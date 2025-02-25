@@ -35,6 +35,7 @@ class SiteController extends Controller
         $validatedData = $request->validate($this->rules);
         
         $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['user_id'] = auth()->user()->id;
         Site::create($validatedData);
         return redirect()->route('site.index')->with('success','Data berhasil ditambah');
     }

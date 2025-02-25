@@ -29,14 +29,12 @@ class PembelianBarangController extends Controller
         if ($query->count() == 0) {
             $lastId = 0;
         } else {
-            $queri = $query->get();
-            foreach ($queri as $q) {
-                $lastId = $q->id;
-            }
+            $lastId = $query->orderBy('created_at', 'desc')->first()->id;
         }
         $nextId = $lastId + 1;
         $nextKode = str_pad($nextId,5,'0',STR_PAD_LEFT);
-        $kode = 'P'.date('y').$nextKode;
+        $kode = 'PB'.date('y').$nextKode;
+
         $barangs = Barang::orderBy('nama')->get();
         return view('pembelianBarang.create', compact('barangs', 'kode'));
     }

@@ -18,6 +18,7 @@ class PerbaikanUnit extends Model
         'bukti_transaksi',
         'created_by',
         'updated_by',
+        'user_id',
     ];
 
     public function unit()

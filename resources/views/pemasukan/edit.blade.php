@@ -14,8 +14,27 @@
                 <div class="card">
                     <div class="card-body">
                         <label>Kode Transaksi</label>
-                        <input type="text" class="form-control" name="kode_transaksi" placeholder="Kode Transaksi" value="{{ $pemasukan->kode_transaksi }}">
+                        <input type="text" class="form-control" name="kode_transaksi" value="{{ $pemasukan->kode_transaksi }}" readonly>
                         @error('kode_transaksi')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label>Site</label>
+                        <select name="site_id" id="" class="form-control">
+                            <option value=""></option>
+                            @foreach ($sites as $site)
+                                <option value="{{ $site->id }}" {{ $site->id == $pemasukan->site_id ? 'selected' : '' }}>
+                                    {{ $site->nama_site }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('site_id')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
                             </div>

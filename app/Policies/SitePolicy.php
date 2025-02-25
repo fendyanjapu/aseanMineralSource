@@ -10,7 +10,7 @@ class SitePolicy
 {
     public function update(User $user, Site $site): bool
     {
-        return ($user->level == 'Direksi' || $user->level == 'Admin');
+        return ($user->level_id < 3 || $site->user_id === $user->id);
     }
 
     /**
@@ -18,6 +18,6 @@ class SitePolicy
      */
     public function delete(User $user, Site $site): bool
     {
-        return ($user->level == 'Direksi' || $user->level == 'Admin');
+        return ($user->level_id < 3 || $site->user_id === $user->id);
     }
 }

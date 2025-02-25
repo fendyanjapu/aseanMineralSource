@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Site;
 use App\Models\Pemasukan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class PemasukanController extends Controller
@@ -20,7 +22,18 @@ class PemasukanController extends Controller
      */
     public function create()
     {
-        return view('pemasukan.create');
+        $query = Pemasukan::where(DB::raw('YEAR(created_at)'), '=', date('Y'));
+        if ($query->count() == 0) {
+            $lastId = 0;
+        } else {
+            $lastId = $query->orderBy('created_at', 'desc')->first()->id;
+        }
+        $nextId = $lastId + 1;
+        $nextKode = str_pad($nextId,5,'0',STR_PAD_LEFT);
+        $kode = 'PS'.date('y').$nextKode;
+
+        $sites = Site::all();
+        return view('pemasukan.create', compact('sites', 'kode'));
     }
 
     /**
@@ -30,6 +43,7 @@ class PemasukanController extends Controller
     {
         $rules = [
             'kode_transaksi'=> 'required|max:255',
+            'site_id'=> 'required',
             'jumlah'=> 'required|max:255',
             'sumber_dana'=> 'required|max:255',
             'metode_transaksi'=> 'required|max:255',
@@ -43,6 +57,7 @@ class PemasukanController extends Controller
 
         $validatedData = $request->validate($rules);
         $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['user_id'] = auth()->user()->id;
         $validatedData['bukti_transaksi'] = $nama_gbr;
 
         $store = Pemasukan::create($validatedData);
@@ -66,7 +81,8 @@ class PemasukanController extends Controller
     {
         $this->authorize('update', $pemasukan);
 
-        return view('pemasukan.edit', compact('pemasukan'));
+        $sites = Site::all();
+        return view('pemasukan.edit', compact('pemasukan','sites'));
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use App\Models\PerbaikanUnit;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
 class PerbaikanUnitController extends Controller
@@ -24,8 +25,18 @@ class PerbaikanUnitController extends Controller
      */
     public function create()
     {
+        $query = PerbaikanUnit::where(DB::raw('YEAR(created_at)'), '=', date('Y'));
+        if ($query->count() == 0) {
+            $lastId = 0;
+        } else {
+            $lastId = $query->orderBy('created_at', 'desc')->first()->id;
+        }
+        $nextId = $lastId + 1;
+        $nextKode = str_pad($nextId,5,'0',STR_PAD_LEFT);
+        $kode = 'PU'.date('y').$nextKode;
+
         $units = Unit::all();
-        return view('perbaikanUnit.create', compact('units'));
+        return view('perbaikanUnit.create', compact('units', 'kode'));
     }
 
     /**
@@ -48,6 +59,7 @@ class PerbaikanUnitController extends Controller
 
         $validatedData = $request->validate($rules);
         $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['user_id'] = auth()->user()->id;
         $validatedData['bukti_transaksi'] = $nama_gbr;
 
         $store = PerbaikanUnit::create($validatedData);

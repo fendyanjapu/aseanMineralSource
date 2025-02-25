@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('tanggal');
             $table->string('created_by');
             $table->string('updated_by')->nullable();
+            $table->smallInteger('site_id');
             $table->smallInteger('user_id');
             $table->timestamps();
         });
