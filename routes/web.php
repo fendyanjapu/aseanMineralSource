@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\KondisiBatuController;
 use App\Http\Controllers\LaporanPemasukanController;
 use App\Http\Controllers\LaporanPengeluaranController;
 use App\Http\Controllers\PemasukanController;
@@ -52,6 +53,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('pembelianBarang', PembelianBarangController::class)->except('show');
     Route::resource('perbaikanUnit', PerbaikanUnitController::class)->except('show');
     Route::resource('penggajihan', PenggajihanController::class)->except('show');
+    Route::resource('kondisiBatu', KondisiBatuController::class)->except('show');
 });
 
 
