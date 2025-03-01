@@ -129,7 +129,7 @@
 					</li>
 
 					<li class="sidebar-item">
-						<a class="sidebar-link" href="#">
+						<a class="sidebar-link" href="{{ route('kondisiLapangan.index') }}">
 							<i class="align-middle" data-feather="file"></i> <span class="align-middle">Kondisi
 								Lapangan</span>
 						</a>
