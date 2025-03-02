@@ -11,7 +11,7 @@ class PenggajihanPolicy
     
     public function update(User $user, Penggajihan $penggajihan): bool
     {
-        return ($user->level == 'Direksi' || $user->level == 'Admin');
+        return ($user->level_id < 3 || $penggajihan->user_id === $user->id);
     }
 
     /**
@@ -19,7 +19,7 @@ class PenggajihanPolicy
      */
     public function delete(User $user, Penggajihan $penggajihan): bool
     {
-        return ($user->level == 'Direksi' || $user->level == 'Admin');
+        return ($user->level_id < 3 || $penggajihan->user_id === $user->id);
     }
 
 }

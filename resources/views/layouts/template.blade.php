@@ -36,7 +36,7 @@
 				</a>
 
 				<ul class="sidebar-nav">
-					{{-- <li class="sidebar-header">
+					<li class="sidebar-header">
 						Dashboard
 					</li>
 
@@ -45,7 +45,7 @@
 							<i class="align-middle" data-feather="sliders"></i> <span
 								class="align-middle">Dashboard</span>
 						</a>
-					</li> --}}
+					</li>
 
 					<li class="sidebar-header">
 						Data Master
@@ -105,7 +105,7 @@
 
 					<li class="sidebar-item">
 						<a class="sidebar-link" href="{{ route('perbaikanUnit.index') }}">
-							<i class="align-middle" data-feather="anchor"></i> <span class="align-middle">Perbaikan
+							<i class="align-middle" data-feather="settings"></i> <span class="align-middle">Perbaikan
 								Unit</span>
 						</a>
 					</li>
@@ -117,20 +117,27 @@
 						</a>
 					</li>
 
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="{{ route('penggajihan.index') }}">
+							<i class="align-middle" data-feather="dollar-sign"></i> <span
+								class="align-middle">Penggajihan</span>
+						</a>
+					</li>
+
 					<li class="sidebar-header">
 						Laporan Lapangan
 					</li>
 
 					<li class="sidebar-item">
 						<a class="sidebar-link" href="{{ route('kondisiBatu.index') }}">
-							<i class="align-middle" data-feather="file"></i> <span class="align-middle">Kondisi
+							<i class="align-middle" data-feather="triangle"></i> <span class="align-middle">Kondisi
 								Batu</span>
 						</a>
 					</li>
 
 					<li class="sidebar-item">
 						<a class="sidebar-link" href="{{ route('kondisiLapangan.index') }}">
-							<i class="align-middle" data-feather="file"></i> <span class="align-middle">Kondisi
+							<i class="align-middle" data-feather="image"></i> <span class="align-middle">Kondisi
 								Lapangan</span>
 						</a>
 					</li>
@@ -140,15 +147,15 @@
 					</li>
 
 					<li class="sidebar-item">
-						<a class="sidebar-link" href="#">
-							<i class="align-middle" data-feather="file"></i> <span class="align-middle">Pembelian
+						<a class="sidebar-link" href="{{ route('pembelianBatu.index') }}">
+							<i class="align-middle" data-feather="shopping-bag"></i> <span class="align-middle">Pembelian
 								Dari Site</span>
 						</a>
 					</li>
 
 					<li class="sidebar-item">
 						<a class="sidebar-link" href="#">
-							<i class="align-middle" data-feather="file"></i> <span
+							<i class="align-middle" data-feather="anchor"></i> <span
 								class="align-middle">Pengapalan</span>
 						</a>
 					</li>

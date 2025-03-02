@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="mb-3">
-        <h1 class="h3 d-inline align-middle">Tambah Data Pengeluaran Site</h1>
+        <h1 class="h3 d-inline align-middle">Tambah Data Kondisi Lpangan</h1>
 
     </div>
 

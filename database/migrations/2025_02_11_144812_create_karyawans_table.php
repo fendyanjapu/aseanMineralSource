@@ -26,7 +26,6 @@ return new class extends Migration
             $table->string('status');
             $table->string('created_by');
             $table->string('updated_by')->nullable();
-            $table->smallInteger('user_id');
             $table->timestamps();
         });
     }

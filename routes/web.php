@@ -7,6 +7,7 @@ use App\Http\Controllers\LaporanPemasukanController;
 use App\Http\Controllers\LaporanPengeluaranController;
 use App\Http\Controllers\PemasukanController;
 use App\Http\Controllers\PembelianBarangController;
+use App\Http\Controllers\PembelianBatuController;
 use App\Http\Controllers\PenggajihanController;
 use App\Http\Controllers\PerbaikanUnitController;
 use App\Http\Controllers\SiteController;
@@ -56,6 +57,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('penggajihan', PenggajihanController::class)->except('show');
     Route::resource('kondisiBatu', KondisiBatuController::class)->except('show');
     Route::resource('kondisiLapangan', KondisiLapanganController::class)->except('show');
+    Route::resource('pembelianBatu', PembelianBatuController::class)->except('show');
 });
 
 

@@ -8,4 +8,25 @@ use Illuminate\Database\Eloquent\Model;
 class PembelianBatu extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'kode_transaksi',
+        'site_id',
+        'nama_jetty',
+        'tgl_rotasi_dari',
+        'tgl_rotasi_sampai',
+        'jumlah_tonase',
+        'harga',
+        'jetty',
+        'document_dll',
+        'total_penjualan',
+        'created_by',
+        'updated_by',
+        'user_id',
+    ];
+
+    public function site()
+    {
+        return $this->belongsTo(Site::class);
+    }
 }
