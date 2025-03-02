@@ -106,7 +106,6 @@
                 </div>
 
                 <div class="card">
-
                     <div class="card-body">
                         <label>Bukti Transaksi</label>
                         <input type="file" class="form-control" name="bukti_transaksi" accept="image/*,application/pdf">
@@ -116,10 +115,7 @@
                             </div>
                         @enderror
                     </div>
-
                 </div>
-
-                
 
                 <button class="btn btn-success" type="submit">Simpan</button>
                 <a href="#" onclick="self.history.back()" class="btn btn-danger">Batal</a>

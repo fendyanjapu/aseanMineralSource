@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'level_id',
         'jenis_user_id',
+        'site_id',
         'created_by',
         'updated_by',
     ];
@@ -30,6 +31,11 @@ class User extends Authenticatable
     public function level()
     {
         return $this->belongsTo(Level::class);
+    }
+
+    public function site()
+    {
+        return $this->belongsTo(Site::class);
     }
 
     /**

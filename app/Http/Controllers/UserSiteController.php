@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Site;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,8 @@ class UserSiteController extends Controller
      */
     public function create()
     {
-        return view('userSite.create');
+        $sites = Site::all();
+        return view('userSite.create', compact('sites'));
     }
 
     /**
@@ -36,7 +38,8 @@ class UserSiteController extends Controller
             'name'=> 'required|max:255',
             'username'=> 'required|max:255',
             'password'=> 'required|max:255',
-            'level_id'=> 'required|max:255',
+            'level_id'=> 'required',
+            'site_id'=> 'required',
         ];
 
         $validatedData = $request->validate($rules);
@@ -74,6 +77,7 @@ class UserSiteController extends Controller
         $rules = [
             'name'=> 'required|max:255',
             'username'=> 'required|max:255',
+            'site_id'=> 'required',
         ];
 
         $validatedData = $request->validate($rules);

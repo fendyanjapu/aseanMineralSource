@@ -2,19 +2,23 @@
 
 @section('content')
     <div class="mb-3">
-        <h1 class="h3 d-inline align-middle">Tambah Data Pengguna</h1>
+        <h1 class="h3 d-inline align-middle">Tambah Data Operasional Site</h1>
 
     </div>
-
-    <form action="{{ route('userSite.store') }}" method="POST">
+    @if (session()->has('error'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('error') }}
+        </div>
+    @endif
+    <form action="{{ route('operasionalSite.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-12 col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <label>Nama</label>
-                        <input type="text" class="form-control" name="name" placeholder="Nama">
-                        @error('name')
+                        <label>Kode Transaksi</label>
+                        <input type="text" class="form-control" name="kode_transaksi" readonly value="{{ $kode }}">
+                        @error('kode_transaksi')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
                             </div>
@@ -23,11 +27,10 @@
                 </div>
 
                 <div class="card">
-
                     <div class="card-body">
-                        <label>Username</label>
-                        <input type="text" class="form-control" name="username" placeholder="Username">
-                        @error('username')
+                        <label>Nama Transaksi</label>
+                        <input type="text" class="form-control" name="nama_transaksi" placeholder="Nama Transaksi" value="{{ old('nama_transaksi') }}">
+                        @error('nama_transaksi')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
                             </div>
@@ -36,28 +39,11 @@
                 </div>
 
                 <div class="card">
-
                     <div class="card-body">
-                        <label>Password</label>
-                        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-                        <br>
-                        <input type="checkbox" onclick="myFunction()">Show Password
-                        @error('password')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-
-                    <div class="card-body">
-                        <label>Level</label>
-                        <select class="form-select mb-3" name="level_id" readlony>
-                            <option value="4" selected>Operator Site</option>
-                        </select>
-                        @error('level')
+                        <label>Biaya</label>
+                        <input type="text" class="form-control" name="biaya" id="biaya" placeholder="Biaya"
+                            value="{{ old('biaya') }}">
+                        @error('biaya')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
                             </div>
@@ -69,7 +55,6 @@
                     <div class="card-body">
                         <label>Site</label>
                         <select name="site_id" id="" class="form-control">
-                            <option value=""></option>
                             @foreach ($sites as $site)
                                 <option value="{{ $site->id }}">{{ $site->nama_site }}</option>
                             @endforeach
@@ -82,21 +67,34 @@
                     </div>
                 </div>
 
+                <div class="card">
+                    <div class="card-body">
+                        <label>Bukti Transaksi</label>
+                        <input type="file" class="form-control" name="bukti_transaksi" accept="image/*,application/pdf">
+                        @error('bukti_transaksi')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
                 <button class="btn btn-success" type="submit">Simpan</button>
                 <a href="#" onclick="self.history.back()" class="btn btn-danger">Batal</a>
             </div>
+
         </div>
     </form>
 
     <script>
-        function myFunction() {
-            var x = document.getElementById("password");
-            if (x.type === "password") {
-                x.type = "text";
-            } else {
-                x.type = "password";
-            }
-        }
+        $("#biaya").keyup(function (event) {
+            $(this).val(function (index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    ;
+            });
+        });
     </script>
 
 @endsection

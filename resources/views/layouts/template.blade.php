@@ -136,7 +136,7 @@
 					</li>
 
 					<li class="sidebar-item">
-						<a class="sidebar-link" href="#">
+						<a class="sidebar-link" href="{{ route('operasionalSite.index') }}">
 							<i class="align-middle" data-feather="link"></i> <span class="align-middle">Operasional
 								Site</span>
 						</a>
