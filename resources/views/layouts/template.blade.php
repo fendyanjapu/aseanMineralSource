@@ -125,6 +125,24 @@
 					</li>
 
 					<li class="sidebar-header">
+						Produktivitas
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="#">
+							<i class="align-middle" data-feather="refresh-ccw"></i> <span class="align-middle">Rotasi
+								Unit</span>
+						</a>
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="#">
+							<i class="align-middle" data-feather="link"></i> <span class="align-middle">Operasional
+								Site</span>
+						</a>
+					</li>
+
+					<li class="sidebar-header">
 						Laporan Lapangan
 					</li>
 

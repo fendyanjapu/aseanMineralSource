@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->smallInteger('level_id');
             $table->smallInteger('jenis_user_id');
+            $table->smallInteger('site_id')->nullable();
             $table->string('created_by');
             $table->string('updated_by')->nullable();
             $table->timestamp('email_verified_at')->nullable();

@@ -24,5 +24,25 @@ class DatabaseSeeder extends Seeder
             'jenis_user_id' => '1',
             'created_by' => 'Test User Admin',
         ]);
+
+        DB::table('jenis_users')->insert([
+            'jenis' => 'Asian Mining Source',
+        ]);
+        DB::table('jenis_users')->insert([
+            'jenis' => 'Site',
+        ]);
+
+        DB::table('levels')->insert([
+            'level' => 'IT',
+        ]);
+        DB::table('levels')->insert([
+            'level' => 'Direksi Asean Mineral Source',
+        ]);
+        DB::table('levels')->insert([
+            'level' => 'Checker Asean Mineral Source',
+        ]);
+        DB::table('levels')->insert([
+            'level' => 'Operator Site',
+        ]);
     }
 }

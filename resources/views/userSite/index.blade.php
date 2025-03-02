@@ -50,7 +50,7 @@
                                     <th scope="row">{{ $loop->iteration }}</th>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->username }}</td>
-                                    <td>{{ $user->level->level }}</td>
+                                    <td>{{ $user->level?->level }}</td>
                                     @if (auth()->user()->level_id < 2)
                                         <td>{{ $user->created_by }}</td>
                                         <td>{{ $user->updated_by }}</td>
