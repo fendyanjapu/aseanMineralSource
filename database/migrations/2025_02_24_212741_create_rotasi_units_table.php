@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('nopol');
             $table->string('supir');
             $table->string('jarak');
-            $table->string('berat_kendraan');
+            $table->string('berat_kendaraan');
             $table->string('berat_kotor');
             $table->string('berat_bersih');
             $table->string('premi_tonase');

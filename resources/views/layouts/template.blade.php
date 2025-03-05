@@ -129,9 +129,9 @@
 					</li>
 
 					<li class="sidebar-item">
-						<a class="sidebar-link" href="#">
+						<a class="sidebar-link" href="{{ route('rotasiUnit.index') }}">
 							<i class="align-middle" data-feather="refresh-ccw"></i> <span class="align-middle">Rotasi
-								Unit</span>
+								Unit Site</span>
 						</a>
 					</li>
 
@@ -172,7 +172,7 @@
 					</li>
 
 					<li class="sidebar-item">
-						<a class="sidebar-link" href="#">
+						<a class="sidebar-link" href="{{ route('pengapalan.index') }}">
 							<i class="align-middle" data-feather="anchor"></i> <span
 								class="align-middle">Pengapalan</span>
 						</a>

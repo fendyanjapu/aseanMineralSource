@@ -9,8 +9,10 @@ use App\Http\Controllers\OperasionalSiteController;
 use App\Http\Controllers\PemasukanController;
 use App\Http\Controllers\PembelianBarangController;
 use App\Http\Controllers\PembelianBatuController;
+use App\Http\Controllers\PengapalanController;
 use App\Http\Controllers\PenggajihanController;
 use App\Http\Controllers\PerbaikanUnitController;
+use App\Http\Controllers\RotasiUnitController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserSiteController;
@@ -46,6 +48,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('laporanPemasukan/print', [LaporanPemasukanController::class, 'print'])->name('laporanPemasukan.print');
     Route::post('laporanPengeluaran/print', [LaporanPengeluaranController::class, 'print'])->name('laporanPengeluaran.print');
 
+    Route::get('/getPembelianBatu/{site_id}', [PengapalanController::class, 'getPembelianBatu'] )->name('getPembelianBatu');
+    Route::get('/getTotalRotasi', [RotasiUnitController::class, 'getTotalRotasi'] )->name('getTotalRotasi');
+
     Route::resource('user', UserController::class)->except('show');
     Route::resource('userSite', UserSiteController::class)->except('show');
     Route::resource('karyawan', KaryawanController::class);
@@ -60,6 +65,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('kondisiLapangan', KondisiLapanganController::class)->except('show');
     Route::resource('pembelianBatu', PembelianBatuController::class)->except('show');
     Route::resource('operasionalSite', OperasionalSiteController::class)->except('show');
+    Route::resource('pengapalan', PengapalanController::class)->except('show');
+    Route::resource('rotasiUnit', RotasiUnitController::class)->except('show');
 });
 
 
