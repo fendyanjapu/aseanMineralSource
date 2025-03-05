@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('jetty');
             $table->string('document_dll');
             $table->string('total_penjualan');
+            $table->char('status_pengapalan', 1);
             $table->string('created_by');
             $table->string('updated_by')->nullable();
             $table->smallInteger('user_id');

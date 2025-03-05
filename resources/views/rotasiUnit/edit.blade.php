@@ -2,24 +2,18 @@
 
 @section('content')
     <div class="mb-3">
-        <h1 class="h3 d-inline align-middle">Tambah Data Rotasi Unit Site</h1>
+        <h1 class="h3 d-inline align-middle">Edit Data Rotasi Unit Site</h1>
 
     </div>
-    <div style="margin: 0px 20px">
-        @if (session()->has('success'))
-            <div class="alert alert-success" role="alert">
-                {{ session('success') }}
-            </div>
-        @endif
-    </div>
-    <form action="{{ route('rotasiUnit.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('rotasiUnit.update', ['rotasiUnit' => $rotasiUnit]) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
         <div class="row">
             <div class="col-12 col-lg-6">
                 <div class="card">
                     <div class="card-body">
                         <label>Kode Transaksi</label>
-                        <input type="text" class="form-control" name="kode_transaksi" readonly value="{{ $kode }}">
+                        <input type="text" class="form-control" name="kode_transaksi" readonly value="{{ $rotasiUnit->kode_transaksi }}">
                         @error('kode_transaksi')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -32,7 +26,7 @@
                     <div class="card-body">
                         <label>No Nota</label><br>
                         <input type="text" class="form-control col-lg-3" name="no_nota" placeholder="No Nota"
-                            value="{{ old('no_nota') }}">
+                            value="{{ $rotasiUnit->no_nota }}">
                         @error('no_nota')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -45,7 +39,7 @@
                     <div class="card-body">
                         <label>Tanggal</label><br>
                         <input type="date" class="form-control col-lg-3" name="tanggal" id="tanggal"
-                            value="{{ old('tanggal') }}">
+                            value="{{ $rotasiUnit->tanggal }}">
                         @error('tanggal')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -58,7 +52,7 @@
                     <div class="card-body">
                         <label>Nopol</label>
                         <input type="text" class="form-control" name="nopol" id="nopol" placeholder="Nopol"
-                            value="{{ old('nopol') }}">
+                            value="{{ $rotasiUnit->nopol }}">
                         @error('nopol')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -71,7 +65,7 @@
                     <div class="card-body">
                         <label>Supir</label>
                         <input type="text" class="form-control" name="supir"
-                            placeholder="Supir" value="{{ old('supir') }}">
+                            placeholder="Supir" value="{{ $rotasiUnit->supir }}">
                         @error('supir')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -84,7 +78,7 @@
                     <div class="card-body">
                         <label>Jarak</label>
                         <input type="text" class="form-control" name="jarak" placeholder="Jarak"
-                            value="{{ old('jarak') }}">
+                            value="{{ $rotasiUnit->jarak }}">
                         @error('jarak')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -97,7 +91,7 @@
                     <div class="card-body">
                         <label>Berat Kendaraan</label>
                         <input type="number" class="form-control" name="berat_kendaraan" id="berat_kendaraan" placeholder="Berat Kendaraan"
-                            value="{{ old('berat_kendaraan') }}">
+                            value="{{ $rotasiUnit->berat_kendaraan }}">
                         @error('berat_kendaraan')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -110,7 +104,7 @@
                     <div class="card-body">
                         <label>Berat Kotor</label>
                         <input type="number" class="form-control" name="berat_kotor" id="berat_kotor"
-                            placeholder="Berat Kotor" value="{{ old('berat_kotor') }}">
+                            placeholder="Berat Kotor" value="{{ $rotasiUnit->berat_kotor }}">
                         @error('berat_kotor')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -123,7 +117,7 @@
                     <div class="card-body">
                         <label>Berat Bersih</label>
                         <input type="text" class="form-control" name="berat_bersih" id="berat_bersih"
-                            placeholder="Berat Bersih" value="{{ old('berat_bersih') }}" readonly>
+                            placeholder="Berat Bersih" value="{{ $rotasiUnit->berat_bersih }}" readonly>
                         @error('berat_bersih')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -136,7 +130,7 @@
                     <div class="card-body">
                         <label>Premi Tonase</label>
                         <input type="text" class="form-control" name="premi_tonase" id="premi_tonase"
-                            placeholder="Premi Tonase" value="{{ old('premi_tonase') }}">
+                            placeholder="Premi Tonase" value="{{ $rotasiUnit->premi_tonase }}">
                         @error('premi_tonase')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -149,7 +143,7 @@
                     <div class="card-body">
                         <label>Premi Per rite</label>
                         <input type="text" class="form-control" name="premi_per_rite" id="premi_per_rite"
-                            placeholder="Premi Per rite" value="{{ old('premi_per_rite') }}">
+                            placeholder="Premi Per rite" value="{{ $rotasiUnit->premi_per_rite }}">
                         @error('premi_per_rite')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -162,7 +156,7 @@
                     <div class="card-body">
                         <label>Total Biaya</label>
                         <input type="text" class="form-control" name="total_biaya" id="total_biaya"
-                            placeholder="Total Biaya" value="{{ old('total_biaya') }}" readonly>
+                            placeholder="Total Biaya" value="{{ $rotasiUnit->total_biaya }}" readonly>
                         @error('total_biaya')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -175,7 +169,7 @@
                     <div class="card-body">
                         <label>Total Rotasi</label>
                         <input type="text" class="form-control" name="total_rotasi" id="total_rotasi"
-                            placeholder="Total Rotasi" value="{{ old('total_rotasi') }}" readonly>
+                            placeholder="Total Rotasi" value="{{ $rotasiUnit->total_rotasi }}" readonly>
                         @error('total_rotasi')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -189,7 +183,9 @@
                         <label>Site</label>
                         <select name="site_id" id="" class="form-control">
                             @foreach ($sites as $site)
-                                <option value="{{ $site->id }}">{{ $site->nama_site }}</option>
+                                <option value="{{ $site->id }}" {{ $site->id == $rotasiUnit->site_id ? 'selected' : '' }}>
+                                    {{ $site->nama_site }}
+                                </option>
                             @endforeach
                         </select>
                         @error('site_id')

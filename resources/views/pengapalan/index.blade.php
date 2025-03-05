@@ -34,6 +34,12 @@
                                 <th scope="col">Tanggal Pengapalan</th>
                                 <th scope="col">Nama Tongkang</th>
                                 <th scope="col">Site</th>
+                                <th scope="col">Tonase</th>
+                                <th scope="col">Harga di Site</th>
+                                <th scope="col">Harga Jual Pertonase</th>
+                                <th scope="col">Document dll</th>
+                                <th scope="col">Total Harga Penjualan</th>
+                                <th scope="col">Laba Bersih</th>
                                 @if (auth()->user()->level_id == 1)
                                     <th scope="col">Created By</th>
                                     <th scope="col">Updated By</th>
@@ -47,13 +53,15 @@
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
                                     <td>{{ $pengapalan->kode_transaksi }}</td>
-                                    <td>{{ $pengapalan->nama_transaksi }}</td>
+                                    <td>{{ date_format(date_create($pengapalan->tanggal_pengapalan), 'd-m-Y') }}</td>
                                     <td>{{ $pengapalan->nama_tongkang }}</td>
                                     <td>{{ $pengapalan->site?->nama_site }}</td>
-                                    <td>{{ $pengapalan->pembelianBatu?->jumlah_tonase }}</td>
-                                    <td>{{ $pengapalan->pembelianBatu?->harga }}</td>
-                                    <td>{{ $pengapalan->pembelianBatu?->nama_jetty }}</td>
-                                    <td>{{ $pengapalan->pembelianBatu?->total_penjualan }}</td>
+                                    <td>{{ $pengapalan->tonase }}</td>
+                                    <td>{{ $pengapalan->harga_di_site }}</td>
+                                    <td>{{ $pengapalan->harga_jual_per_tonase }}</td>
+                                    <td>{{ $pengapalan->document_dll }}</td>
+                                    <td>{{ $pengapalan->total_harga_penjualan }}</td>
+                                    <td>{{ $pengapalan->laba_bersih }}</td>
                                     @if (auth()->user()->level_id == 1)
                                         <td>{{ $pengapalan->created_by }}</td>
                                         <td>{{ $pengapalan->updated_by }}</td>

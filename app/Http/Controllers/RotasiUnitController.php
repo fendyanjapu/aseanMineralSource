@@ -27,7 +27,7 @@ class RotasiUnitController extends Controller
     ];
     public function index()
     {
-        $rotasiUnits = RotasiUnit::all();
+        $rotasiUnits = RotasiUnit::orderBy('tanggal', 'desc')->get();
         return view('rotasiUnit.index', compact('rotasiUnits'));
     }
 
@@ -117,6 +117,7 @@ class RotasiUnitController extends Controller
     public function getTotalRotasi(Request $request)
     {
         $totalRotasi = RotasiUnit::where('tanggal', '=', $request->tanggal)->where('nopol', '=', $request->nopol)->count();
+        $totalRotasi += 1;
         return json_encode($totalRotasi);
     }
 }

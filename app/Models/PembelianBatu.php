@@ -20,6 +20,7 @@ class PembelianBatu extends Model
         'jetty',
         'document_dll',
         'total_penjualan',
+        'status_pengapalan',
         'created_by',
         'updated_by',
         'user_id',

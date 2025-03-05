@@ -17,7 +17,12 @@ return new class extends Migration
             $table->date('tanggal_pengapalan');
             $table->string('nama_tongkang');
             $table->smallInteger('site_id');
-            $table->smallInteger('pembelian_batu_id');
+            $table->string('tonase');
+            $table->string('harga_di_site');
+            $table->string('harga_jual_per_tonase');
+            $table->string('document_dll');
+            $table->string('total_harga_penjualan');
+            $table->string('laba_bersih');
             $table->string('created_by');
             $table->string('updated_by')->nullable();
             $table->smallInteger('user_id');

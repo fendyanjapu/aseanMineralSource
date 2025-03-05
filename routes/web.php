@@ -48,7 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('laporanPemasukan/print', [LaporanPemasukanController::class, 'print'])->name('laporanPemasukan.print');
     Route::post('laporanPengeluaran/print', [LaporanPengeluaranController::class, 'print'])->name('laporanPengeluaran.print');
 
-    Route::get('/getPembelianBatu/{site_id}', [PengapalanController::class, 'getPembelianBatu'] )->name('getPembelianBatu');
+    Route::get('/getSite', [PengapalanController::class, 'getSite'] )->name('getSite');
     Route::get('/getTotalRotasi', [RotasiUnitController::class, 'getTotalRotasi'] )->name('getTotalRotasi');
 
     Route::resource('user', UserController::class)->except('show');

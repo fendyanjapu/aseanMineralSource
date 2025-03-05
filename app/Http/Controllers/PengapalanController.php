@@ -15,7 +15,8 @@ class PengapalanController extends Controller
         'tanggal_pengapalan'=> 'required|date',
         'nama_tongkang'=> 'required|max:255',
         'site_id'=> 'required',
-        'pembelian_batu_id'=> 'required',
+        'tonase'=> 'required|max:255',
+        'harga_di_site'=> 'required|max:255',
     ];
     public function index()
     {
@@ -48,6 +49,10 @@ class PengapalanController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate($this->rules);
+        $validatedData['harga_jual_per_tonase'] = $request->harga_jual_per_tonase;
+        $validatedData['document_dll'] = $request->document_dll;
+        $validatedData['total_harga_penjualan'] = $request->total_harga_penjualan;
+        $validatedData['laba_bersih'] = $request->laba_bersih;
         $validatedData['created_by'] = auth()->user()->name;
         $validatedData['user_id'] = auth()->user()->id;
 
@@ -84,6 +89,10 @@ class PengapalanController extends Controller
         $this->authorize('update', $pengapalan);
 
         $validatedData = $request->validate($this->rules);
+        $validatedData['harga_jual_per_tonase'] = $request->harga_jual_per_tonase;
+        $validatedData['document_dll'] = $request->document_dll;
+        $validatedData['total_harga_penjualan'] = $request->total_harga_penjualan;
+        $validatedData['laba_bersih'] = $request->laba_bersih;
         $validatedData['updated_by'] = auth()->user()->name;
         Pengapalan::findOrFail($pengapalan->id)->update($validatedData);
 
@@ -102,9 +111,20 @@ class PengapalanController extends Controller
         return redirect(route('pengapalan.index'))->with('success','Data berhasil dihapus');
     }
 
-    public function getPembelianBatu($site_id)
+    public function getSite(Request $request)
     {
-        $pembelianBatu = PembelianBatu::where('site_id', '=', $site_id)->get();
-        return response()->json($pembelianBatu);
+        $site_id = $request->site_id;
+        $pembelianBatus = PembelianBatu::where('site_id', '=', $site_id)->where('status_pengapalan', '=', '0')->get();
+        $jumlah_tonase = 0;
+        $total_penjualan = 0;
+        foreach ($pembelianBatus as $pembelianBatu) {
+            $jumlah_tonase += str_replace(',', '', $pembelianBatu->jumlah_tonase);
+            $total_penjualan += str_replace(',', '', $pembelianBatu->total_penjualan);
+        }
+        $data = [
+            'jumlah_tonase' => $jumlah_tonase,
+            'total_penjualan' => $total_penjualan,
+        ];
+        return json_encode($data);
     }
 }

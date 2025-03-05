@@ -62,6 +62,7 @@ class PembelianBatuController extends Controller
             $validatedData = $request->validate($this->rules);
             $validatedData['created_by'] = auth()->user()->name;
             $validatedData['user_id'] = auth()->user()->id;
+            $validatedData['status_pengapalan'] = "0";
 
             PembelianBatu::create($validatedData);
 

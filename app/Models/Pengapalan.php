@@ -14,7 +14,12 @@ class Pengapalan extends Model
         'tanggal_pengapalan',
         'nama_tongkang',
         'site_id',
-        'pembelian_batu_id',
+        'tonase',
+        'harga_di_site',
+        'harga_jual_per_tonase',
+        'document_dll',
+        'total_harga_penjualan',
+        'laba_bersih',
         'created_by',
         'updated_by',
         'user_id',
@@ -23,10 +28,5 @@ class Pengapalan extends Model
     public function site()
     {
         return $this->belongsTo(Site::class);
-    }
-
-    public function pembelianBatu()
-    {
-        return $this->belongsTo(PembelianBatu::class);
     }
 }
