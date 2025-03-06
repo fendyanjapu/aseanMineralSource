@@ -73,9 +73,18 @@ class PembelianBatuController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PembelianBatu $pembelianBatu)
+    public function laporan(Request $request)
     {
-        //
+        $dariTanggal = $request->dari_tanggal;
+        $sampaiTanggal = $request->sampai_tanggal;
+        if ($dariTanggal != null && $sampaiTanggal != null) {
+            $pembelianBatus = PembelianBatu::where('tgl_rotasi_dari', '>=', $dariTanggal)
+                        ->where('tgl_rotasi_dari', '<=', $sampaiTanggal)->get();
+            
+        } else {
+            $pembelianBatus = PembelianBatu::where('tgl_rotasi_dari', '<=', '2000-01-01')->get();
+        }
+        return view('pembelianBatu.laporan', compact('pembelianBatus', 'dariTanggal', 'sampaiTanggal'));
     }
 
     /**

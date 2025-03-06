@@ -51,6 +51,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/getSite', [PengapalanController::class, 'getSite'] )->name('getSite');
     Route::get('/getTotalRotasi', [RotasiUnitController::class, 'getTotalRotasi'] )->name('getTotalRotasi');
 
+    Route::get('pembelianBatu/laporan', [PembelianBatuController::class, 'laporan'])->name('pembelianBatu.laporan');
+
     Route::resource('user', UserController::class)->except('show');
     Route::resource('userSite', UserSiteController::class)->except('show');
     Route::resource('karyawan', KaryawanController::class);

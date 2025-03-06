@@ -25,6 +25,16 @@
 	<link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.css" />
 
 	<script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+
+	<script src="https://cdn.datatables.net/buttons/3.2.2/js/dataTables.buttons.js"></script>
+	<script src="https://cdn.datatables.net/buttons/3.2.2/js/buttons.dataTables.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+	<script src="https://cdn.datatables.net/buttons/3.2.2/js/buttons.html5.min.js"></script>
+	<script src="https://cdn.datatables.net/buttons/3.2.2/js/buttons.print.min.js"></script>
+
+	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.2/css/buttons.dataTables.css">
 </head>
 
 <body>
@@ -184,7 +194,7 @@
 						<div class="dropdown-menu dropdown-menu-end">
 							<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="file"></i>
 								Pengeluaran</a>
-							<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="file"></i>
+							<a class="dropdown-item" href="{{ route('pembelianBatu.laporan') }}"><i class="align-middle me-1" data-feather="file"></i>
 								Pembelian dari Site</a>
 							<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="file"></i>
 								Pengapalan</a>
