@@ -58,6 +58,13 @@ class PengapalanController extends Controller
 
         Pengapalan::create($validatedData);
 
+        // ubah status pembelian dari site
+        $ids = explode(',',$request->id_pembelian_batu);
+        $data['status_pengapalan'] = '1';
+        foreach ($ids as $id) {
+            PembelianBatu::findOrFail($id)->update($data);
+        }
+
         return redirect()->route('pengapalan.index')->with('success','Data berhasil ditambah');
     }
 
@@ -117,14 +124,18 @@ class PengapalanController extends Controller
         $pembelianBatus = PembelianBatu::where('site_id', '=', $site_id)->where('status_pengapalan', '=', '0')->get();
         $jumlah_tonase = 0;
         $total_penjualan = 0;
+        $id_pembelian_batu = [];
         foreach ($pembelianBatus as $pembelianBatu) {
             $jumlah_tonase += str_replace(',', '', $pembelianBatu->jumlah_tonase);
             $total_penjualan += str_replace(',', '', $pembelianBatu->total_penjualan);
+            $id_pembelian_batu[] = $pembelianBatu->id;
         }
         $data = [
             'jumlah_tonase' => $jumlah_tonase,
             'total_penjualan' => $total_penjualan,
+            'id_pembelian_batu' => $id_pembelian_batu,
         ];
         return json_encode($data);
     }
+
 }

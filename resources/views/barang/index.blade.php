@@ -35,15 +35,12 @@
                                 <th scope="col">Merk</th>
                                 <th scope="col">Spesifikasi</th>
                                 <th scope="col">Kisaran Harga</th>
-                                @if (auth()->user()->level_id < 2)
+                                @if (auth()->user()->level_id == 1)
                                     <th scope="col">Created By</th>
                                     <th scope="col">Updated By</th>
-                                @endif
-
-                                @if (auth()->user()->level_id < 3)
                                     <th scope="col">Created At</th>
-                                    <th scope="col" style="text-align: center">Action</th>
                                 @endif
+                                <th scope="col" style="text-align: center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -55,14 +52,15 @@
                                     <td>{{ $barang->merk }}</td>
                                     <td>{{ $barang->spesifikasi }}</td>
                                     <td>{{ $barang->kisaran_harga }}</td>
-                                    @if (auth()->user()->level_id < 2)
+                                    @if (auth()->user()->level_id == 1)
                                         <td>{{ $barang->created_by }}</td>
                                         <td>{{ $barang->updated_by }}</td>
+                                        <td>{{ $barang->created_at }}</td>
                                     @endif
 
                                     @auth
                                         @can('update', $barang)
-                                            <td>{{ $barang->created_at }}</td>
+
                                             <td style="display: flex; justify-content: center;">
                                                 <a href="{{ route('barang.edit', ['barang' => $barang]) }}"
                                                     class="btn btn-success btn-sm">Edit</a>
@@ -74,6 +72,8 @@
                                                         onclick="return confirm('Hapus data?')">Hapus</button>
                                                 </form>
                                             </td>
+                                        @else
+                                            <td></td>
                                         @endcan
                                     @endauth
                                 </tr>

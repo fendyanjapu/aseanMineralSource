@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="mb-3">
-        <h1 class="h3 d-inline align-middle">Edit Data Pemasukan</h1>
+        <h1 class="h3 d-inline align-middle">Edit Data Pengeluaran Site</h1>
 
     </div>
 

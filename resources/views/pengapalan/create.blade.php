@@ -96,7 +96,7 @@
                         <input type="text" class="form-control" name="harga_jual_per_tonase" id="harga_jual_per_tonase"
                             placeholder="Harga Jual Pertonase" value="{{ old('harga_jual_per_tonase') }}"
                             {{ auth()->user()->level_id != 2 ? 'readonly' : '' }}>
-                            <small>*direksi</small>
+                            <small>*diinput direksi</small>
                         @error('harga_jual_per_tonase')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -111,7 +111,7 @@
                         <input type="text" class="form-control" name="document_dll" id="document_dll"
                             placeholder="Document dll" value="{{ old('document_dll') }}"
                             {{ auth()->user()->level_id != 2 ? 'readonly' : '' }}>
-                            <small>*direksi</small>
+                            <small>*diinput direksi</small>
                         @error('document_dll')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -143,6 +143,8 @@
                                 <small>{{ $message }}</small>
                             </div>
                         @enderror
+                        <input type="hidden" class="form-control" name="id_pembelian_batu" id="id_pembelian_batu"
+                            readonly>
                     </div>
                 </div>
 
@@ -178,9 +180,9 @@
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                             ;
                     });
+                    $('#id_pembelian_batu').val(data.id_pembelian_batu);
                 }
             });
-
         });
 
         $('#harga_jual_per_tonase').keyup(function(){

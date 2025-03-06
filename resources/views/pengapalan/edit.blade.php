@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="mb-3">
-        <h1 class="h3 d-inline align-middle">Tambah Data Pengapalan</h1>
+        <h1 class="h3 d-inline align-middle">Edit Data Pengapalan</h1>
 
     </div>
     <form action="{{ route('pengapalan.update', ['pengapalan' => $pengapalan]) }}" method="POST">
@@ -51,7 +51,8 @@
                 <div class="card">
                     <div class="card-body">
                         <label>Site</label>
-                        <select name="site_id" id="site" class="form-control">
+                        <input type="hidden" name="site_id" value="{{ $pengapalan->site_id }}">
+                        <select name="site" id="site" class="form-control" disabled>
                             <option value=""></option>
                             @foreach ($sites as $site)
                                 <option value="{{ $site->id }}" {{ $site->id == $pengapalan->site_id ? 'selected' : '' }}>
@@ -99,7 +100,7 @@
                         <input type="text" class="form-control" name="harga_jual_per_tonase" id="harga_jual_per_tonase"
                             placeholder="Harga Jual Pertonase" value="{{ $pengapalan->harga_jual_per_tonase }}"
                             {{ auth()->user()->level_id != 2 ? 'readonly' : '' }}>
-                            <small>*direksi</small>
+                            <small>*diinput direksi</small>
                         @error('harga_jual_per_tonase')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -114,7 +115,7 @@
                         <input type="text" class="form-control" name="document_dll" id="document_dll"
                             placeholder="Document dll" value="{{ $pengapalan->document_dll }}"
                             {{ auth()->user()->level_id != 2 ? 'readonly' : '' }}>
-                            <small>*direksi</small>
+                            <small>*diinput direksi</small>
                         @error('document_dll')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -157,35 +158,6 @@
     </form>
 
     <script>
-        $('#site').change(function () {
-            let id = $(this).val();
-            $.ajax({
-                type: "GET",
-                data: "site_id=" + id,
-                url: "{{ route('getSite') }}",
-                cache: false,
-                success: function (result) {
-                    let data = $.parseJSON(result);
-                    $('#tonase').val(data.jumlah_tonase);
-                    $('#harga_di_site').val(data.total_penjualan);
-
-                    $('#tonase').val(function (index, value) {
-                        return value
-                            .replace(/\D/g, "")
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                            ;
-                    });
-                    $('#harga_di_site').val(function (index, value) {
-                        return value
-                            .replace(/\D/g, "")
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                            ;
-                    });
-                }
-            });
-
-        });
-
         $('#harga_jual_per_tonase').keyup(function(){
             $(this).val(function (index, value) {
                 return value

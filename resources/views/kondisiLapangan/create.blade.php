@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="mb-3">
-        <h1 class="h3 d-inline align-middle">Tambah Data Kondisi Lpangan</h1>
+        <h1 class="h3 d-inline align-middle">Tambah Data Kondisi Lapangan</h1>
 
     </div>
 
@@ -27,7 +27,7 @@
 
                     <div class="card-body">
                         <label>Bukti Pelaporan</label>
-                        <input type="file" class="form-control" name="bukti_pelaporan" accept="image/*">
+                        <input type="file" class="form-control" name="bukti_pelaporan" accept="image/*" required>
                         @error('bukti_pelaporan')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>

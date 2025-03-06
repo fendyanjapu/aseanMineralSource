@@ -35,12 +35,12 @@
                                 <th scope="col">Tanggal Masuk</th>
                                 <th scope="col">Jabatan</th>
                                 <th scope="col">Level</th>
-                                <th scope="col">Created By</th>
-                                <th scope="col">Updated By</th>
-                                @if (auth()->user()->level != 'Operator')
-                                <th scope="col">Created At</th>
-                                    <th scope="col" style="text-align: center">Action</th>
+                                @if (auth()->user()->level_id == 1)
+                                    <th scope="col">Created By</th>
+                                    <th scope="col">Updated By</th>
+                                    <th scope="col">Created At</th>
                                 @endif
+                                <th scope="col" style="text-align: center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -52,11 +52,14 @@
                                     <td>{{ $karyawan->tanggal_masuk }}</td>
                                     <td>{{ $karyawan->jabatan }}</td>
                                     <td>{{ $karyawan->level }}</td>
-                                    <td>{{ $karyawan->created_by }}</td>
-                                    <td>{{ $karyawan->updated_by }}</td>
+                                    @if (auth()->user()->level_id == 1)
+                                        <td>{{ $karyawan->created_by }}</td>
+                                        <td>{{ $karyawan->updated_by }}</td>
+                                        <td>{{ $karyawan->created_at }}</td>
+                                    @endif
                                     @auth
                                         @can('update', $karyawan)
-                                        <td>{{ $karyawan->created_at }}</td>
+
                                             <td style="display: flex; justify-content: center;">
                                                 <a href="{{ route('karyawan.edit', ['karyawan' => $karyawan]) }}"
                                                     class="btn btn-success btn-sm">Edit</a>
@@ -68,6 +71,8 @@
                                                         onclick="return confirm('Hapus data?')">Hapus</button>
                                                 </form>
                                             </td>
+                                        @else
+                                            <td></td>
                                         @endcan
                                     @endauth
                                 </tr>

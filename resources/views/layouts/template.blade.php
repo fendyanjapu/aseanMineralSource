@@ -117,13 +117,6 @@
 						</a>
 					</li>
 
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('penggajihan.index') }}">
-							<i class="align-middle" data-feather="dollar-sign"></i> <span
-								class="align-middle">Penggajihan</span>
-						</a>
-					</li>
-
 					<li class="sidebar-header">
 						Produktivitas
 					</li>
