@@ -9,7 +9,11 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return view("login");
+        if (auth()->user()) {
+            return redirect()->route('dashboard');
+        } else {
+            return view("login");
+        }
     }
 
     public function signin(Request $request)

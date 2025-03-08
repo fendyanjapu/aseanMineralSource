@@ -13,6 +13,7 @@ class PembelianBatuController extends Controller
         'kode_transaksi'=> 'required|max:255',
         'site_id'=> 'required',
         'nama_jetty'=> 'required|max:255',
+        'tgl_pembelian'=> 'required|date',
         'tgl_rotasi_dari'=> 'required|date',
         'tgl_rotasi_sampai'=> 'required|date',
         'jumlah_tonase'=> 'required',
@@ -77,19 +78,58 @@ class PembelianBatuController extends Controller
     {
         $dariTanggal = $request->dari_tanggal;
         $sampaiTanggal = $request->sampai_tanggal;
+        $site_id = $request->site_id;
         if ($dariTanggal != null && $sampaiTanggal != null) {
-            $pembelianBatus = PembelianBatu::where('tgl_rotasi_dari', '>=', $dariTanggal)
-                        ->where('tgl_rotasi_dari', '<=', $sampaiTanggal)->get();
+            $query = PembelianBatu::where('tgl_pembelian', '>=', $dariTanggal)
+                        ->where('tgl_pembelian', '<=', $sampaiTanggal);
             
         } else {
-            $pembelianBatus = PembelianBatu::where('tgl_rotasi_dari', '<=', '2000-01-01')->get();
+            $query = PembelianBatu::where('tgl_pembelian', '<=', '2000-01-01');
         }
-        return view('pembelianBatu.laporan', compact('pembelianBatus', 'dariTanggal', 'sampaiTanggal'));
+
+        if ($site_id != 'all') {
+            $query->where('site_id', '=', $site_id);
+        }
+        $pembelianBatus = $query->get();
+        $sites = Site::all();
+        return view('pembelianBatu.laporan', compact(
+            'pembelianBatus', 
+            'dariTanggal', 
+            'sampaiTanggal', 
+            'site_id',
+            'sites'
+        ));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    public function penjualanSite(Request $request)
+    {
+        $dariTanggal = $request->dari_tanggal;
+        $sampaiTanggal = $request->sampai_tanggal;
+        $site_id = $request->site_id;
+        if ($dariTanggal != null && $sampaiTanggal != null) {
+            $query = PembelianBatu::where('tgl_pembelian', '>=', $dariTanggal)
+                        ->where('tgl_pembelian', '<=', $sampaiTanggal);
+            
+        } else {
+            $query = PembelianBatu::where('tgl_pembelian', '<=', '2000-01-01');
+        }
+        if (auth()->user()->level_id == 1) {
+            if ($site_id != 'all') {
+                $query->where('site_id', '=', $site_id);
+            }
+        } else {
+            $query->where('site_id', '=', auth()->user()->site_id);
+        }
+        $pembelianBatus = $query->get();
+        $sites = Site::all();
+        return view('pembelianBatu.laporanPenjualanSite', compact(
+            'pembelianBatus', 
+            'dariTanggal', 
+            'sampaiTanggal',
+            'site_id',
+            'sites'
+        ));
+    }
     public function edit(PembelianBatu $pembelianBatu)
     {
         $this->authorize('update', $pembelianBatu);

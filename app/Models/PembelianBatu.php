@@ -13,6 +13,7 @@ class PembelianBatu extends Model
         'kode_transaksi',
         'site_id',
         'nama_jetty',
+        'tgl_pembelian',
         'tgl_rotasi_dari',
         'tgl_rotasi_sampai',
         'jumlah_tonase',

@@ -71,9 +71,34 @@ class RotasiUnitController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(RotasiUnit $rotasiUnit)
+    public function laporan(Request $request)
     {
-        //
+        $dariTanggal = $request->dari_tanggal;
+        $sampaiTanggal = $request->sampai_tanggal;
+        $site_id = $request->site_id;
+        if ($dariTanggal != null && $sampaiTanggal != null) {
+            $query = RotasiUnit::where('tanggal', '>=', $dariTanggal)
+                        ->where('tanggal', '<=', $sampaiTanggal);
+            
+        } else {
+            $query = RotasiUnit::where('tanggal', '<=', '2000-01-01');
+        }
+        if (auth()->user()->level_id == 1) {
+            if ($site_id != 'all') {
+                $query->where('site_id', '=', $site_id);
+            }
+        } else {
+            $query->where('site_id', '=', auth()->user()->site_id);
+        }
+        $rotasiUnits = $query->get();
+        $sites = Site::all();
+        return view('rotasiUnit.laporan', compact(
+            'rotasiUnits', 
+            'dariTanggal', 
+            'sampaiTanggal',
+            'site_id',
+            'sites'
+        ));
     }
 
     /**

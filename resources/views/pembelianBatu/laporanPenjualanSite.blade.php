@@ -9,13 +9,13 @@
                         buttons: [
                             {
                                 extend: 'excelHtml5',
-                                title: 'Laporan Pembelian Batu Dari Site periode {{ $dariTanggal }} s.d {{ $sampaiTanggal }}'
+                                title: 'Laporan Penjualan Site periode {{ $dariTanggal }} s.d {{ $sampaiTanggal }}'
                             },
                             {
                                 extend: 'pdfHtml5',
-                                title: 'Laporan Pembelian Batu Dari Site periode {{ $dariTanggal }} s.d {{ $sampaiTanggal }}',
+                                title: 'Laporan Penjualan Site periode {{ $dariTanggal }} s.d {{ $sampaiTanggal }}',
                                 customize: function (doc) {
-                                    doc.content[1].margin = [ 50, 0, 20, 0 ];
+                                    doc.content[1].margin = [50, 0, 20, 0];
                                 }
                             }
                         ]
@@ -24,7 +24,7 @@
             });
         });
     </script>
-    <h1 class="h3 mb-3">Laporan Pembelian Batu Dari Site</h1>
+    <h1 class="h3 mb-3">Laporan Penjualan Site</h1>
 
     <div class="row">
         <div class="col-12">
@@ -44,17 +44,19 @@
                                             value="{{ $sampaiTanggal }}" required></td>
                                 </tr>
                             </table>
-                            <br>
-                            <p>Site:</p>
-                            <select name="site_id" id="" class="form-control" required>
-                                <option value=""></option>
-                                <option value="all" {{ $site_id == 'all' ? 'selected' : '' }}>Semua</option>
-                                @foreach ($sites as $site)
-                                    <option value="{{ $site->id }}" {{ $site_id == $site->id ? 'selected' : '' }}>
-                                        {{ $site->nama_site }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            @if (auth()->user()->level_id == 1)
+                                <br>
+                                <p>Site:</p>
+                                <select name="site_id" id="" class="form-control" required>
+                                    <option value=""></option>
+                                    <option value="all" {{ $site_id == 'all' ? 'selected' : '' }}>Semua</option>
+                                    @foreach ($sites as $site)
+                                        <option value="{{ $site->id }}" {{ $site_id == $site->id ? 'selected' : '' }}>
+                                            {{ $site->nama_site }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            @endif
                         </div>
                         <br>
                         <button class="btn btn-primary">Submit</button>
@@ -66,11 +68,9 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Kode Transaksi</th>
-                                <th scope="col">Site</th>
                                 <th scope="col">Tanggal Pembelian</th>
                                 <th scope="col">Jumlah Tonase</th>
                                 <th scope="col">Harga</th>
-
                             </tr>
                         </thead>
                         <tbody>
@@ -78,7 +78,6 @@
                                 <tr>
                                     <th scope="row" style="text-align: center">{{ $loop->iteration }}</th>
                                     <td>{{ $pembelianBatu->kode_transaksi }}</td>
-                                    <td>{{ $pembelianBatu->site?->nama_site }}</td>
                                     <td>{{ date_format(date_create($pembelianBatu->tgl_pembelian), 'd-m-Y') }}</td>
                                     <td>{{ $pembelianBatu->jumlah_tonase }}</td>
                                     <td>{{ $pembelianBatu->harga }}</td>

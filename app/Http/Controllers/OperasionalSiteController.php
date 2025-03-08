@@ -48,6 +48,7 @@ class OperasionalSiteController extends Controller
     {
         $rules = [
             'kode_transaksi'=> 'required|max:255',
+            'tanggal'=> 'required|date',
             'nama_transaksi'=> 'required|max:255',
             'biaya'=> 'required|max:255',
             'bukti_transaksi' => 'required|file|mimes:jpg,jpeg,png,pdf|max:4096',
@@ -64,7 +65,7 @@ class OperasionalSiteController extends Controller
         $validatedData['user_id'] = auth()->user()->id;
         $validatedData['bukti_transaksi'] = $nama_gbr;
 
-        $store = operasionalSite::create($validatedData);
+        $store = OperasionalSite::create($validatedData);
 
         if ($store) { $gambar->move($tujuan_upload,$nama_gbr); }
         return redirect()->route('operasionalSite.index')->with('success','Data berhasil ditambah');
@@ -73,9 +74,34 @@ class OperasionalSiteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(OperasionalSite $operasionalSite)
+    public function laporan(Request $request)
     {
-        //
+        $dariTanggal = $request->dari_tanggal;
+        $sampaiTanggal = $request->sampai_tanggal;
+        $site_id = $request->site_id;
+        if ($dariTanggal != null && $sampaiTanggal != null) {
+            $query = OperasionalSite::where('tanggal', '>=', $dariTanggal)
+                        ->where('tanggal', '<=', $sampaiTanggal);
+            
+        } else {
+            $query = OperasionalSite::where('tanggal', '<=', '2000-01-01');
+        }
+        if (auth()->user()->level_id == 1) {
+            if ($site_id != 'all') {
+                $query->where('site_id', '=', $site_id);
+            }
+        } else {
+            $query->where('site_id', '=', auth()->user()->site_id);
+        }
+        $operasionalSites = $query->get();
+        $sites = Site::all();
+        return view('operasionalSite.laporan', compact(
+            'operasionalSites', 
+            'dariTanggal', 
+            'sampaiTanggal',
+            'site_id',
+            'sites'
+        ));
     }
 
     /**
@@ -103,6 +129,7 @@ class OperasionalSiteController extends Controller
 
         $rules = [
             'kode_transaksi'=> 'required|max:255',
+            'tanggal'=> 'required|date',
             'nama_transaksi'=> 'required|max:255',
             'biaya'=> 'required|max:255',
             'site_id'=> 'required',
@@ -110,7 +137,7 @@ class OperasionalSiteController extends Controller
 
         $validatedData = $request->validate($rules);
         $validatedData['updated_by'] = auth()->user()->name;
-        operasionalSite::findOrFail($operasionalSite->id)->update($validatedData);
+        OperasionalSite::findOrFail($operasionalSite->id)->update($validatedData);
 
         return redirect(route('operasionalSite.index'))->with('success','Data berhasil diubah');
     }
@@ -122,10 +149,10 @@ class OperasionalSiteController extends Controller
     {
         $this->authorize('delete', $operasionalSite);
         
-        $query = operasionalSite::findOrFail($operasionalSite->id);
+        $query = OperasionalSite::findOrFail($operasionalSite->id);
         $file  = $query->bukti_transaksi;
 
-        operasionalSite::destroy($operasionalSite->id);
+        OperasionalSite::destroy($operasionalSite->id);
         $file_path = public_path('upload/operasionalSite/'.$file);
         if (File::exists($file_path)) {
             File::delete($file_path);

@@ -192,13 +192,13 @@
 								Source</span>
 						</a>
 						<div class="dropdown-menu dropdown-menu-end">
-							<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="file"></i>
+							<a class="dropdown-item" href="{{ route('pengeluaran.laporan') }}"><i class="align-middle me-1" data-feather="file"></i>
 								Pengeluaran</a>
 							<a class="dropdown-item" href="{{ route('pembelianBatu.laporan') }}"><i class="align-middle me-1" data-feather="file"></i>
 								Pembelian dari Site</a>
-							<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="file"></i>
+							<a class="dropdown-item" href="{{ route('pengapalan.laporan') }}"><i class="align-middle me-1" data-feather="file"></i>
 								Pengapalan</a>
-							<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="file"></i>
+							<a class="dropdown-item" href="{{ route('penjualanBatu.laporan') }}"><i class="align-middle me-1" data-feather="file"></i>
 								Penjualan Batu</a>
 						</div>
 					</li>
@@ -209,11 +209,11 @@
 							<i class="align-middle" data-feather="file"></i> <span class="align-middle">Site</span>
 						</a>
 						<div class="dropdown-menu dropdown-menu-end">
-							<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="file"></i>
+							<a class="dropdown-item" href="{{ route('operasionalSite.laporan') }}"><i class="align-middle me-1" data-feather="file"></i>
 								Pengeluaran</a>
-							<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="file"></i>
+							<a class="dropdown-item" href="{{ route('rotasiUnit.laporan') }}"><i class="align-middle me-1" data-feather="file"></i>
 								Produksi</a>
-							<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="file"></i>
+							<a class="dropdown-item" href="{{ route('PenjualanSite.laporan') }}"><i class="align-middle me-1" data-feather="file"></i>
 								Penjualan</a>
 						</div>
 					</li>
@@ -281,7 +281,7 @@
 						<div class="col-6 text-end">
 							<ul class="list-inline">
 								<li class="list-inline-item">
-									<a class="text-muted" href="https://adminkit.io/" target="_blank">Support</a>
+									<a class="text-muted" href="https://www.linkedin.com/in/noor-rahmat-effendy-549351125/?originalSubdomain=id" target="_blank">Support</a>
 								</li>
 								<li class="list-inline-item">
 									<a class="text-muted" href="https://adminkit.io/" target="_blank">Help Center</a>

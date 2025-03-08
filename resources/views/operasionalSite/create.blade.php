@@ -28,6 +28,19 @@
 
                 <div class="card">
                     <div class="card-body">
+                        <label>Tanggal</label><br>
+                        <input type="date" class="form-control col-lg-3" name="tanggal" id="tanggal"
+                            value="{{ old('tanggal') }}">
+                        @error('tanggal')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
                         <label>Nama Transaksi</label>
                         <input type="text" class="form-control" name="nama_transaksi" placeholder="Nama Transaksi" value="{{ old('nama_transaksi') }}">
                         @error('nama_transaksi')

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\PerbaikanUnit;
 use Illuminate\Http\Request;
 use App\Models\PembelianBarang;
 use Illuminate\Support\Facades\DB;
@@ -73,9 +74,29 @@ class PembelianBarangController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PembelianBarang $pembelianBarang)
+    public function laporan(Request $request)
     {
-        //
+        $dariTanggal = $request->dari_tanggal;
+        $sampaiTanggal = $request->sampai_tanggal;
+        if ($dariTanggal != null && $sampaiTanggal != null) {
+            $query = PembelianBarang::where('tanggal', '>=', $dariTanggal)
+                        ->where('tanggal', '<=', $sampaiTanggal);
+            $query2 = PerbaikanUnit::where('tanggal', '>=', $dariTanggal)
+                        ->where('tanggal', '<=', $sampaiTanggal);
+        } else {
+            $query = PembelianBarang::where('tanggal', '<=', '2000-01-01');
+            $query2 = PerbaikanUnit::where('tanggal', '<=', '2000-01-01');
+        }
+
+        $pembelianBarangs = $query->get();
+        $perbaikanUnits = $query2->get();
+        return view('pembelianBarang.laporan', compact(
+            'pembelianBarangs',
+            'perbaikanUnits',
+            'dariTanggal', 
+            'sampaiTanggal', 
+        ));
+
     }
 
     /**

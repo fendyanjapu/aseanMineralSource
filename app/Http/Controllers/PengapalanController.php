@@ -71,14 +71,52 @@ class PengapalanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pengapalan $pengapalan)
+    public function laporan(Request $request)
     {
-        //
+        $dariTanggal = $request->dari_tanggal;
+        $sampaiTanggal = $request->sampai_tanggal;
+        $site_id = $request->site_id;
+        if ($dariTanggal != null && $sampaiTanggal != null) {
+            $query = Pengapalan::where('tanggal_pengapalan', '>=', $dariTanggal)
+                        ->where('tanggal_pengapalan', '<=', $sampaiTanggal);
+            
+        } else {
+            $query = Pengapalan::where('tanggal_pengapalan', '<=', '2000-01-01');
+        }
+
+        if ($site_id != 'all') {
+            $query->where('site_id', '=', $site_id);
+        }
+        $pengapalans = $query->get();
+        $sites = Site::all();
+        return view('pengapalan.laporan', compact(
+            'pengapalans', 
+            'dariTanggal', 
+            'sampaiTanggal', 
+            'site_id',
+            'sites'
+        ));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    public function penjualanBatu(Request $request)
+    {
+        $dariTanggal = $request->dari_tanggal;
+        $sampaiTanggal = $request->sampai_tanggal;
+        if ($dariTanggal != null && $sampaiTanggal != null) {
+            $query = Pengapalan::where('tanggal_pengapalan', '>=', $dariTanggal)
+                        ->where('tanggal_pengapalan', '<=', $sampaiTanggal);
+            
+        } else {
+            $query = Pengapalan::where('tanggal_pengapalan', '<=', '2000-01-01');
+        }
+
+        $pengapalans = $query->get();
+        return view('pengapalan.laporanPenjualanBatu', compact(
+            'pengapalans', 
+            'dariTanggal', 
+            'sampaiTanggal', 
+        ));
+    }
     public function edit(Pengapalan $pengapalan)
     {
         $this->authorize('update', $pengapalan);

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('kode_transaksi');
             $table->smallInteger('site_id');
+            $table->date('tgl_pembelian');
             $table->string('nama_jetty');
             $table->date('tgl_rotasi_dari');
             $table->date('tgl_rotasi_sampai');

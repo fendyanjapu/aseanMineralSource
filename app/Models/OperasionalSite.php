@@ -11,6 +11,7 @@ class OperasionalSite extends Model
 
     protected $fillable = [
         'kode_transaksi',
+        'tanggal',
         'nama_transaksi',
         'biaya',
         'bukti_transaksi',

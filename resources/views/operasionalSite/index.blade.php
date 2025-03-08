@@ -31,6 +31,7 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Kode Transaksi</th>
+                                <th scope="col">Tanggal</th>
                                 <th scope="col">Nama Transaksi</th>
                                 <th scope="col">Biaya</th>
                                 <th scope="col">Bukti Transaksi</th>
@@ -48,6 +49,7 @@
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
                                     <td>{{ $operasionalSite->kode_transaksi }}</td>
+                                    <td>{{ date_format(date_create($operasionalSite->tanggal), 'd-m-Y') }}</td>
                                     <td>{{ $operasionalSite->nama_transaksi }}</td>
                                     <td>{{ $operasionalSite->biaya }}</td>
                                     <td><a href="{{ env('APP_URL') . '/upload/operasionalSite/' . $operasionalSite->bukti_transaksi }}"

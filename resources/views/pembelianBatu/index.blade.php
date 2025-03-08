@@ -32,6 +32,7 @@
                                 <th scope="col" rowspan="2">#</th>
                                 <th scope="col" rowspan="2">Kode Transaksi</th>
                                 <th scope="col" rowspan="2">Site</th>
+                                <th scope="col" rowspan="2">Tanggal Pembelian</th>
                                 <th scope="col" rowspan="2">Nama Jetty</th>
                                 <th scope="col" colspan="2">Tanggal Rotasi</th>
                                 <th scope="col" rowspan="2">Jumlah Tonase</th>
@@ -57,6 +58,7 @@
                                     <th scope="row">{{ $loop->iteration }}</th>
                                     <td>{{ $pembelianBatu->kode_transaksi }}</td>
                                     <td>{{ $pembelianBatu->site?->nama_site }}</td>
+                                    <td>{{ date_format(date_create($pembelianBatu->tgl_pembelian), 'd-m-Y') }}</td>
                                     <td>{{ $pembelianBatu->nama_jetty }}</td>
                                     <td>{{ date_format(date_create($pembelianBatu->tgl_rotasi_dari), 'd-m-Y') }}</td>
                                     <td>{{ date_format(date_create($pembelianBatu->tgl_rotasi_sampai), 'd-m-Y') }}</td>

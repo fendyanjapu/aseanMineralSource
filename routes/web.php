@@ -52,6 +52,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/getTotalRotasi', [RotasiUnitController::class, 'getTotalRotasi'] )->name('getTotalRotasi');
 
     Route::get('pembelianBatu/laporan', [PembelianBatuController::class, 'laporan'])->name('pembelianBatu.laporan');
+    Route::get('penjualanSite/laporan', [PembelianBatuController::class, 'penjualanSite'])->name('PenjualanSite.laporan');
+    Route::get('pengapalan/laporan', [PengapalanController::class, 'laporan'])->name('pengapalan.laporan');
+    Route::get('penjualanBatu/laporan', [PengapalanController::class, 'penjualanBatu'])->name('penjualanBatu.laporan');
+    Route::get('rotasiUnit/laporan', [RotasiUnitController::class, 'laporan'])->name('rotasiUnit.laporan');
+    Route::get('operasionalSite/laporan', [OperasionalSiteController::class, 'laporan'])->name('operasionalSite.laporan');
+    Route::get('pengeluaran/laporan', [PembelianBarangController::class, 'laporan'])->name('pengeluaran.laporan');
 
     Route::resource('user', UserController::class)->except('show');
     Route::resource('userSite', UserSiteController::class)->except('show');

@@ -45,6 +45,19 @@
 
                 <div class="card">
                     <div class="card-body">
+                        <label>Tanggal Pembelian</label>
+                        <input type="date" class="form-control col-lg-3" name="tgl_pembelian"
+                            value="{{ $pembelianBatu->tgl_pembelian }}">
+                        @error('tgl_pembelian')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
                         <label>Nama Jetty</label>
                         <input type="text" class="form-control" name="nama_jetty" placeholder="Nama Jetty"
                             value="{{ $pembelianBatu->nama_jetty }}">
