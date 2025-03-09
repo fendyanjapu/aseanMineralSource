@@ -181,6 +181,13 @@
 						</a>
 					</li>
 
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="{{ route('pembayaranPenjualan.index') }}">
+							<i class="align-middle" data-feather="dollar-sign"></i> <span
+								class="align-middle">Pembayaran Penjualan</span>
+						</a>
+					</li>
+
 					<li class="sidebar-header">
 						Laporan
 					</li>

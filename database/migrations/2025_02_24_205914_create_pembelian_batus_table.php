@@ -17,8 +17,7 @@ return new class extends Migration
             $table->smallInteger('site_id');
             $table->date('tgl_pembelian');
             $table->string('nama_jetty');
-            $table->date('tgl_rotasi_dari');
-            $table->date('tgl_rotasi_sampai');
+            $table->text('tgl_rotasi');
             $table->string('jumlah_tonase');
             $table->string('harga');
             $table->string('jetty');

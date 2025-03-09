@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HutangSite;
 use App\Models\Site;
 use App\Models\Pemasukan;
 use Illuminate\Http\Request;
@@ -62,6 +63,14 @@ class PemasukanController extends Controller
 
         $store = Pemasukan::create($validatedData);
 
+        $hutang = str_replace(',', '', $request->jumlah);
+        $data = [
+            'site_id' => $request->site_id,
+            'pemasukan_id' => $store->id,
+            'hutang' => $hutang
+        ];
+        HutangSite::create($data);
+
         if ($store) { $gambar->move($tujuan_upload,$nama_gbr); }
         return redirect()->route('pemasukan.index')->with('success','Data berhasil ditambah');
     }
@@ -94,6 +103,7 @@ class PemasukanController extends Controller
         
         $rules = [
             'kode_transaksi'=> 'required|max:255',
+            'site_id'=> 'required',
             'jumlah'=> 'required|max:255',
             'sumber_dana'=> 'required|max:255',
             'metode_transaksi'=> 'required|max:255',
@@ -103,6 +113,13 @@ class PemasukanController extends Controller
         $validatedData = $request->validate($rules);
         $validatedData['updated_by'] = auth()->user()->name;
         Pemasukan::findOrFail($pemasukan->id)->update($validatedData);
+
+        $hutang = str_replace(',', '', $request->jumlah);
+        $data = [
+            'site_id' => $request->site_id,
+            'hutang' => $hutang
+        ];
+        HutangSite::where('pemasukan_id', '=', $pemasukan->id)->update($data);
 
         return redirect(route('pemasukan.index'))->with('success','Data berhasil diubah');
     }

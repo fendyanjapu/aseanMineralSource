@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Site;
+use App\Models\RotasiUnit;
 use Illuminate\Http\Request;
 use App\Models\PembelianBatu;
 use Illuminate\Support\Facades\DB;
@@ -14,13 +15,12 @@ class PembelianBatuController extends Controller
         'site_id'=> 'required',
         'nama_jetty'=> 'required|max:255',
         'tgl_pembelian'=> 'required|date',
-        'tgl_rotasi_dari'=> 'required|date',
-        'tgl_rotasi_sampai'=> 'required|date',
+        'tgl_rotasi'=> 'required',
         'jumlah_tonase'=> 'required',
-        'harga'=> 'required',
-        'jetty'=> 'required',
-        'document_dll'=> 'required',
-        'total_penjualan'=> 'required',
+        'harga'=> 'required|max:255',
+        'jetty'=> 'required|max:255',
+        'document_dll'=> 'required|max:255',
+        'total_penjualan'=> 'required|max:255',
     ];
     public function index()
     {
@@ -52,23 +52,14 @@ class PembelianBatuController extends Controller
      */
     public function store(Request $request)
     {
-        $from = $request->tgl_rotasi_dari;
-        $to = $request->tgl_rotasi_sampai;
-        $cek1 = PembelianBatu::whereBetween('tgl_rotasi_dari',  [$from, $to])->count();
-        $cek2 = PembelianBatu::whereBetween('tgl_rotasi_sampai',  [$from, $to])->count();
+        $validatedData = $request->validate($this->rules);
+        $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['user_id'] = auth()->user()->id;
+        $validatedData['status_pengapalan'] = "0";
 
-        if ($cek1 > 0 || $cek2 > 0) {
-            return back()->with('error', 'Gagal! Tanggal rotasi sudah ada');
-        } else {
-            $validatedData = $request->validate($this->rules);
-            $validatedData['created_by'] = auth()->user()->name;
-            $validatedData['user_id'] = auth()->user()->id;
-            $validatedData['status_pengapalan'] = "0";
+        PembelianBatu::create($validatedData);
 
-            PembelianBatu::create($validatedData);
-
-            return redirect()->route('pembelianBatu.index')->with('success','Data berhasil ditambah');
-        }
+        return redirect()->route('pembelianBatu.index')->with('success','Data berhasil ditambah');
     }
 
     /**
@@ -163,5 +154,33 @@ class PembelianBatuController extends Controller
         PembelianBatu::destroy($pembelianBatu->id);
 
         return redirect(route('pembelianBatu.index'))->with('success','Data berhasil dihapus');
+    }
+
+    public function getTotalRotasi(Request $request)
+    {
+        $query = RotasiUnit::where('tanggal', '=', $request->tanggal)->where('site_id', '=', $request->site_id);
+        $totalRotasi = $query->count();
+        if ($totalRotasi > 0) {
+            $jumlahTonase = $query->sum('berat_bersih');
+        } else {
+            $jumlahTonase = 0;
+        }
+        $data = [
+            'totalRotasi' => $totalRotasi,
+            'jumlahTonase' => $jumlahTonase,
+        ];
+        return json_encode($data);
+    }
+
+    public function cekTglRotasi(Request $request)
+    {
+        $tgl_rotasi = $request->tanggal;
+        $cek = PembelianBatu::where('tgl_rotasi', 'like', '%'.$tgl_rotasi.'%')->count();
+        if ($cek > 0) {
+            $alert = 1;
+        } else {
+            $alert = 0;
+        }
+        return json_encode($alert);
     }
 }

@@ -27,7 +27,7 @@ class RotasiUnitController extends Controller
     ];
     public function index()
     {
-        $rotasiUnits = RotasiUnit::orderBy('tanggal', 'desc')->get();
+        $rotasiUnits = RotasiUnit::orderBy('tanggal', 'desc')->orderBy('created_at', 'desc')->get();
         return view('rotasiUnit.index', compact('rotasiUnits'));
     }
 

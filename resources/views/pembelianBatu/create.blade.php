@@ -28,8 +28,21 @@
 
                 <div class="card">
                     <div class="card-body">
+                        <label>Tanggal Pembelian</label>
+                        <input type="date" class="form-control col-lg-3" name="tgl_pembelian"
+                            value="{{ old('tgl_pembelian') }}">
+                        @error('tgl_pembelian')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
                         <label>Site</label>
-                        <select name="site_id" id="" class="form-control">
+                        <select name="site_id" id="site_id" class="form-control">
                             <option value=""></option>
                             @foreach ($sites as $site)
                                 <option value="{{ $site->id }}">{{ $site->nama_site }}</option>
@@ -45,10 +58,51 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <label>Tanggal Pembelian</label>
-                        <input type="date" class="form-control col-lg-3" name="tgl_pembelian"
-                            value="{{ old('tgl_pembelian') }}">
-                        @error('tgl_pembelian')
+                        <label>Pilih Tanggal Rotasi</label>
+                        <input type="date" class="form-control col-lg-3" name="" id="tgl_rotasi">
+                        <br>
+                        <table>
+                            <tr>
+                                <td><label>Total Rotasi</label></td>
+                                <td><label>Tonase</label></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td><input type="text" class="form-control col-lg-3" name="total_rotasi" id="total_rotasi"
+                                        readonly></td>
+                                <td><input type="text" class="form-control col-lg-3" name="tonase" id="tonase" readonly>
+                                </td>
+                                <td>
+                                    <a href="#" onclick="tambahRotasi()" class="btn btn-sm btn-success">Tambah</a>
+                                    <a href="#" onclick="hapusRotasi()" class="btn btn-sm btn-danger">Hapus</a>
+                                    <a href="#" onclick="resetRotasi()" class="btn btn-sm btn-info">Reset</a>
+                                </td>
+                            </tr>
+                        </table>
+
+
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label>Tanggal Rotasi</label>
+                        <input type="text" class="form-control" name="tgl_rotasi" id="tanggal_rotasi"
+                            placeholder="Tanggal Rotasi" value="{{ old('tgl_rotasi') }}" readonly>
+                        @error('tgl_rotasi')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label>Jumlah Tonase</label>
+                        <input type="text" class="form-control" name="jumlah_tonase" id="jumlah_tonase"
+                            placeholder="Jumlah Tonase" value="{{ old('jumlah_tonase') }}" readonly>
+                        @error('jumlah_tonase')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
                             </div>
@@ -62,41 +116,6 @@
                         <input type="text" class="form-control" name="nama_jetty" placeholder="Nama Jetty"
                             value="{{ old('nama_jetty') }}">
                         @error('nama_jetty')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <label>Tanggal Rotasi</label><br>
-                        <label>Dari</label>
-                        <input type="date" class="form-control col-lg-3" name="tgl_rotasi_dari"
-                            value="{{ old('tgl_rotasi_dari') }}">
-                        @error('tgl_rotasi_dari')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                        <label>Sampai</label>
-                        <input type="date" class="form-control col-lg-3" name="tgl_rotasi_sampai"
-                            value="{{ old('tgl_rotasi_sampai') }}">
-                        @error('tgl_rotasi_sampai')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <label>Jumlah Tonase</label>
-                        <input type="text" class="form-control" name="jumlah_tonase" id="jumlah_tonase"
-                            placeholder="Jumlah Tonase" value="{{ old('jumlah_tonase') }}">
-                        @error('jumlah_tonase')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
                             </div>
@@ -157,7 +176,7 @@
                 </div>
 
                 <button class="btn btn-success" type="submit">Simpan</button>
-                <a href="#" onclick="self.history.back()" class="btn btn-danger">Batal</a>
+                <a href="{{ route('pembelianBatu.index') }}" class="btn btn-danger">Batal</a>
             </div>
 
         </div>
@@ -200,6 +219,95 @@
             });
             totalPenjualan();
         });
+
+        $("#tgl_rotasi").change(function (event) {
+            totalRotasi();
+        });
+
+        $("#site_id").change(function (event) {
+            totalRotasi();
+        });
+
+        function totalRotasi() {
+            let tgl_rotasi = $('#tgl_rotasi').val();
+            let site_id = $('#site_id').val();
+            $.ajax({
+                type: "GET",
+                data: { tanggal: tgl_rotasi, site_id: site_id },
+                url: "{{ route('pembelianBatu.getTotalRotasi') }}",
+                cache: false,
+                success: function (result) {
+                    let data = $.parseJSON(result);
+                    $('#total_rotasi').val(data.totalRotasi);
+                    $('#tonase').val(data.jumlahTonase);
+                }
+            });
+        }
+
+        function tambahRotasi() {
+            let tgl_rotasi = $('#tgl_rotasi').val();
+
+            $.ajax({
+                type: "GET",
+                data: { tanggal: tgl_rotasi },
+                url: "{{ route('cekTglRotasi') }}",
+                cache: false,
+                success: function (result) {
+                    let data = $.parseJSON(result);
+                    cek = data;
+
+                    if (cek == 1) {
+                        alert('Tanggal rotasi sudah ada!')
+                    } else {
+                        let tonase = $('#tonase').val();
+
+                        if (tonase == 0) {
+                            alert('Tidak ada produksi!');
+                        } else {
+                            let tanggal_rotasi = $('#tanggal_rotasi').val();
+                            let jumlah_tonase = $('#jumlah_tonase').val();
+                            let tonase = $('#tonase').val();
+                            if (tanggal_rotasi == '') {
+                                var jumTgl = [tgl_rotasi];
+                            } else {
+                                var jumTgl = [tanggal_rotasi];
+                                jumTgl.push(tgl_rotasi);
+                            }
+                            if (jumlah_tonase == '') {
+                                var jmlTonase = tonase;
+                            } else {
+                                var jmlTonase = parseInt(jumlah_tonase) + parseInt(tonase);
+                            }
+                            let tglRotasi = jumTgl.toString();
+                            $('#tanggal_rotasi').val(tglRotasi);
+                            $('#jumlah_tonase').val(jmlTonase);
+                        }
+                    }
+                }
+            });
+        }
+
+        function hapusRotasi() {
+            let tanggal_rotasi = $('#tanggal_rotasi').val();
+            let tgl_rotasi = $('#tgl_rotasi').val();
+            let jumlah_tonase = $('#jumlah_tonase').val();
+            let tonase = $('#tonase').val();
+            let jumTgl = tanggal_rotasi.replace(tgl_rotasi, '');
+            jumTgl = jumTgl.substring(0, jumTgl.length - 1);
+
+            if (jumlah_tonase == '') {
+                var jmlTonase = "";
+            } else {
+                var jmlTonase = parseInt(jumlah_tonase) - parseInt(tonase);
+            }
+            $('#tanggal_rotasi').val(jumTgl);
+            $('#jumlah_tonase').val(jmlTonase);
+        }
+
+        function resetRotasi() {
+            $('#tanggal_rotasi').val("");
+            $('#jumlah_tonase').val("");
+        }
 
         function totalPenjualan() {
             let harga = $("#harga").val();

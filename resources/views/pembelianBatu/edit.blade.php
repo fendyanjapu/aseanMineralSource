@@ -71,19 +71,10 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <label>Tanggal Rotasi</label><br>
-                        <label>Dari</label>
-                        <input type="date" class="form-control col-lg-3" name="tgl_rotasi_dari"
-                            value="{{ $pembelianBatu->tgl_rotasi_dari }}">
-                        @error('tgl_rotasi_dari')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                        <label>Sampai</label>
-                        <input type="date" class="form-control col-lg-3" name="tgl_rotasi_sampai"
-                            value="{{ $pembelianBatu->tgl_rotasi_sampai }}">
-                        @error('tgl_rotasi_sampai')
+                        <label>Tanggal Rotasi</label>
+                        <input type="date" class="form-control col-lg-3" name="tgl_rotasi"
+                            value="{{ $pembelianBatu->tgl_rotasi }}">
+                        @error('tgl_rotasi')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
                             </div>

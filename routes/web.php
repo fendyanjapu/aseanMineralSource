@@ -7,6 +7,7 @@ use App\Http\Controllers\LaporanPemasukanController;
 use App\Http\Controllers\LaporanPengeluaranController;
 use App\Http\Controllers\OperasionalSiteController;
 use App\Http\Controllers\PemasukanController;
+use App\Http\Controllers\PembayaranPenjualanController;
 use App\Http\Controllers\PembelianBarangController;
 use App\Http\Controllers\PembelianBatuController;
 use App\Http\Controllers\PengapalanController;
@@ -50,6 +51,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/getSite', [PengapalanController::class, 'getSite'] )->name('getSite');
     Route::get('/getTotalRotasi', [RotasiUnitController::class, 'getTotalRotasi'] )->name('getTotalRotasi');
+    Route::get('/getTotalRotasiPembelian', [PembelianBatuController::class, 'getTotalRotasi'] )->name('pembelianBatu.getTotalRotasi');
+    Route::get('/cekTglRotasi', [PembelianBatuController::class, 'cekTglRotasi'] )->name('cekTglRotasi');
+    Route::get('/getTotalHutang', [PembayaranPenjualanController::class, 'getTotalHutang'] )->name('getTotalHutang');
 
     Route::get('pembelianBatu/laporan', [PembelianBatuController::class, 'laporan'])->name('pembelianBatu.laporan');
     Route::get('penjualanSite/laporan', [PembelianBatuController::class, 'penjualanSite'])->name('PenjualanSite.laporan');
@@ -75,6 +79,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('operasionalSite', OperasionalSiteController::class)->except('show');
     Route::resource('pengapalan', PengapalanController::class)->except('show');
     Route::resource('rotasiUnit', RotasiUnitController::class)->except('show');
+    Route::resource('pembayaranPenjualan', PembayaranPenjualanController::class)->except('show');
 });
 
 

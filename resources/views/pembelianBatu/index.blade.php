@@ -29,27 +29,23 @@
                     <table class="table" id="myTable">
                         <thead>
                             <tr>
-                                <th scope="col" rowspan="2">#</th>
-                                <th scope="col" rowspan="2">Kode Transaksi</th>
-                                <th scope="col" rowspan="2">Site</th>
-                                <th scope="col" rowspan="2">Tanggal Pembelian</th>
-                                <th scope="col" rowspan="2">Nama Jetty</th>
-                                <th scope="col" colspan="2">Tanggal Rotasi</th>
-                                <th scope="col" rowspan="2">Jumlah Tonase</th>
-                                <th scope="col" rowspan="2">Harga</th>
-                                <th scope="col" rowspan="2">Jetty</th>
-                                <th scope="col" rowspan="2">Document dll</th>
-                                <th scope="col" rowspan="2">Total Penjuanan</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Kode Transaksi</th>
+                                <th scope="col">Site</th>
+                                <th scope="col">Tanggal Pembelian</th>
+                                <th scope="col">Nama Jetty</th>
+                                <th scope="col">Tanggal Rotasi</th>
+                                <th scope="col">Jumlah Tonase</th>
+                                <th scope="col">Harga</th>
+                                <th scope="col">Jetty</th>
+                                <th scope="col">Document dll</th>
+                                <th scope="col">Total Penjualan</th>
                                 @if (auth()->user()->level_id == 1)
-                                    <th scope="col" rowspan="2">Created By</th>
-                                    <th scope="col" rowspan="2">Updated By</th>
-                                    <th scope="col" rowspan="2">Created At</th>
+                                    <th scope="col">Created By</th>
+                                    <th scope="col">Updated By</th>
+                                    <th scope="col">Created At</th>
                                 @endif
-                                <th scope="col" rowspan="2" style="text-align: center">Action</th>
-                            </tr>
-                            <tr>
-                                <th scope="col">Dari</th>
-                                <th scope="col">Sampai</th>
+                                <th scope="col" style="text-align: center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,8 +56,8 @@
                                     <td>{{ $pembelianBatu->site?->nama_site }}</td>
                                     <td>{{ date_format(date_create($pembelianBatu->tgl_pembelian), 'd-m-Y') }}</td>
                                     <td>{{ $pembelianBatu->nama_jetty }}</td>
-                                    <td>{{ date_format(date_create($pembelianBatu->tgl_rotasi_dari), 'd-m-Y') }}</td>
-                                    <td>{{ date_format(date_create($pembelianBatu->tgl_rotasi_sampai), 'd-m-Y') }}</td>
+                                    <?php $tgl_rotasi = str_replace(',','<br>', $pembelianBatu->tgl_rotasi) ?>
+                                    <td>{!! $tgl_rotasi !!}</td>
                                     <td>{{ $pembelianBatu->jumlah_tonase }}</td>
                                     <td>{{ $pembelianBatu->harga }}</td>
                                     <td>{{ $pembelianBatu->jetty }}</td>
