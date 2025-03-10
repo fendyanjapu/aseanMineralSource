@@ -68,9 +68,11 @@
 								Pengguna</span>
 						</a>
 						<div class="dropdown-menu dropdown-menu-end">
-							<a class="dropdown-item" href="{{ route('user.index') }}"><i class="align-middle me-1" data-feather="user"></i>
+							<a class="dropdown-item" href="{{ route('user.index') }}"><i class="align-middle me-1"
+									data-feather="user"></i>
 								Asian Mining Source</a>
-							<a class="dropdown-item" href="{{ route('userSite.index') }}"><i class="align-middle me-1" data-feather="user"></i>
+							<a class="dropdown-item" href="{{ route('userSite.index') }}"><i class="align-middle me-1"
+									data-feather="user"></i>
 								Site</a>
 						</div>
 					</li>
@@ -169,7 +171,8 @@
 
 					<li class="sidebar-item">
 						<a class="sidebar-link" href="{{ route('pembelianBatu.index') }}">
-							<i class="align-middle" data-feather="shopping-bag"></i> <span class="align-middle">Pembelian
+							<i class="align-middle" data-feather="shopping-bag"></i> <span
+								class="align-middle">Pembelian
 								Dari Site</span>
 						</a>
 					</li>
@@ -199,14 +202,21 @@
 								Source</span>
 						</a>
 						<div class="dropdown-menu dropdown-menu-end">
-							<a class="dropdown-item" href="{{ route('pengeluaran.laporan') }}"><i class="align-middle me-1" data-feather="file"></i>
+							<a class="dropdown-item" href="{{ route('pengeluaran.laporan') }}"><i
+									class="align-middle me-1" data-feather="file"></i>
 								Pengeluaran</a>
-							<a class="dropdown-item" href="{{ route('pembelianBatu.laporan') }}"><i class="align-middle me-1" data-feather="file"></i>
+							<a class="dropdown-item" href="{{ route('pembelianBatu.laporan') }}"><i
+									class="align-middle me-1" data-feather="file"></i>
 								Pembelian dari Site</a>
-							<a class="dropdown-item" href="{{ route('pengapalan.laporan') }}"><i class="align-middle me-1" data-feather="file"></i>
+							<a class="dropdown-item" href="{{ route('pengapalan.laporan') }}"><i
+									class="align-middle me-1" data-feather="file"></i>
 								Pengapalan</a>
-							<a class="dropdown-item" href="{{ route('penjualanBatu.laporan') }}"><i class="align-middle me-1" data-feather="file"></i>
+							<a class="dropdown-item" href="{{ route('penjualanBatu.laporan') }}"><i
+									class="align-middle me-1" data-feather="file"></i>
 								Penjualan Batu</a>
+							<a class="dropdown-item" href="{{ route('pembayaranPenjualan.laporan') }}"><i
+									class="align-middle me-1" data-feather="file"></i>
+								Pembayaran Penjualan</a>
 						</div>
 					</li>
 
@@ -216,11 +226,14 @@
 							<i class="align-middle" data-feather="file"></i> <span class="align-middle">Site</span>
 						</a>
 						<div class="dropdown-menu dropdown-menu-end">
-							<a class="dropdown-item" href="{{ route('operasionalSite.laporan') }}"><i class="align-middle me-1" data-feather="file"></i>
+							<a class="dropdown-item" href="{{ route('operasionalSite.laporan') }}"><i
+									class="align-middle me-1" data-feather="file"></i>
 								Pengeluaran</a>
-							<a class="dropdown-item" href="{{ route('rotasiUnit.laporan') }}"><i class="align-middle me-1" data-feather="file"></i>
+							<a class="dropdown-item" href="{{ route('rotasiUnit.laporan') }}"><i
+									class="align-middle me-1" data-feather="file"></i>
 								Produksi</a>
-							<a class="dropdown-item" href="{{ route('PenjualanSite.laporan') }}"><i class="align-middle me-1" data-feather="file"></i>
+							<a class="dropdown-item" href="{{ route('PenjualanSite.laporan') }}"><i
+									class="align-middle me-1" data-feather="file"></i>
 								Penjualan</a>
 						</div>
 					</li>
@@ -252,9 +265,10 @@
 								<span class="text-dark">{{ auth()->user()->name }}</span>
 							</a>
 							<div class="dropdown-menu dropdown-menu-end">
-								<a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1"
-										data-feather="user"></i> Profil</a>
-
+								<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="user"></i>
+									Profil</a>
+								<a class="dropdown-item" href="{{ route('settings.index') }}"><i class="align-middle me-1" data-feather="settings"></i>
+									Settings</a>
 								<div class="dropdown-divider"></div>
 								<form action="{{ route('logout') }}" method="POST">
 									@csrf
@@ -288,7 +302,9 @@
 						<div class="col-6 text-end">
 							<ul class="list-inline">
 								<li class="list-inline-item">
-									<a class="text-muted" href="https://www.linkedin.com/in/noor-rahmat-effendy-549351125/?originalSubdomain=id" target="_blank">Support</a>
+									<a class="text-muted"
+										href="https://www.linkedin.com/in/noor-rahmat-effendy-549351125/?originalSubdomain=id"
+										target="_blank">Support</a>
 								</li>
 								<li class="list-inline-item">
 									<a class="text-muted" href="https://adminkit.io/" target="_blank">Help Center</a>

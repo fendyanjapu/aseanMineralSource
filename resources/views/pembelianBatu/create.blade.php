@@ -73,14 +73,12 @@
                                 <td><input type="text" class="form-control col-lg-3" name="tonase" id="tonase" readonly>
                                 </td>
                                 <td>
-                                    <a href="#" onclick="tambahRotasi()" class="btn btn-sm btn-success">Tambah</a>
-                                    <a href="#" onclick="hapusRotasi()" class="btn btn-sm btn-danger">Hapus</a>
-                                    <a href="#" onclick="resetRotasi()" class="btn btn-sm btn-info">Reset</a>
+                                    <a href="#" onclick="tambahRotasi()" class="btn btn-sm btn-success buton">Tambah</a>
+                                    <a href="#" onclick="hapusRotasi()" class="btn btn-sm btn-danger buton">Hapus</a>
+                                    <a href="#" onclick="resetRotasi()" class="btn btn-sm btn-info buton">Reset</a>
                                 </td>
                             </tr>
                         </table>
-
-
                     </div>
                 </div>
 
@@ -183,6 +181,10 @@
     </form>
 
     <script>
+        $('a.buton').click(function (e) {
+            e.preventDefault();
+        });
+
         $("#jumlah_tonase").keyup(function (event) {
             $(this).val(function (index, value) {
                 return value

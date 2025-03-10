@@ -13,7 +13,7 @@
                 <div class="card">
                     <div class="card-body">
                         <label>Nama</label>
-                        <input type="text" class="form-control" name="name" placeholder="Nama">
+                        <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Nama">
                         @error('name')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -26,7 +26,7 @@
 
                     <div class="card-body">
                         <label>Username</label>
-                        <input type="text" class="form-control" name="username" placeholder="Username">
+                        <input type="text" class="form-control" name="username" value="{{ old('username') }}" placeholder="Username">
                         @error('username')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -45,6 +45,13 @@
                         @error('password')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
+                                <small>
+                                    Must be at least 8 characters in length,
+                                    must contain at least one lowercase letter,
+                                    must contain at least one uppercase letter,
+                                    must contain at least one digit,
+                                    must contain a special character.
+                                </small>
                             </div>
                         @enderror
                     </div>

@@ -55,6 +55,7 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Kode Transaksi</th>
+                                <th scope="col">Site</th>
                                 <th scope="col">Data Pembelian Site</th>
                                 <th scope="col">Tanggal Pembelian</th>
                                 <th scope="col">Tonase</th>
@@ -77,18 +78,20 @@
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
                                     <td>{{ $pembayaranPenjualan->kode_transaksi }}</td>
-                                    <td>{{ $pembayaranPenjualan->pembelianBatu?->kode_transaksi }}</td>
-                                    <td>{{ $pembayaranPenjualan->pembelianBatu?->tgl_pembelian }}</td>
-                                    <td>{{ $pembayaranPenjualan->pembelianBatu?->jumlah_tonase }}</td>
-                                    <td>{{ $pembayaranPenjualan->pembelianBatu?->total_penjualan }}</td>
-                                    <td>
-                                        {{ $pembayaranPenjualan->pemasukan?->kode_transaksi }} |
-                                        {{ $pembayaranPenjualan->pemasukan?->sumber_dana }}
-                                    </td>
-                                    <td>{{ $pembayaranPenjualan->pemasukan?->tanggal }}</td>
-                                    <td>{{ $pembayaranPenjualan->pemasukan?->jumlah }}</td>
+                                    <td>{{ $pembayaranPenjualan->site?->nama_site }}</td>
+                                    <?php $data_pembelian_site = str_replace(',','<br>', $pembayaranPenjualan->data_pembelian_site) ?>
+                                    <td>{!! $data_pembelian_site !!}</td>
+                                    <?php $tanggal_pembelian = str_replace(',','<br>', $pembayaranPenjualan->tanggal_pembelian) ?>
+                                    <td>{!! $tanggal_pembelian !!}</td>
+                                    <td>{{ $pembayaranPenjualan->tonase }}</td>
+                                    <td>{{ $pembayaranPenjualan->total_harga_pembelian }}</td>
+                                    <?php $dana_operasional_site = str_replace(',','<br>', $pembayaranPenjualan->dana_operasional_site) ?>
+                                    <td>{!! $dana_operasional_site !!}</td>
+                                    <?php $tanggal_transfer_ke_site = str_replace(',','<br>', $pembayaranPenjualan->tanggal_transfer_ke_site) ?>
+                                    <td>{!! $tanggal_transfer_ke_site !!}</td>
+                                    <td>{{ $pembayaranPenjualan->jumlah_hutang_site }}</td>
                                     <td>{{ $pembayaranPenjualan->total_pembayaran_site }}</td>
-                                    <td>{{ date_format(date_create($pembayaranPenjualan->tanggal_transaksi), 'd-m-Y') }}</td>
+                                    <td>{{ $pembayaranPenjualan->tanggal_transaksi }}</td>
                                     <td><a href="{{ env('APP_URL') . '/upload/pembayaranPenjualan/' . $pembayaranPenjualan->bukti_transaksi }}"
                                             target="_blank">Lihat</a></td>
                                     <td>{{ $pembayaranPenjualan->sisa_hutang_site }}</td>
@@ -96,7 +99,7 @@
                                     @auth
                                         @can('update', $pembayaranPenjualan)
                                             <td style="display: flex; justify-content: center;">
-                                                <a href="{{ route('pembayaranPenjualan.edit', ['pembayaranPenjualan' => $pembayaranPenjualan]) }}"
+                                                {{-- <a href="{{ route('pembayaranPenjualan.edit', ['pembayaranPenjualan' => $pembayaranPenjualan]) }}"
                                                     class="btn btn-success btn-sm">Edit</a>
 
                                                 <form
@@ -106,7 +109,7 @@
                                                     @method('delete')
                                                     <button class="btn btn-danger btn-sm"
                                                         onclick="return confirm('Hapus data?')">Hapus</button>
-                                                </form>
+                                                </form> --}}
                                             </td>
                                         @endcan
                                     @endauth

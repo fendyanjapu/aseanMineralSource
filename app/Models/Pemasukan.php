@@ -20,6 +20,7 @@ class Pemasukan extends Model
         'updated_by',
         'site_id',
         'user_id',
+        'status_hutang',
     ];
 
     public function site()

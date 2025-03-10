@@ -59,6 +59,7 @@ class PemasukanController extends Controller
         $validatedData = $request->validate($rules);
         $validatedData['created_by'] = auth()->user()->name;
         $validatedData['user_id'] = auth()->user()->id;
+        $validatedData['status_hutang'] = '1';
         $validatedData['bukti_transaksi'] = $nama_gbr;
 
         $store = Pemasukan::create($validatedData);
@@ -133,7 +134,7 @@ class PemasukanController extends Controller
 
         $query = Pemasukan::findOrFail($pemasukan->id);
         $file  = $query->bukti_transaksi;
-
+        HutangSite::where('pemasukan_id', '=', $pemasukan->id)->delete();
         Pemasukan::destroy($pemasukan->id);
         $file_path = public_path('upload/pemasukan/'.$file);
         if (File::exists($file_path)) {

@@ -12,17 +12,17 @@ class PembayaranPenjualan extends Model
     protected $fillable = [
         'kode_transaksi',
         'site_id',
-        'pemasukan_id',
-        'pembelian_batu_id',
-        'tanggal_transaksi',
         'data_pembelian_site',
+        'tanggal_pembelian',
+        'tonase',
+        'total_harga_pembelian',
+        'dana_operasional_site',
         'tanggal_transfer_ke_site',
         'jumlah_hutang_site',
-        'sisa_hutang_site',
-        'tonase',
         'total_pembayaran_site',
-        'total_harga_pembelian',
+        'tanggal_transaksi',
         'bukti_transaksi',
+        'sisa_hutang_site',
     ];
 
     public function site()

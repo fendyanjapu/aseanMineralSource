@@ -17,12 +17,12 @@ return new class extends Migration
             $table->smallInteger('site_id');
 
             $table->text('data_pembelian_site');
-            $table->date('tanggal_pembelian');
+            $table->text('tanggal_pembelian');
             $table->string('tonase');
             $table->string('total_harga_pembelian');
 
             $table->text('dana_operasional_site');
-            $table->date('tanggal_transfer_ke_site');
+            $table->text('tanggal_transfer_ke_site');
             $table->string('jumlah_hutang_site');
             $table->string('total_pembayaran_site');
             

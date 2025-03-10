@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('updated_by')->nullable();
             $table->smallInteger('site_id');
             $table->smallInteger('user_id');
+            $table->char('status_hutang', 1);
             $table->timestamps();
         });
     }

@@ -97,7 +97,7 @@
                     <div class="card-body">
                         <label>Berat Kendaraan</label>
                         <input type="number" class="form-control" name="berat_kendaraan" id="berat_kendaraan" placeholder="Berat Kendaraan"
-                            value="{{ old('berat_kendaraan') }}">
+                            value="{{ old('berat_kendaraan') }}" step=".001">
                         @error('berat_kendaraan')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -110,7 +110,7 @@
                     <div class="card-body">
                         <label>Berat Kotor</label>
                         <input type="number" class="form-control" name="berat_kotor" id="berat_kotor"
-                            placeholder="Berat Kotor" value="{{ old('berat_kotor') }}">
+                            placeholder="Berat Kotor" value="{{ old('berat_kotor') }}" step=".001">
                         @error('berat_kotor')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -210,9 +210,11 @@
     <script>
         $("#berat_kotor").keyup(function (event) {
             beratBersih();
+            totalBiaya();
         });
         $("#berat_kendaraan").keyup(function (event) {
             beratBersih();
+            totalBiaya();
         });
 
         $("#premi_tonase").keyup(function (event) {
@@ -260,7 +262,7 @@
         function beratBersih() {
             let berat_kotor = $("#berat_kotor").val();
             let berat_kendaraan = $("#berat_kendaraan").val();
-            let berat_bersih = parseInt(berat_kotor) - parseInt(berat_kendaraan);
+            let berat_bersih = parseFloat(berat_kotor) - parseFloat(berat_kendaraan);
             $("#berat_bersih").val(berat_bersih);
         }
 
