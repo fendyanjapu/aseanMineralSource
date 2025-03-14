@@ -167,7 +167,7 @@ class PembelianBatuController extends Controller
         }
         $data = [
             'totalRotasi' => $totalRotasi,
-            'jumlahTonase' => $jumlahTonase,
+            'jumlahTonase' => number_format($jumlahTonase,2),
         ];
         return json_encode($data);
     }

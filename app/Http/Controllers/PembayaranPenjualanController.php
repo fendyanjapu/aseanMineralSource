@@ -93,6 +93,8 @@ class PembayaranPenjualanController extends Controller
         $nama_gbr = time()."_".$gambar->getClientOriginalName(); 
 
         $validatedData = $request->validate($rules);
+        $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['user_id'] = auth()->user()->id;
         $validatedData['bukti_transaksi'] = $nama_gbr;
         $store = PembayaranPenjualan::create($validatedData);
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('tgl_pembelian');
             $table->string('nama_jetty');
             $table->text('tgl_rotasi');
-            $table->string('jumlah_tonase');
+            $table->float('jumlah_tonase');
             $table->string('harga');
             $table->string('jetty');
             $table->string('document_dll');

@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->text('data_pembelian_site');
             $table->text('tanggal_pembelian');
-            $table->string('tonase');
+            $table->float('tonase');
             $table->string('total_harga_pembelian');
 
             $table->text('dana_operasional_site');
@@ -29,6 +29,10 @@ return new class extends Migration
             $table->date('tanggal_transaksi');
             $table->string('bukti_transaksi');
             $table->string('sisa_hutang_site');
+
+            $table->string('created_by');
+            $table->string('updated_by')->nullable();
+            $table->smallInteger('user_id');
             
             $table->timestamps();
         });

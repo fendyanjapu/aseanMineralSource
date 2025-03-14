@@ -502,7 +502,7 @@
                         if (jumlah_tonase == '') {
                             var jmlTonase = tonase;
                         } else {
-                            var jmlTonase = parseInt(jumlah_tonase) + parseInt(tonase);
+                            var jmlTonase = parseFloat(jumlah_tonase) + parseFloat(tonase);
                         }
 
                         if (int_total_harga_pembelian == '') {
@@ -549,7 +549,7 @@
             if (jumlah_tonase == '') {
                 var jmlTonase = "";
             } else {
-                var jmlTonase = parseInt(jumlah_tonase) - parseInt(tonase);
+                var jmlTonase = parseFloat(jumlah_tonase) - parseFloat(tonase);
             }
             if (total_harga_pembelian == '') {
                 var total_harga = "";

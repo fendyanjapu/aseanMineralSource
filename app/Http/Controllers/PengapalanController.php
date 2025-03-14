@@ -14,7 +14,9 @@ class PengapalanController extends Controller
         'kode_transaksi'=> 'required|max:255',
         'tanggal_pengapalan'=> 'required|date',
         'nama_tongkang'=> 'required|max:255',
+        'tanggal_pembelian' => 'required',
         'site_id'=> 'required',
+        'harga'=> 'required',
         'tonase'=> 'required|max:255',
         'harga_di_site'=> 'required|max:255',
     ];
@@ -22,6 +24,7 @@ class PengapalanController extends Controller
     {
         $pengapalans = Pengapalan::all();
         return view('pengapalan.index', compact('pengapalans'));
+        // return view('pengapalan.date');
     }
 
     /**
@@ -49,6 +52,8 @@ class PengapalanController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate($this->rules);
+        // $validatedData = $request->all();
+        $validatedData['id_pembelian_batu'] = $request->id_pembelian_batu;
         $validatedData['harga_jual_per_tonase'] = $request->harga_jual_per_tonase;
         $validatedData['document_dll'] = $request->document_dll;
         $validatedData['total_harga_penjualan'] = $request->total_harga_penjualan;
@@ -56,13 +61,15 @@ class PengapalanController extends Controller
         $validatedData['created_by'] = auth()->user()->name;
         $validatedData['user_id'] = auth()->user()->id;
 
-        Pengapalan::create($validatedData);
+        $store = Pengapalan::create($validatedData);
 
-        // ubah status pembelian dari site
-        $ids = explode(',',$request->id_pembelian_batu);
-        $data['status_pengapalan'] = '1';
-        foreach ($ids as $id) {
-            PembelianBatu::findOrFail($id)->update($data);
+        if ($store) {
+            // ubah status pembelian dari site
+            $ids = explode(',',$request->id_pembelian_batu);
+            $data['status_pengapalan'] = '1';
+            foreach ($ids as $id) {
+                PembelianBatu::findOrFail($id)->update($data);
+            }
         }
 
         return redirect()->route('pengapalan.index')->with('success','Data berhasil ditambah');
@@ -151,7 +158,18 @@ class PengapalanController extends Controller
     {
         $this->authorize('delete', $pengapalan);
 
-        Pengapalan::destroy($pengapalan->id);
+        $id_pembelian_batu = $pengapalan->id_pembelian_batu;
+
+        $delete = Pengapalan::destroy($pengapalan->id);
+
+        if ($delete) {
+            // ubah status pembelian dari site
+            $ids = explode(',',$id_pembelian_batu);
+            $data['status_pengapalan'] = '0';
+            foreach ($ids as $id) {
+                PembelianBatu::findOrFail($id)->update($data);
+            }
+        }
 
         return redirect(route('pengapalan.index'))->with('success','Data berhasil dihapus');
     }
@@ -159,19 +177,43 @@ class PengapalanController extends Controller
     public function getSite(Request $request)
     {
         $site_id = $request->site_id;
-        $pembelianBatus = PembelianBatu::where('site_id', '=', $site_id)->where('status_pengapalan', '=', '0')->get();
+        $pembelianBatus = PembelianBatu::where('site_id', '=', $site_id)
+                                        ->where('status_pengapalan', '=', '0')
+                                        ->get();
+        $tgl_pembelian = '';
+        foreach ($pembelianBatus as $pembelianBatu) {
+            $tgl_pembelian .= ','.$pembelianBatu->tgl_pembelian;
+        }
+        $data = [
+            'tgl_pembelian' => $tgl_pembelian,
+        ];
+        return json_encode($data);
+    }
+
+    public function getDataPembelianbatu(Request $request)
+    {
+        $site_id = $request->site_id;
+        $tanggal = $request->tgl_pembelian;
+        $tanggal = date_format(date_create($tanggal), 'Y-m-d');
+        $pembelianBatus = PembelianBatu::where('site_id', '=', $site_id)
+                                        ->where('status_pengapalan', '=', '0')
+                                        ->where('tgl_pembelian', '=', $tanggal)
+                                        ->get();
         $jumlah_tonase = 0;
         $total_penjualan = 0;
-        $id_pembelian_batu = [];
+        // $id_pembelian_batu = [];
         foreach ($pembelianBatus as $pembelianBatu) {
             $jumlah_tonase += str_replace(',', '', $pembelianBatu->jumlah_tonase);
             $total_penjualan += str_replace(',', '', $pembelianBatu->total_penjualan);
-            $id_pembelian_batu[] = $pembelianBatu->id;
+            $harga = str_replace(',', '', $pembelianBatu->harga);
+            $id_pembelian_batu = $pembelianBatu->id;
         }
         $data = [
             'jumlah_tonase' => $jumlah_tonase,
             'total_penjualan' => $total_penjualan,
+            'harga' => $harga,
             'id_pembelian_batu' => $id_pembelian_batu,
+            'tanggal' => $tanggal,
         ];
         return json_encode($data);
     }

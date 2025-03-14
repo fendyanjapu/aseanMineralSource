@@ -34,6 +34,7 @@
                                 <th scope="col">Tanggal Pengapalan</th>
                                 <th scope="col">Nama Tongkang</th>
                                 <th scope="col">Site</th>
+                                <th scope="col">Harga</th>
                                 <th scope="col">Tonase</th>
                                 <th scope="col">Harga di Site</th>
                                 <th scope="col">Harga Jual Pertonase</th>
@@ -56,6 +57,7 @@
                                     <td>{{ date_format(date_create($pengapalan->tanggal_pengapalan), 'd-m-Y') }}</td>
                                     <td>{{ $pengapalan->nama_tongkang }}</td>
                                     <td>{{ $pengapalan->site?->nama_site }}</td>
+                                    <td>{{ $pengapalan->harga }}</td>
                                     <td>{{ $pengapalan->tonase }}</td>
                                     <td>{{ $pengapalan->harga_di_site }}</td>
                                     <td>{{ $pengapalan->harga_jual_per_tonase }}</td>

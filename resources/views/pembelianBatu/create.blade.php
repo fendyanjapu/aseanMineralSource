@@ -70,7 +70,7 @@
                             <tr>
                                 <td><input type="text" class="form-control col-lg-3" name="total_rotasi" id="total_rotasi"
                                         readonly></td>
-                                <td><input type="text" class="form-control col-lg-3" name="tonase" id="tonase" readonly>
+                                <td><input type="text" class="form-control col-lg-3" name="tonase" id="tonase"  readonly>
                                 </td>
                                 <td>
                                     <a href="#" onclick="tambahRotasi()" class="btn btn-sm btn-success buton">Tambah</a>

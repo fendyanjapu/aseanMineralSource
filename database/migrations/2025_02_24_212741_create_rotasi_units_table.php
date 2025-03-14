@@ -19,9 +19,9 @@ return new class extends Migration
             $table->string('nopol');
             $table->string('supir');
             $table->string('jarak');
-            $table->string('berat_kendaraan');
-            $table->string('berat_kotor');
-            $table->string('berat_bersih');
+            $table->float('berat_kendaraan');
+            $table->float('berat_kotor');
+            $table->float('berat_bersih');
             $table->string('premi_tonase');
             $table->string('premi_per_rite');
             $table->string('total_biaya');

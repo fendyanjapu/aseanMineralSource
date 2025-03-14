@@ -55,6 +55,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('laporanPengeluaran/print', [LaporanPengeluaranController::class, 'print'])->name('laporanPengeluaran.print');
 
     Route::get('/getSite', [PengapalanController::class, 'getSite'] )->name('getSite');
+    Route::get('/getDataPembelianbatu', [PengapalanController::class, 'getDataPembelianbatu'] )->name('getDataPembelianbatu');
     Route::get('/getTotalRotasi', [RotasiUnitController::class, 'getTotalRotasi'] )->name('getTotalRotasi');
     Route::get('/getTotalRotasiPembelian', [PembelianBatuController::class, 'getTotalRotasi'] )->name('pembelianBatu.getTotalRotasi');
     Route::get('/cekTglRotasi', [PembelianBatuController::class, 'cekTglRotasi'] )->name('cekTglRotasi');
