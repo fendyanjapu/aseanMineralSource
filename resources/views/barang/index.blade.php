@@ -35,9 +35,8 @@
                                 <th scope="col">Merk</th>
                                 <th scope="col">Spesifikasi</th>
                                 <th scope="col">Kisaran Harga</th>
-                                @if (auth()->user()->level_id == 1)
+                                @if (auth()->user()->level_id < 3)
                                     <th scope="col">Created By</th>
-                                    <th scope="col">Updated By</th>
                                     <th scope="col">Created At</th>
                                 @endif
                                 <th scope="col" style="text-align: center">Action</th>
@@ -52,9 +51,8 @@
                                     <td>{{ $barang->merk }}</td>
                                     <td>{{ $barang->spesifikasi }}</td>
                                     <td>{{ $barang->kisaran_harga }}</td>
-                                    @if (auth()->user()->level_id == 1)
+                                    @if (auth()->user()->level_id < 3)
                                         <td>{{ $barang->created_by }}</td>
-                                        <td>{{ $barang->updated_by }}</td>
                                         <td>{{ $barang->created_at }}</td>
                                     @endif
 

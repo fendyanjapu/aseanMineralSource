@@ -8,9 +8,18 @@ use Illuminate\Auth\Access\Response;
 
 class SitePolicy
 {
+    public function viewAny(User $user): bool
+    {
+        return ($user->level_id < 3);
+    }
+
+    public function create(User $user): bool
+    {
+        return ($user->level_id < 3);
+    }
     public function update(User $user, Site $site): bool
     {
-        return ($user->level_id < 3 || $site->user_id === $user->id);
+        return ($user->level_id < 3);
     }
 
     /**
@@ -18,6 +27,6 @@ class SitePolicy
      */
     public function delete(User $user, Site $site): bool
     {
-        return ($user->level_id < 3 || $site->user_id === $user->id);
+        return ($user->level_id < 3);
     }
 }

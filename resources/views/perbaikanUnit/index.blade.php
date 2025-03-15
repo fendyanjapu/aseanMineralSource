@@ -37,9 +37,8 @@
                                 <th scope="col">Total Harga</th>
                                 <th scope="col">Tanggal</th>
                                 <th scope="col">Bukti Transaksi</th>
-                                @if (auth()->user()->level_id == 1)
+                                @if (auth()->user()->level_id < 3)
                                     <th scope="col">Created By</th>
-                                    <th scope="col">Updated By</th>
                                     <th scope="col">Created At</th>
                                 @endif
 
@@ -59,9 +58,8 @@
                                     <td>{{ $perbaikanUnit->tanggal }}</td>
                                     <td><a href="{{ env('APP_URL') . '/upload/perbaikanUnit/' . $perbaikanUnit->bukti_transaksi }}"
                                             target="_blank">Lihat</a></td>
-                                    @if (auth()->user()->level_id == 1)
+                                    @if (auth()->user()->level_id < 3)
                                         <td>{{ $perbaikanUnit->created_by }}</td>
-                                        <td>{{ $perbaikanUnit->updated_by }}</td>
                                         <td>{{ $perbaikanUnit->created_at }}</td>
                                     @endif
                                     @auth

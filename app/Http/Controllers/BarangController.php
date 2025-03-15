@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Barang;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,8 @@ class BarangController extends Controller
     ];
     public function index()
     {
+        $this->authorize('viewAny', User::class);
+        
         $barangs  = Barang::all();
         
         return view('barang.index', compact('barangs'));
@@ -26,6 +29,8 @@ class BarangController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', User::class);
+
         $lastId = Barang::latest()->first()?->id;
         if ($lastId == null) { $lastId = 0; }
         $nextId = $lastId + 1;
@@ -39,8 +44,10 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', User::class);
+
         $validatedData = $request->validate($this->rules);
-        $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
         Barang::create($validatedData);
         return redirect()->route('barang.index')->with('success','Data berhasil ditambah');
@@ -72,7 +79,7 @@ class BarangController extends Controller
         $this->authorize('update', $barang);
 
         $validatedData = $request->validate($this->rules);
-        $validatedData['updated_by'] = auth()->user()->name;
+        $validatedData['updated_by'] = auth()->user()->username;
         Barang::findOrFail($barang->id)->update($validatedData);
 
         return redirect(route('barang.index'))->with('success','Data berhasil diubah');

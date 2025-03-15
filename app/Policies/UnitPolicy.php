@@ -8,6 +8,16 @@ use Illuminate\Auth\Access\Response;
 
 class UnitPolicy
 {
+    public function viewAny(User $user): bool
+    {
+        return $user->level_id < 3;
+    }
+
+    public function create(User $user): bool
+    {
+        return $user->level_id < 3;
+    }
+
     public function update(User $user, Unit $unit): bool
     {
         return $user->level_id < 3;

@@ -38,9 +38,8 @@
                                 <th scope="col">Tanggal Pembelian</th>
                                 <th scope="col">Keterangan</th>
                                 <th scope="col">Bukti Transaksi</th>
-                                @if (auth()->user()->level_id == 1)
+                                @if (auth()->user()->level_id < 3)
                                     <th scope="col">Created By</th>
-                                    <th scope="col">Updated By</th>
                                     <th scope="col">Created At</th>
                                 @endif
 
@@ -60,9 +59,8 @@
                                     <td>{{ $pembelianBarang->keterangan }}</td>
                                     <td><a href="{{ env('APP_URL') . '/upload/pembelianBarang/' . $pembelianBarang->bukti_transaksi }}"
                                             target="_blank">Lihat</a></td>
-                                    @if (auth()->user()->level_id == 1)
+                                    @if (auth()->user()->level_id < 3)
                                         <td>{{ $pembelianBarang->created_by }}</td>
-                                        <td>{{ $pembelianBarang->updated_by }}</td>
                                         <td>{{ $pembelianBarang->created_at }}</td>
                                     @endif
                                     @auth

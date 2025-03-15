@@ -33,13 +33,11 @@
                                 <th scope="col">Nama Site</th>
                                 <th scope="col">Lokasi</th>
                                 <th scope="col">Penganggung Jawab</th>
-                                @if (auth()->user()->level_id == 1)
+                                @if (auth()->user()->level_id < 3)
                                     <th scope="col">Created By</th>
-                                    <th scope="col">Updated By</th>
                                     <th scope="col">Created At</th>
+                                    <th scope="col" style="text-align: center">Action</th>
                                 @endif
-                                <th scope="col" style="text-align: center">Action</th>
-
                             </tr>
                         </thead>
                         <tbody>
@@ -49,9 +47,8 @@
                                     <td>{{ $site->nama_site }}</td>
                                     <td>{{ $site->lokasi }}</td>
                                     <td>{{ $site->penanggung_jawab }}</td>
-                                    @if (auth()->user()->level_id == 1)
+                                    @if (auth()->user()->level_id < 3)
                                         <td>{{ $site->created_by }}</td>
-                                        <td>{{ $site->updated_by }}</td>
                                         <td>{{ $site->created_at }}</td>
                                     @endif
 

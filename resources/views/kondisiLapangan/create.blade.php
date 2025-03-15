@@ -82,7 +82,9 @@
                         <select name="site_id" id="" class="form-control">
                             <option value=""></option>
                             @foreach ($sites as $site)
-                                <option value="{{ $site->id }}">{{ $site->nama_site }}</option>
+                                <option value="{{ $site->id }}" {{ old('site_id') == $site->id ? 'selected' : '' }}>
+                                    {{ $site->nama_site }}
+                                </option>
                             @endforeach
                         </select>
                         @error('site_id')

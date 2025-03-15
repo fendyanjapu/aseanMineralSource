@@ -8,9 +8,13 @@ use Illuminate\Auth\Access\Response;
 
 class KondisiBatuPolicy
 {
+    public function create(User $user): bool
+    {
+        return ($user->level_id != 2 );
+    }
     public function update(User $user, KondisiBatu $kondisiBatu): bool
     {
-        return ($user->level_id < 3 || $kondisiBatu->user_id === $user->id);
+        return ($user->level_id == 1 || $kondisiBatu->user_id === $user->id);
     }
 
     /**
@@ -18,6 +22,6 @@ class KondisiBatuPolicy
      */
     public function delete(User $user, KondisiBatu $kondisiBatu): bool
     {
-        return ($user->level_id < 3 || $kondisiBatu->user_id === $user->id);
+        return ($user->level_id == 1 || $kondisiBatu->user_id === $user->id);
     }
 }

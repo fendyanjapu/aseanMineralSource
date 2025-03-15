@@ -23,6 +23,9 @@ class PembayaranPenjualan extends Model
         'tanggal_transaksi',
         'bukti_transaksi',
         'sisa_hutang_site',
+        'created_by',
+        'updated_by',
+        'user_id',
     ];
 
     public function site()

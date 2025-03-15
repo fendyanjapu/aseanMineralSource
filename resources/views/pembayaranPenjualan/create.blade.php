@@ -1,6 +1,13 @@
 @extends('layouts.template')
 
 @section('content')
+<style>
+    .ui-highlight .ui-state-default{
+        background: green !important;
+        border-color: green !important;
+        color: white !important;
+    }
+</style>
     <div class="mb-3">
         <h1 class="h3 d-inline align-middle">Tambah Pembayaran Penjualan</h1>
 
@@ -50,7 +57,7 @@
                 <div class="card">
                     <div class="card-body">
                         <label>Pilih Tanggal Pembelian</label>
-                        <input type="date" class="form-control col-lg-3" name="" id="tglPembelian">
+                        <input type="text" class="form-control col-lg-3" name="" id="tglPembelian">
                         <br>
                         <label>Data Pembelian</label>
                         <select class="form-control col-lg-3" name="" id="dataPembelian">
@@ -123,13 +130,7 @@
                 <div class="card">
                     <div class="card-body">
                         <label>Pilih Dana Operasional</label>
-                        <select class="form-control col-lg-3" name="" id="danaOperasional">
-                            <option value=""></option>
-                            @foreach ($pengeluaranSites as $pengeluaranSite)
-                                <option value="{{ $pengeluaranSite->kode_transaksi }}">{{ $pengeluaranSite->kode_transaksi }}
-                                </option>
-                            @endforeach
-                        </select>
+                        <select class="form-control col-lg-3" name="" id="danaOperasional"></select>
                         <br>
                         <table>
                             <tr>
@@ -244,6 +245,30 @@
             e.preventDefault();
         });
 
+        function colorDate(dates) {
+            // var dates = ['2025-03-05','2025-03-15','2025-03-25'];
+            dateArray = dates.split(",");
+            jQuery(function(){
+                jQuery('#tglPembelian').datepicker({
+                    changeMonth : true,
+                    changeYear : true,
+                    beforeShowDay : function(date){
+                        var y = date.getFullYear().toString(); // get full year
+                        var m = (date.getMonth() + 1).toString(); // get month.
+                        var d = date.getDate().toString(); // get Day
+                        if(m.length == 1){ m = '0' + m; } // append zero(0) if single digit
+                        if(d.length == 1){ d = '0' + d; } // append zero(0) if single digit
+                        var currDate = y+'-'+m+'-'+d;
+                        if(dateArray.indexOf(currDate) >= 0){
+                            return [true, "ui-highlight"];	
+                        }else{
+                            return [true];
+                        }					
+                    }
+                });
+            })
+        }
+
         $('#site_id').change(function () {
             let site_id = $(this).val();
             $.ajax({
@@ -253,16 +278,27 @@
                 cache: false,
                 success: function (result) {
                     let data = $.parseJSON(result);
-                    $("#total_hutang").val(data);
+                    $("#total_hutang").val(data.total_hutang);
                     $('#total_hutang').val(function (index, value) {
                         return value
                             .replace(/\D/g, "")
                             .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                             ;
                     });
+                    let dates = data.tgl_pembelian;
+                    colorDate(dates);
                 }
             });
             getDataPembelian();
+            $.ajax({
+                type: "GET",
+                data: { site_id: site_id },
+                url: "{{ route('getOperasional') }}",
+                cache: false,
+                success: function (result) {
+                    $('#danaOperasional').html(result);
+                }
+            });
         });
 
         $('#danaOperasional').change(function () {
@@ -321,6 +357,9 @@
             let int_total_harga_pembelian = total_harga_pembelian.replace(/,/g, "");
             let int_jumlah_hutang_site = jumlah_hutang_site.replace(/,/g, "");
             let total = parseInt(int_total_harga_pembelian) - parseInt(int_jumlah_hutang_site);
+            if (total < 0) {
+                total = 0;
+            }
             $('#total_pembayaran_site').val(total);
             $('#total_pembayaran_site').val(function (index, value) {
                 return value
@@ -333,9 +372,16 @@
         function sisaHutangSite() {
             let total_hutang = $('#total_hutang').val();
             let jumlah_hutang_site = $('#jumlah_hutang_site').val();
+            let total_harga_pembelian = $('#total_harga_pembelian').val();
             let int_total_hutang = total_hutang.replace(/,/g, "");
             let int_jumlah_hutang_site = jumlah_hutang_site.replace(/,/g, "");
-            let total = parseInt(int_total_hutang) - parseInt(int_jumlah_hutang_site);
+            let int_total_harga_pembelian = total_harga_pembelian.replace(/,/g, "");
+
+            if (parseInt(int_total_harga_pembelian) > parseInt(int_jumlah_hutang_site)) {
+                total = parseInt(int_total_hutang) - parseInt(int_jumlah_hutang_site);
+            } else {
+                total = parseInt(int_jumlah_hutang_site) - parseInt(int_total_harga_pembelian);
+            }
             $('#sisa_hutang_site').val(total);
             $('#sisa_hutang_site').val(function (index, value) {
                 return value
@@ -389,7 +435,7 @@
                     ;
             });
             totalpembayaranSite();
-            sisaHutangSite()
+            sisaHutangSite();
         }
 
         function hapusOperasional() {
@@ -425,7 +471,7 @@
                     ;
             });
             totalpembayaranSite();
-            sisaHutangSite()
+            sisaHutangSite();
         }
 
         function resetOperasional() {
@@ -433,7 +479,7 @@
             $('#tanggal_transfer_ke_site').val("");
             $('#jumlah_hutang_site').val("");
             totalpembayaranSite();
-            sisaHutangSite()
+            sisaHutangSite();
         }
 
         function getDataPembelian() {
@@ -522,7 +568,7 @@
                                 ;
                         });
                         totalpembayaranSite();
-                        sisaHutangSite()
+                        // sisaHutangSite();
                     }
                 }
             });
@@ -568,7 +614,7 @@
                     ;
             });
             totalpembayaranSite();
-            sisaHutangSite()
+            // sisaHutangSite();
         }
 
         function resetPembelian() {
@@ -577,7 +623,7 @@
             $('#jmlTonase').val("");
             $('#total_harga_pembelian').val("");
             totalpembayaranSite();
-            sisaHutangSite()
+            // sisaHutangSite();
         }
 
     </script>

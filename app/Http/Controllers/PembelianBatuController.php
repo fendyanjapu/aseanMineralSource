@@ -24,6 +24,8 @@ class PembelianBatuController extends Controller
     ];
     public function index()
     {
+        $this->authorize('viewAny', PembelianBatu::class);
+
         $pembelianBatus = PembelianBatu::all();
         return view('pembelianBatu.index', compact('pembelianBatus'));
     }
@@ -33,6 +35,8 @@ class PembelianBatuController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', PembelianBatu::class);
+
         $query = PembelianBatu::where(DB::raw('YEAR(created_at)'), '=', date('Y'));
         if ($query->count() == 0) {
             $lastId = 0;
@@ -52,8 +56,10 @@ class PembelianBatuController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', PembelianBatu::class);
+        
         $validatedData = $request->validate($this->rules);
-        $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
         $validatedData['status_pengapalan'] = "0";
 
@@ -62,9 +68,40 @@ class PembelianBatuController extends Controller
         return redirect()->route('pembelianBatu.index')->with('success','Data berhasil ditambah');
     }
 
+    public function edit(PembelianBatu $pembelianBatu)
+    {
+        $this->authorize('update', $pembelianBatu);
+
+        $sites = Site::all();
+
+        return view('pembelianBatu.edit', compact('pembelianBatu', 'sites'));
+    }
+
     /**
-     * Display the specified resource.
+     * Update the specified resource in storage.
      */
+    public function update(Request $request, PembelianBatu $pembelianBatu)
+    {
+        $this->authorize('update', $pembelianBatu);
+
+        $validatedData = $request->validate($this->rules);
+        $validatedData['updated_by'] = auth()->user()->username;
+        PembelianBatu::findOrFail($pembelianBatu->id)->update($validatedData);
+
+        return redirect(route('pembelianBatu.index'))->with('success','Data berhasil diubah');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(PembelianBatu $pembelianBatu)
+    {
+        $this->authorize('delete', $pembelianBatu);
+
+        PembelianBatu::destroy($pembelianBatu->id);
+
+        return redirect(route('pembelianBatu.index'))->with('success','Data berhasil dihapus');
+    }
     public function laporan(Request $request)
     {
         $dariTanggal = $request->dari_tanggal;
@@ -120,40 +157,6 @@ class PembelianBatuController extends Controller
             'site_id',
             'sites'
         ));
-    }
-    public function edit(PembelianBatu $pembelianBatu)
-    {
-        $this->authorize('update', $pembelianBatu);
-
-        $sites = Site::all();
-
-        return view('pembelianBatu.edit', compact('pembelianBatu', 'sites'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, PembelianBatu $pembelianBatu)
-    {
-        $this->authorize('update', $pembelianBatu);
-
-        $validatedData = $request->validate($this->rules);
-        $validatedData['updated_by'] = auth()->user()->name;
-        PembelianBatu::findOrFail($pembelianBatu->id)->update($validatedData);
-
-        return redirect(route('pembelianBatu.index'))->with('success','Data berhasil diubah');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(PembelianBatu $pembelianBatu)
-    {
-        $this->authorize('delete', $pembelianBatu);
-
-        PembelianBatu::destroy($pembelianBatu->id);
-
-        return redirect(route('pembelianBatu.index'))->with('success','Data berhasil dihapus');
     }
 
     public function getTotalRotasi(Request $request)

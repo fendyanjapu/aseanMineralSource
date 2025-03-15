@@ -28,7 +28,9 @@
                         <select class="form-control" name="unit_id">
                             <option value=""></option>
                             @foreach ($units as $item)
-                                <option value="{{ $item->id }}">{{ $item->no_identitas_unit }}</option>
+                                <option value="{{ $item->id }}" {{ old('unit_id') == $item->id ? 'selected' : '' }}>
+                                    {{ $item->no_identitas_unit }}
+                                </option>
                             @endforeach
                         </select>
                         @error('unit_id')

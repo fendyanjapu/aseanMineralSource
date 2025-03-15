@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Unit;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UnitController extends Controller
@@ -17,6 +18,8 @@ class UnitController extends Controller
     ];
     public function index()
     {
+        $this->authorize('viewAny', User::class);
+        
         $units  = Unit::all();
        
         return view('unit.index', compact('units'));
@@ -27,6 +30,8 @@ class UnitController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', User::class);
+
         $lastId = Unit::latest()->first()?->id;
         if ($lastId == null) { $lastId = 0; }
         $nextId = $lastId + 1;
@@ -40,9 +45,11 @@ class UnitController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', User::class);
+
         $validatedData = $request->validate($this->rules);
         
-        $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
         Unit::create($validatedData);
         return redirect()->route('unit.index')->with('success','Data berhasil ditambah');
@@ -74,7 +81,7 @@ class UnitController extends Controller
         $this->authorize('update', $unit);
 
         $validatedData = $request->validate($this->rules);
-        $validatedData['updated_by'] = auth()->user()->name;
+        $validatedData['updated_by'] = auth()->user()->username;
         Unit::findOrFail($unit->id)->update($validatedData);
 
         return redirect(route('unit.index'))->with('success','Data berhasil diubah');

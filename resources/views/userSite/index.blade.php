@@ -34,13 +34,9 @@
                                 <th scope="col">Username</th>
                                 <th scope="col">Level</th>
                                 <th scope="col">Site</th>
-                                @if (auth()->user()->level_id < 2)
-                                    <th scope="col">Created By</th>
-                                    <th scope="col">Updated By</th>
-                                    <th scope="col">Created At</th>
-                                @endif
-
                                 @if (auth()->user()->level_id < 3)
+                                    <th scope="col">Created By</th>
+                                    <th scope="col">Created At</th>
                                     <th scope="col" style="text-align: center">Action</th>
                                 @endif
                             </tr>
@@ -53,9 +49,8 @@
                                     <td>{{ $user->username }}</td>
                                     <td>{{ $user->level?->level }}</td>
                                     <td>{{ $user->site?->nama_site }}</td>
-                                    @if (auth()->user()->level_id < 2)
+                                    @if (auth()->user()->level_id < 3)
                                         <td>{{ $user->created_by }}</td>
-                                        <td>{{ $user->updated_by }}</td>
                                         <td>{{ $user->created_at }}</td>
                                     @endif
 

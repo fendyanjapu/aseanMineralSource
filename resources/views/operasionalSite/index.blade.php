@@ -12,11 +12,13 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">
-                        <a class="btn btn-primary" href="{{ route('operasionalSite.create') }}">
-                            <i class="align-middle" data-feather="plus-square"></i> <span class="align-middle">Tambah</span>
-                        </a>
-                    </h5>
+                    @if (auth()->user()->level_id == 1 || auth()->user()->level_id == 4)
+                        <h5 class="card-title mb-0">
+                            <a class="btn btn-primary" href="{{ route('operasionalSite.create') }}">
+                                <i class="align-middle" data-feather="plus-square"></i> <span class="align-middle">Tambah</span>
+                            </a>
+                        </h5>
+                    @endif
                 </div>
                 <div style="margin: 0px 20px">
                     @if (session()->has('success'))
@@ -36,9 +38,8 @@
                                 <th scope="col">Biaya</th>
                                 <th scope="col">Bukti Transaksi</th>
                                 <th scope="col">Site</th>
-                                @if (auth()->user()->level_id == 1)
+                                @if (auth()->user()->level_id < 3)
                                     <th scope="col">Created By</th>
-                                    <th scope="col">Updated By</th>
                                     <th scope="col">Created At</th>
                                 @endif
                                 <th scope="col" style="text-align: center">Action</th>
@@ -55,9 +56,8 @@
                                     <td><a href="{{ env('APP_URL') . '/upload/operasionalSite/' . $operasionalSite->bukti_transaksi }}"
                                         target="_blank">Lihat</a></td>
                                     <td>{{ $operasionalSite->site?->nama_site }}</td>
-                                    @if (auth()->user()->level_id == 1)
+                                    @if (auth()->user()->level_id < 3)
                                         <td>{{ $operasionalSite->created_by }}</td>
-                                        <td>{{ $operasionalSite->updated_by }}</td>
                                         <td>{{ $operasionalSite->created_at }}</td>
                                     @endif
                                     @auth

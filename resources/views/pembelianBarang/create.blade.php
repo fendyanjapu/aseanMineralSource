@@ -28,7 +28,9 @@
                         <select class="form-control" name="barang_id">
                             <option value=""></option>
                             @foreach ($barangs as $item)
-                                <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                <option value="{{ $item->id }}" {{ old('barang_id') == $item->id ? 'selected' : '' }}>
+                                    {{ $item->nama }}
+                                </option>
                             @endforeach
                         </select>
                         @error('barang_id')
@@ -108,7 +110,7 @@
                 <div class="card">
                     <div class="card-body">
                         <label>Bukti Transaksi</label>
-                        <input type="file" class="form-control" name="bukti_transaksi" accept="image/*,application/pdf">
+                        <input type="file" class="form-control" name="bukti_transaksi" accept="image/*,application/pdf" required>
                         @error('bukti_transaksi')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>

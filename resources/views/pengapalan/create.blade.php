@@ -344,6 +344,14 @@
             });
         }
 
+        function reset() {
+            $('#id_pembelian_batu').val("");
+            $('#tanggal_pembelian').val("");
+            $('#jmlTonase').val("");
+            $('#sumHarga').val("");
+            $('#harga_di_site').val("");
+        }
+
         $('#tglPembelianBatu').change(function() {
             let tanggal = $(this).val();
             let id = $('#site').val();

@@ -1,6 +1,13 @@
 @extends('layouts.template')
 
 @section('content')
+<style>
+    .ui-highlight .ui-state-default{
+        background: green !important;
+        border-color: green !important;
+        color: white !important;
+    }
+</style>
     <div class="mb-3">
         <h1 class="h3 d-inline align-middle">Edit Data Pembelian Batu Dari Site</h1>
 
@@ -59,7 +66,7 @@
                 <div class="card">
                     <div class="card-body">
                         <label>Pilih Tanggal Rotasi</label>
-                        <input type="date" class="form-control col-lg-3" name="" id="tgl_rotasi">
+                        <input type="text" class="form-control col-lg-3" name="" id="tgl_rotasi">
                         <br>
                         <table>
                             <tr>
@@ -73,9 +80,9 @@
                                 <td><input type="text" class="form-control col-lg-3" name="tonase" id="tonase" readonly>
                                 </td>
                                 <td>
-                                    <a href="#" onclick="tambahRotasi()" class="btn btn-sm btn-success">Tambah</a>
-                                    <a href="#" onclick="hapusRotasi()" class="btn btn-sm btn-danger">Hapus</a>
-                                    <a href="#" onclick="resetRotasi()" class="btn btn-sm btn-info">Reset</a>
+                                    <a href="#" onclick="tambahRotasi()" class="btn btn-sm btn-success buton">Tambah</a>
+                                    <a href="#" onclick="hapusRotasi()" class="btn btn-sm btn-danger buton">Hapus</a>
+                                    <a href="#" onclick="resetRotasi()" class="btn btn-sm btn-info buton">Reset</a>
                                 </td>
                             </tr>
                         </table>
@@ -183,6 +190,34 @@
     </form>
 
     <script>
+        $('a.buton').click(function (e) {
+            e.preventDefault();
+        });
+
+        function colorDate(dates) {
+            // var dates = ['2025-03-05','2025-03-15','2025-03-25'];
+            dateArray = dates.split(",");
+            jQuery(function(){
+                jQuery('#tgl_rotasi').datepicker({
+                    changeMonth : true,
+                    changeYear : true,
+                    beforeShowDay : function(date){
+                        var y = date.getFullYear().toString(); // get full year
+                        var m = (date.getMonth() + 1).toString(); // get month.
+                        var d = date.getDate().toString(); // get Day
+                        if(m.length == 1){ m = '0' + m; } // append zero(0) if single digit
+                        if(d.length == 1){ d = '0' + d; } // append zero(0) if single digit
+                        var currDate = y+'-'+m+'-'+d;
+                        if(dateArray.indexOf(currDate) >= 0){
+                            return [true, "ui-highlight"];	
+                        }else{
+                            return [true];
+                        }					
+                    }
+                });
+            })
+        }
+
         $("#jumlah_tonase").keyup(function (event) {
             $(this).val(function (index, value) {
                 return value
@@ -225,6 +260,18 @@
         });
 
         $("#site_id").change(function (event) {
+            let id = $(this).val();
+            $.ajax({
+                type: "GET",
+                data: "site_id=" + id,
+                url: "{{ route('getRotasi') }}",
+                cache: false,
+                success: function (result) {
+                    let data = $.parseJSON(result);
+                    let dates = data.tanggal;
+                    colorDate(dates);
+                }
+            });
             totalRotasi();
         });
 
@@ -317,11 +364,10 @@
             let int_harga = harga.replace(/,/g, "");
             let int_jetty = jetty.replace(/,/g, "");
             let int_document_dll = document_dll.replace(/,/g, "");
-            let int_jumlah_tonase = jumlah_tonase.replace(/,/g, "");
 
-            let total_penjualan = (int_harga * int_jumlah_tonase) +
-                                (int_jetty * int_jumlah_tonase) +
-                                (int_document_dll * int_jumlah_tonase);
+            let total_penjualan = (int_harga * jumlah_tonase) -
+                                (int_jetty * jumlah_tonase) -
+                                (int_document_dll * jumlah_tonase);
 
             $('#total_penjualan').val(total_penjualan);
             $('#total_penjualan').val(function (index, value) {

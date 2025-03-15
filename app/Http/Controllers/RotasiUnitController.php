@@ -36,6 +36,8 @@ class RotasiUnitController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', RotasiUnit::class);
+
         $query = RotasiUnit::where(DB::raw('YEAR(created_at)'), '=', date('Y'));
         if ($query->count() == 0) {
             $lastId = 0;
@@ -59,8 +61,10 @@ class RotasiUnitController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', RotasiUnit::class);
+        
         $validatedData = $request->validate($this->rules);
-        $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
 
         RotasiUnit::create($validatedData);
@@ -121,7 +125,7 @@ class RotasiUnitController extends Controller
         $this->authorize('update', $rotasiUnit);
 
         $validatedData = $request->validate($this->rules);
-        $validatedData['updated_by'] = auth()->user()->name;
+        $validatedData['updated_by'] = auth()->user()->username;
         RotasiUnit::findOrFail($rotasiUnit->id)->update($validatedData);
 
         return redirect(route('rotasiUnit.index'))->with('success','Data berhasil diubah');
@@ -144,5 +148,19 @@ class RotasiUnitController extends Controller
         $totalRotasi = RotasiUnit::where('tanggal', '=', $request->tanggal)->where('nopol', '=', $request->nopol)->count();
         $totalRotasi += 1;
         return json_encode($totalRotasi);
+    }
+
+    public function getRotasi(Request $request)
+    {
+        $site_id = $request->site_id;
+        $rotasiUnits = RotasiUnit::where('site_id', '=', $site_id)->get();
+        $tanggal = '';
+        foreach ($rotasiUnits as $rotasiUnit) {
+            $tanggal .= ','.$rotasiUnit->tanggal;
+        }
+        $data = [
+            'tanggal' => $tanggal,
+        ];
+        return json_encode($data);
     }
 }

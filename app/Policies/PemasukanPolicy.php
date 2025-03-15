@@ -8,7 +8,15 @@ use Illuminate\Auth\Access\Response;
 
 class PemasukanPolicy
 {
-    
+    public function viewAny(User $user): bool
+    {
+        return $user->level_id < 4;
+    }
+
+    public function create(User $user): bool
+    {
+        return $user->level_id < 4;
+    }
     public function update(User $user, Pemasukan $pemasukan): bool
     {
         return ($user->level_id < 3 || $pemasukan->user_id === $user->id);

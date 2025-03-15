@@ -59,77 +59,82 @@
 						</a>
 					</li>
 
-					<li class="sidebar-header">
-						Data Master
-					</li>
+					@if (auth()->user()->level_id < 3)
+						<li class="sidebar-header">
+							Data Master
+						</li>
 
-					<li class="sidebar-item dropdown">
-						<a class="sidebar-link dropdown-toggle d-none d-sm-inline-block" href="#"
-							data-bs-toggle="dropdown">
-							<i class="align-middle" data-feather="user"></i> <span class="align-middle">Data
-								Pengguna</span>
-						</a>
-						<div class="dropdown-menu dropdown-menu-end">
-							<a class="dropdown-item" href="{{ route('user.index') }}"><i class="align-middle me-1"
-									data-feather="user"></i>
-								Asian Mining Source</a>
-							<a class="dropdown-item" href="{{ route('userSite.index') }}"><i class="align-middle me-1"
-									data-feather="user"></i>
-								Site</a>
-						</div>
-					</li>
+						<li class="sidebar-item dropdown">
+							<a class="sidebar-link dropdown-toggle d-none d-sm-inline-block" href="#"
+								data-bs-toggle="dropdown">
+								<i class="align-middle" data-feather="user"></i> <span class="align-middle">Data
+									Pengguna</span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-end">
+								<a class="dropdown-item" href="{{ route('user.index') }}"><i class="align-middle me-1"
+										data-feather="user"></i>
+									Asian Mining Source</a>
+								<a class="dropdown-item" href="{{ route('userSite.index') }}"><i class="align-middle me-1"
+										data-feather="user"></i>
+									Site</a>
+							</div>
+						</li>
 
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('site.index') }}">
-							<i class="align-middle" data-feather="map"></i> <span class="align-middle">Data Site</span>
-						</a>
-					</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('site.index') }}">
+								<i class="align-middle" data-feather="map"></i> <span class="align-middle">Data Site</span>
+							</a>
+						</li>
 
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('karyawan.index') }}">
-							<i class="align-middle" data-feather="users"></i> <span class="align-middle">Data
-								Karyawan</span>
-						</a>
-					</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('karyawan.index') }}">
+								<i class="align-middle" data-feather="users"></i> <span class="align-middle">Data
+									Karyawan</span>
+							</a>
+						</li>
 
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('barang.index') }}">
-							<i class="align-middle" data-feather="package"></i> <span class="align-middle">Data
-								Barang</span>
-						</a>
-					</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('barang.index') }}">
+								<i class="align-middle" data-feather="package"></i> <span class="align-middle">Data
+									Barang</span>
+							</a>
+						</li>
 
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('unit.index') }}">
-							<i class="align-middle" data-feather="truck"></i> <span class="align-middle">Data
-								Unit</span>
-						</a>
-					</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('unit.index') }}">
+								<i class="align-middle" data-feather="truck"></i> <span class="align-middle">Data
+									Unit</span>
+							</a>
+						</li>
+					@endif
 
-					<li class="sidebar-header">
-						Transaksi
-					</li>
+					@if (auth()->user()->level_id < 4)
+						<li class="sidebar-header">
+							Transaksi
+						</li>
 
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('pembelianBarang.index') }}">
-							<i class="align-middle" data-feather="shopping-cart"></i> <span
-								class="align-middle">Pembelian Barang</span>
-						</a>
-					</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('pembelianBarang.index') }}">
+								<i class="align-middle" data-feather="shopping-cart"></i> <span
+									class="align-middle">Pembelian Barang</span>
+							</a>
+						</li>
 
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('perbaikanUnit.index') }}">
-							<i class="align-middle" data-feather="settings"></i> <span class="align-middle">Perbaikan
-								Unit</span>
-						</a>
-					</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('perbaikanUnit.index') }}">
+								<i class="align-middle" data-feather="settings"></i> <span class="align-middle">Perbaikan
+									Unit</span>
+							</a>
+						</li>
 
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('pemasukan.index') }}">
-							<i class="align-middle" data-feather="external-link"></i> <span
-								class="align-middle">Pengeluaran Site</span>
-						</a>
-					</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('pemasukan.index') }}">
+								<i class="align-middle" data-feather="external-link"></i> <span
+									class="align-middle">Pengeluaran Site</span>
+							</a>
+						</li>
+
+					@endif
 
 					<li class="sidebar-header">
 						Produktivitas
@@ -167,31 +172,33 @@
 						</a>
 					</li>
 
-					<li class="sidebar-header">
-						Keuangan
-					</li>
+					@if (auth()->user()->level_id < 3)
+						<li class="sidebar-header">
+							Keuangan
+						</li>
 
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('pembelianBatu.index') }}">
-							<i class="align-middle" data-feather="shopping-bag"></i> <span
-								class="align-middle">Pembelian
-								Dari Site</span>
-						</a>
-					</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('pembelianBatu.index') }}">
+								<i class="align-middle" data-feather="shopping-bag"></i> <span
+									class="align-middle">Pembelian
+									Dari Site</span>
+							</a>
+						</li>
 
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('pengapalan.index') }}">
-							<i class="align-middle" data-feather="anchor"></i> <span
-								class="align-middle">Pengapalan</span>
-						</a>
-					</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('pengapalan.index') }}">
+								<i class="align-middle" data-feather="anchor"></i> <span
+									class="align-middle">Pengapalan</span>
+							</a>
+						</li>
 
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ route('pembayaranPenjualan.index') }}">
-							<i class="align-middle" data-feather="dollar-sign"></i> <span
-								class="align-middle">Pembayaran Penjualan</span>
-						</a>
-					</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('pembayaranPenjualan.index') }}">
+								<i class="align-middle" data-feather="dollar-sign"></i> <span
+									class="align-middle">Pembayaran Penjualan</span>
+							</a>
+						</li>
+					@endif
 
 					<li class="sidebar-header">
 						Laporan
@@ -269,7 +276,8 @@
 							<div class="dropdown-menu dropdown-menu-end">
 								<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="user"></i>
 									Profil</a>
-								<a class="dropdown-item" href="{{ route('settings.index') }}"><i class="align-middle me-1" data-feather="settings"></i>
+								<a class="dropdown-item" href="{{ route('settings.index') }}"><i
+										class="align-middle me-1" data-feather="settings"></i>
 									Settings</a>
 								<div class="dropdown-divider"></div>
 								<form action="{{ route('logout') }}" method="POST">

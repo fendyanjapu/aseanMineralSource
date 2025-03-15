@@ -8,10 +8,13 @@ use Illuminate\Auth\Access\Response;
 
 class KondisiLapanganPolicy
 {
-    
+    public function create(User $user): bool
+    {
+        return ($user->level_id != 2 );
+    }
     public function update(User $user, KondisiLapangan $kondisiLapangan): bool
     {
-        return ($user->level_id < 3 || $kondisiLapangan->user_id === $user->id);
+        return ($user->level_id == 1 || $kondisiLapangan->user_id === $user->id);
     }
 
     /**
@@ -19,7 +22,7 @@ class KondisiLapanganPolicy
      */
     public function delete(User $user, KondisiLapangan $kondisiLapangan): bool
     {
-        return ($user->level_id < 3 || $kondisiLapangan->user_id === $user->id);
+        return ($user->level_id == 1 || $kondisiLapangan->user_id === $user->id);
     }
 
 }

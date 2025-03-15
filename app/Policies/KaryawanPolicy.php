@@ -12,17 +12,16 @@ class KaryawanPolicy
     {
         return $user->level_id < 3;
     }
-    /**
-     * Determine whether the user can update the model.
-     */
+    
+    public function create(User $user): bool
+    {
+        return $user->level_id < 3;
+    }
     public function update(User $user, Karyawan $karyawan): bool
     {
         return $user->level_id < 3;
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     */
     public function delete(User $user, Karyawan $karyawan): bool
     {
         return $user->level_id < 3;

@@ -35,9 +35,8 @@
                                 <th scope="col">Tanggal Masuk</th>
                                 <th scope="col">Jabatan</th>
                                 <th scope="col">Level</th>
-                                @if (auth()->user()->level_id == 1)
+                                @if (auth()->user()->level_id < 3)
                                     <th scope="col">Created By</th>
-                                    <th scope="col">Updated By</th>
                                     <th scope="col">Created At</th>
                                 @endif
                                 <th scope="col" style="text-align: center">Action</th>
@@ -52,9 +51,8 @@
                                     <td>{{ $karyawan->tanggal_masuk }}</td>
                                     <td>{{ $karyawan->jabatan }}</td>
                                     <td>{{ $karyawan->level }}</td>
-                                    @if (auth()->user()->level_id == 1)
+                                    @if (auth()->user()->level_id < 3)
                                         <td>{{ $karyawan->created_by }}</td>
-                                        <td>{{ $karyawan->updated_by }}</td>
                                         <td>{{ $karyawan->created_at }}</td>
                                     @endif
                                     @auth

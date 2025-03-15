@@ -1,6 +1,13 @@
 @extends('layouts.template')
 
 @section('content')
+<style>
+    .ui-highlight .ui-state-default{
+        background: green !important;
+        border-color: green !important;
+        color: white !important;
+    }
+</style>
     <div class="mb-3">
         <h1 class="h3 d-inline align-middle">Tambah Data Pembelian Batu Dari Site</h1>
 
@@ -45,7 +52,9 @@
                         <select name="site_id" id="site_id" class="form-control">
                             <option value=""></option>
                             @foreach ($sites as $site)
-                                <option value="{{ $site->id }}">{{ $site->nama_site }}</option>
+                                <option value="{{ $site->id }}" {{ old('site_id') == $site->id ? 'selected' : '' }}>
+                                    {{ $site->nama_site }}
+                                </option>
                             @endforeach
                         </select>
                         @error('site_id')
@@ -59,7 +68,7 @@
                 <div class="card">
                     <div class="card-body">
                         <label>Pilih Tanggal Rotasi</label>
-                        <input type="date" class="form-control col-lg-3" name="" id="tgl_rotasi">
+                        <input type="text" class="form-control col-lg-3" name="" id="tgl_rotasi">
                         <br>
                         <table>
                             <tr>
@@ -185,6 +194,30 @@
             e.preventDefault();
         });
 
+        function colorDate(dates) {
+            // var dates = ['2025-03-05','2025-03-15','2025-03-25'];
+            dateArray = dates.split(",");
+            jQuery(function(){
+                jQuery('#tgl_rotasi').datepicker({
+                    changeMonth : true,
+                    changeYear : true,
+                    beforeShowDay : function(date){
+                        var y = date.getFullYear().toString(); // get full year
+                        var m = (date.getMonth() + 1).toString(); // get month.
+                        var d = date.getDate().toString(); // get Day
+                        if(m.length == 1){ m = '0' + m; } // append zero(0) if single digit
+                        if(d.length == 1){ d = '0' + d; } // append zero(0) if single digit
+                        var currDate = y+'-'+m+'-'+d;
+                        if(dateArray.indexOf(currDate) >= 0){
+                            return [true, "ui-highlight"];	
+                        }else{
+                            return [true];
+                        }					
+                    }
+                });
+            })
+        }
+
         $("#jumlah_tonase").keyup(function (event) {
             $(this).val(function (index, value) {
                 return value
@@ -227,6 +260,18 @@
         });
 
         $("#site_id").change(function (event) {
+            let id = $(this).val();
+            $.ajax({
+                type: "GET",
+                data: "site_id=" + id,
+                url: "{{ route('getRotasi') }}",
+                cache: false,
+                success: function (result) {
+                    let data = $.parseJSON(result);
+                    let dates = data.tanggal;
+                    colorDate(dates);
+                }
+            });
             totalRotasi();
         });
 
@@ -248,45 +293,49 @@
 
         function tambahRotasi() {
             let tgl_rotasi = $('#tgl_rotasi').val();
+            let tanggal_rotasi = $('#tanggal_rotasi').val();
 
-            $.ajax({
-                type: "GET",
-                data: { tanggal: tgl_rotasi },
-                url: "{{ route('cekTglRotasi') }}",
-                cache: false,
-                success: function (result) {
-                    let data = $.parseJSON(result);
-                    cek = data;
+            if (tgl_rotasi == tanggal_rotasi) {
+                alert('Tidak boleh tanggal rotasi yang sama!')
+            } else {
+                $.ajax({
+                    type: "GET",
+                    data: { tanggal: tgl_rotasi },
+                    url: "{{ route('cekTglRotasi') }}",
+                    cache: false,
+                    success: function (result) {
+                        let data = $.parseJSON(result);
+                        cek = data;
 
-                    if (cek == 1) {
-                        alert('Tanggal rotasi sudah ada!')
-                    } else {
-                        let tonase = $('#tonase').val();
-
-                        if (tonase == 0) {
-                            alert('Tidak ada produksi!');
+                        if (cek == 1) {
+                            alert('Tanggal rotasi sudah ada!')
                         } else {
-                            let tanggal_rotasi = $('#tanggal_rotasi').val();
-                            let jumlah_tonase = $('#jumlah_tonase').val();
                             let tonase = $('#tonase').val();
-                            if (tanggal_rotasi == '') {
-                                var jumTgl = [tgl_rotasi];
+
+                            if (tonase == 0) {
+                                alert('Tidak ada produksi!');
                             } else {
-                                var jumTgl = [tanggal_rotasi];
-                                jumTgl.push(tgl_rotasi);
+                                let jumlah_tonase = $('#jumlah_tonase').val();
+                                let tonase = $('#tonase').val();
+                                if (tanggal_rotasi == '') {
+                                    var jumTgl = [tgl_rotasi];
+                                } else {
+                                    var jumTgl = [tanggal_rotasi];
+                                    jumTgl.push(tgl_rotasi);
+                                }
+                                if (jumlah_tonase == '') {
+                                    var jmlTonase = tonase;
+                                } else {
+                                    var jmlTonase = parseInt(jumlah_tonase) + parseInt(tonase);
+                                }
+                                let tglRotasi = jumTgl.toString();
+                                $('#tanggal_rotasi').val(tglRotasi);
+                                $('#jumlah_tonase').val(jmlTonase);
                             }
-                            if (jumlah_tonase == '') {
-                                var jmlTonase = tonase;
-                            } else {
-                                var jmlTonase = parseInt(jumlah_tonase) + parseInt(tonase);
-                            }
-                            let tglRotasi = jumTgl.toString();
-                            $('#tanggal_rotasi').val(tglRotasi);
-                            $('#jumlah_tonase').val(jmlTonase);
                         }
                     }
-                }
-            });
+                });
+            }
         }
 
         function hapusRotasi() {
@@ -319,11 +368,10 @@
             let int_harga = harga.replace(/,/g, "");
             let int_jetty = jetty.replace(/,/g, "");
             let int_document_dll = document_dll.replace(/,/g, "");
-            let int_jumlah_tonase = jumlah_tonase.replace(/,/g, "");
 
-            let total_penjualan = (int_harga * int_jumlah_tonase) +
-                (int_jetty * int_jumlah_tonase) +
-                (int_document_dll * int_jumlah_tonase);
+            let total_penjualan = (int_harga * jumlah_tonase) -
+                (int_jetty * jumlah_tonase) -
+                (int_document_dll * jumlah_tonase);
 
             $('#total_penjualan').val(total_penjualan);
             $('#total_penjualan').val(function (index, value) {

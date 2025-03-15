@@ -12,11 +12,13 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">
-                        <a class="btn btn-primary" href="{{ route('kondisiLapangan.create') }}">
-                            <i class="align-middle" data-feather="plus-square"></i> <span class="align-middle">Tambah</span>
-                        </a>
-                    </h5>
+                    @if (auth()->user()->level_id != 2)
+                        <h5 class="card-title mb-0">
+                            <a class="btn btn-primary" href="{{ route('kondisiLapangan.create') }}">
+                                <i class="align-middle" data-feather="plus-square"></i> <span class="align-middle">Tambah</span>
+                            </a>
+                        </h5>
+                    @endif
                 </div>
                 <div style="margin: 0px 20px">
                     @if (session()->has('success'))
@@ -36,9 +38,8 @@
                                 <th scope="col">Lokasi</th>
                                 <th scope="col">Nama Jetty</th>
                                 <th scope="col">Site</th>
-                                @if (auth()->user()->level_id == 1)
+                                @if (auth()->user()->level_id < 3)
                                     <th scope="col">Created By</th>
-                                    <th scope="col">Updated By</th>
                                     <th scope="col">Created At</th>
                                 @endif
                                 <th scope="col" style="text-align: center">Action</th>
@@ -54,15 +55,15 @@
                                             target="_blank">Lihat</a></td>
                                     <td>{{ $kondisiLapangan->tanggal }}</td>
                                     <td>
-                                        <a href="https://www.google.com/search?q={{ $kondisiLapangan->lokasi }}" target="_blank">
+                                        <a href="https://www.google.com/search?q={{ $kondisiLapangan->lokasi }}"
+                                            target="_blank">
                                             {{ $kondisiLapangan->lokasi }}
                                         </a>
                                     </td>
                                     <td>{{ $kondisiLapangan->nama_jetty }}</td>
                                     <td>{{ $kondisiLapangan->site?->nama_site }}</td>
-                                    @if (auth()->user()->level_id == 1)
+                                    @if (auth()->user()->level_id < 3)
                                         <td>{{ $kondisiLapangan->created_by }}</td>
-                                        <td>{{ $kondisiLapangan->updated_by }}</td>
                                         <td>{{ $kondisiLapangan->created_at }}</td>
                                     @endif
                                     @auth
@@ -71,7 +72,8 @@
                                                 <a href="{{ route('kondisiLapangan.edit', ['kondisiLapangan' => $kondisiLapangan]) }}"
                                                     class="btn btn-success btn-sm">Edit</a>
 
-                                                <form action="{{ route('kondisiLapangan.destroy', ['kondisiLapangan' => $kondisiLapangan]) }}"
+                                                <form
+                                                    action="{{ route('kondisiLapangan.destroy', ['kondisiLapangan' => $kondisiLapangan]) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('delete')

@@ -8,6 +8,16 @@ use Illuminate\Auth\Access\Response;
 
 class PembelianBarangPolicy
 {
+    public function viewAny(User $user): bool
+    {
+        return $user->level_id < 4;
+    }
+
+    public function create(User $user): bool
+    {
+        return $user->level_id < 4;
+    }
+
     
     public function update(User $user, PembelianBarang $pembelianBarang): bool
     {

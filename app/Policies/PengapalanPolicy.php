@@ -8,9 +8,18 @@ use Illuminate\Auth\Access\Response;
 
 class PengapalanPolicy
 {
+    public function viewAny(User $user): bool
+    {
+        return $user->level_id < 3;
+    }
+    
+    public function create(User $user): bool
+    {
+        return $user->level_id < 3;
+    }
     public function update(User $user, Pengapalan $pengapalan): bool
     {
-        return ($user->level_id < 2 || $pengapalan->user_id === $user->id);
+        return $user->level_id < 3;
     }
 
     /**
@@ -18,6 +27,6 @@ class PengapalanPolicy
      */
     public function delete(User $user, Pengapalan $pengapalan): bool
     {
-        return ($user->level_id < 2 || $pengapalan->user_id === $user->id);
+        return $user->level_id < 3;
     }
 }

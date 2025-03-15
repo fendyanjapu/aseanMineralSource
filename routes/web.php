@@ -57,12 +57,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/getSite', [PengapalanController::class, 'getSite'] )->name('getSite');
     Route::get('/getDataPembelianbatu', [PengapalanController::class, 'getDataPembelianbatu'] )->name('getDataPembelianbatu');
     Route::get('/getTotalRotasi', [RotasiUnitController::class, 'getTotalRotasi'] )->name('getTotalRotasi');
+    Route::get('/getRotasi', [RotasiUnitController::class, 'getRotasi'] )->name('getRotasi');
     Route::get('/getTotalRotasiPembelian', [PembelianBatuController::class, 'getTotalRotasi'] )->name('pembelianBatu.getTotalRotasi');
     Route::get('/cekTglRotasi', [PembelianBatuController::class, 'cekTglRotasi'] )->name('cekTglRotasi');
     Route::get('/getTotalHutang', [PembayaranPenjualanController::class, 'getTotalHutang'] )->name('getTotalHutang');
     Route::get('/getDataPembelian', [PembayaranPenjualanController::class, 'getDataPembelian'] )->name('getDataPembelian');
     Route::get('/cekPembelian', [PembayaranPenjualanController::class, 'cekPembelian'] )->name('cekPembelian');
     Route::get('/getPengeluaranSite', [PembayaranPenjualanController::class, 'getPengeluaranSite'] )->name('getPengeluaranSite');
+    Route::get('/getOperasional', [PembayaranPenjualanController::class, 'getOperasional'] )->name('getOperasional');
 
     Route::get('pembelianBatu/laporan', [PembelianBatuController::class, 'laporan'])->name('pembelianBatu.laporan');
     Route::get('penjualanSite/laporan', [PembelianBatuController::class, 'penjualanSite'])->name('PenjualanSite.laporan');
@@ -89,7 +91,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('operasionalSite', OperasionalSiteController::class)->except('show');
     Route::resource('pengapalan', PengapalanController::class)->except('show');
     Route::resource('rotasiUnit', RotasiUnitController::class)->except('show');
-    Route::resource('pembayaranPenjualan', PembayaranPenjualanController::class)->except('show');
+    Route::resource('pembayaranPenjualan', PembayaranPenjualanController::class)->except('show','edit','update');
 });
 
 

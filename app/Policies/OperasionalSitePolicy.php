@@ -8,10 +8,13 @@ use Illuminate\Auth\Access\Response;
 
 class OperasionalSitePolicy
 {
- 
+    public function create(User $user): bool
+    {
+        return ($user->level_id == 1 || $user->level_id == 4);
+    }
     public function update(User $user, OperasionalSite $operasionalSite): bool
     {
-        return ($user->level_id < 2 || $operasionalSite->user_id === $user->id);
+        return ($user->level_id == 1 || $user->level_id == 3 || $operasionalSite->user_id === $user->id);
     }
 
     /**
@@ -19,6 +22,6 @@ class OperasionalSitePolicy
      */
     public function delete(User $user, OperasionalSite $operasionalSite): bool
     {
-        return ($user->level_id < 2 || $operasionalSite->user_id === $user->id);
+        return ($user->level_id == 1 || $user->level_id == 3 || $operasionalSite->user_id === $user->id);
     }
 }

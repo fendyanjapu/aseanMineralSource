@@ -13,6 +13,8 @@ class PemasukanController extends Controller
 {
     public function index()
     {
+        $this->authorize('viewAny', Pemasukan::class);
+
         $pemasukans  = Pemasukan::all();
         
         return view('pemasukan.index', compact('pemasukans'));
@@ -23,6 +25,8 @@ class PemasukanController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Pemasukan::class);
+
         $query = Pemasukan::where(DB::raw('YEAR(created_at)'), '=', date('Y'));
         if ($query->count() == 0) {
             $lastId = 0;
@@ -42,6 +46,8 @@ class PemasukanController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('viewAny', Pemasukan::class);
+        
         $rules = [
             'kode_transaksi'=> 'required|max:255',
             'site_id'=> 'required',
@@ -49,7 +55,7 @@ class PemasukanController extends Controller
             'sumber_dana'=> 'required|max:255',
             'metode_transaksi'=> 'required|max:255',
             'tanggal'=> 'required|date',
-            'bukti_transaksi' => 'required|file|mimes:jpg,jpeg,png,pdf|max:4096',
+            'bukti_transaksi' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ];
 
         $gambar = $request->file('bukti_transaksi');
@@ -57,7 +63,7 @@ class PemasukanController extends Controller
         $nama_gbr = time()."_".$gambar->getClientOriginalName(); 
 
         $validatedData = $request->validate($rules);
-        $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
         $validatedData['status_hutang'] = '1';
         $validatedData['bukti_transaksi'] = $nama_gbr;
@@ -112,7 +118,7 @@ class PemasukanController extends Controller
         ];
 
         $validatedData = $request->validate($rules);
-        $validatedData['updated_by'] = auth()->user()->name;
+        $validatedData['updated_by'] = auth()->user()->username;
         Pemasukan::findOrFail($pemasukan->id)->update($validatedData);
 
         $hutang = str_replace(',', '', $request->jumlah);

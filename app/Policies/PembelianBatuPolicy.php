@@ -8,9 +8,18 @@ use Illuminate\Auth\Access\Response;
 
 class PembelianBatuPolicy
 {
+    public function viewAny(User $user): bool
+    {
+        return $user->level_id < 3;
+    }
+    
+    public function create(User $user): bool
+    {
+        return $user->level_id < 3;
+    }
     public function update(User $user, PembelianBatu $pembelianBatu): bool
     {
-        return ($user->level_id < 3 || $pembelianBatu->user_id === $user->id);
+        return $user->level_id < 3;
     }
 
     /**
@@ -18,7 +27,7 @@ class PembelianBatuPolicy
      */
     public function delete(User $user, PembelianBatu $pembelianBatu): bool
     {
-        return ($user->level_id < 3 || $pembelianBatu->user_id === $user->id);
+        return $user->level_id < 3;
     }
 
 }

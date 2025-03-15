@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
 
@@ -22,6 +23,8 @@ class KaryawanController extends Controller
     ];
     public function index()
     {
+        $this->authorize('viewAny', User::class);
+        
         $karyawans  = Karyawan::all();
         
         return view('karyawan.index', compact('karyawans'));
@@ -32,6 +35,8 @@ class KaryawanController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', User::class);
+
         return view('karyawan.create');
     }
 
@@ -40,8 +45,10 @@ class KaryawanController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', User::class);
+
         $validatedData = $request->validate($this->rules);
-        $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['created_by'] = auth()->user()->username;
         Karyawan::create($validatedData);
         return redirect()->route('karyawan.index')->with('success','Data berhasil ditambah');
     }
@@ -72,7 +79,7 @@ class KaryawanController extends Controller
         $this->authorize('update', $karyawan);
 
         $validatedData = $request->validate($this->rules);
-        $validatedData['updated_by'] = auth()->user()->name;
+        $validatedData['updated_by'] = auth()->user()->username;
         Karyawan::findOrFail($karyawan->id)->update($validatedData);
 
         return redirect(route('karyawan.index'))->with('success','Data berhasil diubah');

@@ -8,9 +8,13 @@ use Illuminate\Auth\Access\Response;
 
 class RotasiUnitPolicy
 {
+    public function create(User $user): bool
+    {
+        return ($user->level_id == 1 || $user->level_id == 4);
+    }
     public function update(User $user, RotasiUnit $rotasiUnit): bool
     {
-        return ($user->level_id < 2 || $rotasiUnit->user_id === $user->id);
+        return ($user->level_id == 1 || $user->level_id == 3 || $rotasiUnit->user_id === $user->id);
     }
 
     /**
@@ -18,6 +22,6 @@ class RotasiUnitPolicy
      */
     public function delete(User $user, RotasiUnit $rotasiUnit): bool
     {
-        return ($user->level_id < 2 || $rotasiUnit->user_id === $user->id);
+        return ($user->level_id == 1 || $user->level_id == 3 || $rotasiUnit->user_id === $user->id);
     }
 }

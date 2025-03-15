@@ -14,7 +14,11 @@ class KondisiLapanganController extends Controller
      */
     public function index()
     {
-        $kondisiLapangans = KondisiLapangan::all();
+        if (auth()->user()->level_id == 4) {
+            $kondisiLapangans = KondisiLapangan::where('site_id', '=', auth()->user()->site_id)->get();
+        } else {
+            $kondisiLapangans = KondisiLapangan::all();
+        }
         return view('kondisiLapangan.index', compact('kondisiLapangans'));
     }
 
@@ -23,7 +27,14 @@ class KondisiLapanganController extends Controller
      */
     public function create()
     {
-        $sites = Site::all();
+        $this->authorize('create', KondisiLapangan::class);
+
+        if (auth()->user()->level_id == 4) {
+            $sites = Site::where('id', '=', auth()->user()->site_id)->get();
+        } else {
+            $sites = Site::all();
+        }
+
         return view('kondisiLapangan.create', compact('sites'));
     }
 
@@ -32,13 +43,15 @@ class KondisiLapanganController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', KondisiLapangan::class);
+
         $rules = [
             'keterangan'=> 'required',
             'lokasi'=> 'required',
             'nama_jetty'=> 'required',
             'site_id'=> 'required',
             'tanggal'=> 'required|date',
-            'bukti_pelaporan' => 'required|file|mimes:jpg,jpeg,png|max:2000',
+            'bukti_pelaporan' => 'required|file|mimes:jpg,jpeg,png|max:2048',
         ];
 
         $gambar = $request->file('bukti_pelaporan');
@@ -46,7 +59,7 @@ class KondisiLapanganController extends Controller
         $nama_gbr = time()."_".$gambar->getClientOriginalName(); 
 
         $validatedData = $request->validate($rules);
-        $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
         $validatedData['bukti_pelaporan'] = $nama_gbr;
 
@@ -71,7 +84,11 @@ class KondisiLapanganController extends Controller
     {
         $this->authorize('update', $kondisiLapangan);
 
-        $sites = Site::all();
+        if (auth()->user()->level_id == 4) {
+            $sites = Site::where('id', '=', auth()->user()->site_id)->get();
+        } else {
+            $sites = Site::all();
+        }
 
         return view('kondisiLapangan.edit', compact('kondisiLapangan', 'sites'));
     }
@@ -92,7 +109,7 @@ class KondisiLapanganController extends Controller
         ];
 
         $validatedData = $request->validate($rules);
-        $validatedData['updated_by'] = auth()->user()->name;
+        $validatedData['updated_by'] = auth()->user()->username;
         KondisiLapangan::findOrFail($kondisiLapangan->id)->update($validatedData);
 
         return redirect(route('kondisiLapangan.index'))->with('success','Data berhasil diubah');

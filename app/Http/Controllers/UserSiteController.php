@@ -25,6 +25,8 @@ class UserSiteController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', User::class);
+
         $sites = Site::all();
         return view('userSite.create', compact('sites'));
     }
@@ -34,6 +36,8 @@ class UserSiteController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', User::class);
+
         $rules = [
             'name'=> 'required|max:255',
             'username'=> 'required|max:255',
@@ -52,7 +56,7 @@ class UserSiteController extends Controller
 
         $validatedData = $request->validate($rules);
         $validatedData['jenis_user_id'] = 2;
-        $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['created_by'] = auth()->user()->username;
         User::create($validatedData);
         return redirect()->route('userSite.index')->with('success','Data berhasil ditambah');
     }
@@ -89,7 +93,7 @@ class UserSiteController extends Controller
         ];
 
         $validatedData = $request->validate($rules);
-        $validatedData['updated_by'] = auth()->user()->name;
+        $validatedData['updated_by'] = auth()->user()->username;
         User::findOrFail($userSite->id)->update($validatedData);
 
         return redirect(route('userSite.index'))->with('success','Data berhasil diubah');

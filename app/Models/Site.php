@@ -17,4 +17,9 @@ class Site extends Model
         'updated_by',
         'user_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

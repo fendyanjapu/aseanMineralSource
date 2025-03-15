@@ -22,6 +22,8 @@ class PengapalanController extends Controller
     ];
     public function index()
     {
+        $this->authorize('viewAny', Pengapalan::class);
+
         $pengapalans = Pengapalan::all();
         return view('pengapalan.index', compact('pengapalans'));
         // return view('pengapalan.date');
@@ -32,6 +34,8 @@ class PengapalanController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Pengapalan::class);
+
         $query = Pengapalan::where(DB::raw('YEAR(created_at)'), '=', date('Y'));
         if ($query->count() == 0) {
             $lastId = 0;
@@ -51,14 +55,15 @@ class PengapalanController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Pengapalan::class);
+
         $validatedData = $request->validate($this->rules);
-        // $validatedData = $request->all();
         $validatedData['id_pembelian_batu'] = $request->id_pembelian_batu;
         $validatedData['harga_jual_per_tonase'] = $request->harga_jual_per_tonase;
         $validatedData['document_dll'] = $request->document_dll;
         $validatedData['total_harga_penjualan'] = $request->total_harga_penjualan;
         $validatedData['laba_bersih'] = $request->laba_bersih;
-        $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
 
         $store = Pengapalan::create($validatedData);
@@ -75,9 +80,55 @@ class PengapalanController extends Controller
         return redirect()->route('pengapalan.index')->with('success','Data berhasil ditambah');
     }
 
+    public function edit(Pengapalan $pengapalan)
+    {
+        $this->authorize('update', $pengapalan);
+
+        $sites = Site::all();
+
+        return view('pengapalan.edit', compact('pengapalan', 'sites'));
+    }
+
     /**
-     * Display the specified resource.
+     * Update the specified resource in storage.
      */
+    public function update(Request $request, Pengapalan $pengapalan)
+    {
+        $this->authorize('update', $pengapalan);
+
+        $validatedData = $request->validate($this->rules);
+        $validatedData['harga_jual_per_tonase'] = $request->harga_jual_per_tonase;
+        $validatedData['document_dll'] = $request->document_dll;
+        $validatedData['total_harga_penjualan'] = $request->total_harga_penjualan;
+        $validatedData['laba_bersih'] = $request->laba_bersih;
+        $validatedData['updated_by'] = auth()->user()->username;
+        Pengapalan::findOrFail($pengapalan->id)->update($validatedData);
+
+        return redirect(route('pengapalan.index'))->with('success','Data berhasil diubah');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Pengapalan $pengapalan)
+    {
+        $this->authorize('delete', $pengapalan);
+
+        $id_pembelian_batu = $pengapalan->id_pembelian_batu;
+
+        $delete = Pengapalan::destroy($pengapalan->id);
+
+        if ($delete) {
+            // ubah status pembelian dari site
+            $ids = explode(',',$id_pembelian_batu);
+            $data['status_pengapalan'] = '0';
+            foreach ($ids as $id) {
+                PembelianBatu::findOrFail($id)->update($data);
+            }
+        }
+
+        return redirect(route('pengapalan.index'))->with('success','Data berhasil dihapus');
+    }
     public function laporan(Request $request)
     {
         $dariTanggal = $request->dari_tanggal;
@@ -123,55 +174,6 @@ class PengapalanController extends Controller
             'dariTanggal', 
             'sampaiTanggal', 
         ));
-    }
-    public function edit(Pengapalan $pengapalan)
-    {
-        $this->authorize('update', $pengapalan);
-
-        $sites = Site::all();
-
-        return view('pengapalan.edit', compact('pengapalan', 'sites'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Pengapalan $pengapalan)
-    {
-        $this->authorize('update', $pengapalan);
-
-        $validatedData = $request->validate($this->rules);
-        $validatedData['harga_jual_per_tonase'] = $request->harga_jual_per_tonase;
-        $validatedData['document_dll'] = $request->document_dll;
-        $validatedData['total_harga_penjualan'] = $request->total_harga_penjualan;
-        $validatedData['laba_bersih'] = $request->laba_bersih;
-        $validatedData['updated_by'] = auth()->user()->name;
-        Pengapalan::findOrFail($pengapalan->id)->update($validatedData);
-
-        return redirect(route('pengapalan.index'))->with('success','Data berhasil diubah');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Pengapalan $pengapalan)
-    {
-        $this->authorize('delete', $pengapalan);
-
-        $id_pembelian_batu = $pengapalan->id_pembelian_batu;
-
-        $delete = Pengapalan::destroy($pengapalan->id);
-
-        if ($delete) {
-            // ubah status pembelian dari site
-            $ids = explode(',',$id_pembelian_batu);
-            $data['status_pengapalan'] = '0';
-            foreach ($ids as $id) {
-                PembelianBatu::findOrFail($id)->update($data);
-            }
-        }
-
-        return redirect(route('pengapalan.index'))->with('success','Data berhasil dihapus');
     }
 
     public function getSite(Request $request)

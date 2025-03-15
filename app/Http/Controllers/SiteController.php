@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Site;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class SiteController extends Controller
@@ -14,6 +15,8 @@ class SiteController extends Controller
     ];
     public function index()
     {
+        $this->authorize('viewAny', User::class);
+        
         $sites  = Site::all();
        
         return view('site.index', compact('sites'));
@@ -24,6 +27,8 @@ class SiteController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', User::class);
+
         return view('site.create');
     }
 
@@ -32,9 +37,11 @@ class SiteController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', User::class);
+        
         $validatedData = $request->validate($this->rules);
         
-        $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
         Site::create($validatedData);
         return redirect()->route('site.index')->with('success','Data berhasil ditambah');
@@ -66,7 +73,7 @@ class SiteController extends Controller
         $this->authorize('update', $site);
 
         $validatedData = $request->validate($this->rules);
-        $validatedData['updated_by'] = auth()->user()->name;
+        $validatedData['updated_by'] = auth()->user()->username;
         Site::findOrFail($site->id)->update($validatedData);
 
         return redirect(route('site.index'))->with('success','Data berhasil diubah');

@@ -22,6 +22,8 @@ class OperasionalSiteController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', OperasionalSite::class);
+        
         $query = OperasionalSite::where(DB::raw('YEAR(created_at)'), '=', date('Y'));
         if ($query->count() == 0) {
             $lastId = 0;
@@ -46,12 +48,14 @@ class OperasionalSiteController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', OperasionalSite::class);
+
         $rules = [
             'kode_transaksi'=> 'required|max:255',
             'tanggal'=> 'required|date',
             'nama_transaksi'=> 'required|max:255',
             'biaya'=> 'required|max:255',
-            'bukti_transaksi' => 'required|file|mimes:jpg,jpeg,png,pdf|max:4096',
+            'bukti_transaksi' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'site_id'=> 'required',
             
         ];
@@ -61,7 +65,7 @@ class OperasionalSiteController extends Controller
         $nama_gbr = time()."_".$gambar->getClientOriginalName(); 
 
         $validatedData = $request->validate($rules);
-        $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
         $validatedData['bukti_transaksi'] = $nama_gbr;
 
@@ -136,7 +140,7 @@ class OperasionalSiteController extends Controller
         ];
 
         $validatedData = $request->validate($rules);
-        $validatedData['updated_by'] = auth()->user()->name;
+        $validatedData['updated_by'] = auth()->user()->username;
         OperasionalSite::findOrFail($operasionalSite->id)->update($validatedData);
 
         return redirect(route('operasionalSite.index'))->with('success','Data berhasil diubah');

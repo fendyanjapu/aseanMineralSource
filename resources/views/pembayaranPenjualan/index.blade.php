@@ -67,10 +67,11 @@
                                 <th scope="col">Tanggal Transaksi</th>
                                 <th scope="col">Bukti Transaksi</th>
                                 <th scope="col">Sisa Hutang Site</th>
-                                @if (auth()->user()->level_id == 2)
-                                    <th scope="col" style="text-align: center">Action</th>
+                                @if (auth()->user()->level_id < 3)
+                                    <th scope="col">Created By</th>
+                                    <th scope="col">Created At</th>
                                 @endif
-
+                                <th scope="col" style="text-align: center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -95,12 +96,15 @@
                                     <td><a href="{{ env('APP_URL') . '/upload/pembayaranPenjualan/' . $pembayaranPenjualan->bukti_transaksi }}"
                                             target="_blank">Lihat</a></td>
                                     <td>{{ $pembayaranPenjualan->sisa_hutang_site }}</td>
-
+                                    @if (auth()->user()->level_id < 3)
+                                        <td>{{ $pembayaranPenjualan->created_by }}</td>
+                                        <td>{{ $pembayaranPenjualan->created_at }}</td>
+                                    @endif
                                     @auth
                                         @can('update', $pembayaranPenjualan)
                                             <td style="display: flex; justify-content: center;">
                                                 {{-- <a href="{{ route('pembayaranPenjualan.edit', ['pembayaranPenjualan' => $pembayaranPenjualan]) }}"
-                                                    class="btn btn-success btn-sm">Edit</a>
+                                                    class="btn btn-success btn-sm">Edit</a> --}}
 
                                                 <form
                                                     action="{{ route('pembayaranPenjualan.destroy', ['pembayaranPenjualan' => $pembayaranPenjualan]) }}"
@@ -109,8 +113,10 @@
                                                     @method('delete')
                                                     <button class="btn btn-danger btn-sm"
                                                         onclick="return confirm('Hapus data?')">Hapus</button>
-                                                </form> --}}
+                                                </form>
                                             </td>
+                                        @else
+                                            <td></td>
                                         @endcan
                                     @endauth
                                 </tr>
@@ -133,7 +139,7 @@
                 cache: false,
                 success: function (result) {
                     let data = $.parseJSON(result);
-                    $("#total_hutang").val(data);
+                    $("#total_hutang").val(data.total_hutang);
                     $('#total_hutang').val(function (index, value) {
                         return value
                             .replace(/\D/g, "")

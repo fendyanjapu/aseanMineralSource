@@ -8,7 +8,16 @@ use Illuminate\Auth\Access\Response;
 
 class BarangPolicy
 {
-    
+    public function viewAny(User $user): bool
+    {
+        return $user->level_id < 3;
+    }
+
+    public function create(User $user): bool
+    {
+        return $user->level_id < 3;
+    }
+
     public function update(User $user, Barang $barang): bool
     {
         return $user->level_id < 3;

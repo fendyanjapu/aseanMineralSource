@@ -15,6 +15,8 @@ class PerbaikanUnitController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', PerbaikanUnit::class);
+
         $perbaikanUnits  = PerbaikanUnit::all();
         
         return view('perbaikanUnit.index', compact('perbaikanUnits'));
@@ -25,6 +27,8 @@ class PerbaikanUnitController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', PerbaikanUnit::class);
+
         $query = PerbaikanUnit::where(DB::raw('YEAR(created_at)'), '=', date('Y'));
         if ($query->count() == 0) {
             $lastId = 0;
@@ -44,13 +48,15 @@ class PerbaikanUnitController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', PerbaikanUnit::class);
+        
         $rules = [
             'kode_transaksi'=> 'required|max:255',
             'unit_id'=> 'required',
             'detail_perbaikan'=> 'required',
             'total_harga'=> 'required',
             'tanggal'=> 'required|date',
-            'bukti_transaksi' => 'required|file|mimes:jpg,jpeg,png,pdf|max:4096',
+            'bukti_transaksi' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ];
 
         $gambar = $request->file('bukti_transaksi');
@@ -58,7 +64,7 @@ class PerbaikanUnitController extends Controller
         $nama_gbr = time()."_".$gambar->getClientOriginalName(); 
 
         $validatedData = $request->validate($rules);
-        $validatedData['created_by'] = auth()->user()->name;
+        $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
         $validatedData['bukti_transaksi'] = $nama_gbr;
 
@@ -104,7 +110,7 @@ class PerbaikanUnitController extends Controller
         ];
 
         $validatedData = $request->validate($rules);
-        $validatedData['updated_by'] = auth()->user()->name;
+        $validatedData['updated_by'] = auth()->user()->username;
         PerbaikanUnit::findOrFail($perbaikanUnit->id)->update($validatedData);
 
         return redirect(route('perbaikanUnit.index'))->with('success','Data berhasil diubah');

@@ -40,9 +40,8 @@
                                 <th scope="col">Jetty</th>
                                 <th scope="col">Document dll</th>
                                 <th scope="col">Total Penjualan</th>
-                                @if (auth()->user()->level_id == 1)
+                                @if (auth()->user()->level_id < 3)
                                     <th scope="col">Created By</th>
-                                    <th scope="col">Updated By</th>
                                     <th scope="col">Created At</th>
                                 @endif
                                 <th scope="col" style="text-align: center">Action</th>
@@ -64,9 +63,8 @@
                                     <td>{{ $pembelianBatu->document_dll }}</td>
                                     <td>{{ $pembelianBatu->total_penjualan }}</td>
                                     
-                                    @if (auth()->user()->level_id == 1)
+                                    @if (auth()->user()->level_id < 3)
                                         <td>{{ $pembelianBatu->created_by }}</td>
-                                        <td>{{ $pembelianBatu->updated_by }}</td>
                                         <td>{{ $pembelianBatu->created_at }}</td>
                                     @endif
                                     @auth
