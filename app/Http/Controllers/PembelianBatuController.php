@@ -161,7 +161,9 @@ class PembelianBatuController extends Controller
 
     public function getTotalRotasi(Request $request)
     {
-        $query = RotasiUnit::where('tanggal', '=', $request->tanggal)->where('site_id', '=', $request->site_id);
+        $tanggal = $request->tanggal;
+        $tanggal = date_format(date_create($tanggal), 'Y-m-d');
+        $query = RotasiUnit::where('tanggal', '=', $tanggal)->where('site_id', '=', $request->site_id);
         $totalRotasi = $query->count();
         if ($totalRotasi > 0) {
             $jumlahTonase = $query->sum('berat_bersih');
