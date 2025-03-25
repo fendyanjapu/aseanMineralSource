@@ -59,8 +59,12 @@ http://www.templatemo.com/tm-473-november
             <a href="#pricing">Business</a>
             <span class="menu-item-bg"></span>
         </li>
-        <li>
+        {{-- <li>
             <a href="#contact">Investments</a>
+            <span class="menu-item-bg"></span>
+        </li> --}}
+        <li>
+            <a href="{{ route('login') }}">Login</a>
             <span class="menu-item-bg"></span>
         </li>
     </ul>
