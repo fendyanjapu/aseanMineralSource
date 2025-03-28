@@ -13,13 +13,10 @@ class PembelianBatuController extends Controller
     private $rules = [
         'kode_transaksi'=> 'required|max:255',
         'site_id'=> 'required',
-        'nama_jetty'=> 'required|max:255',
         'tgl_pembelian'=> 'required|date',
         'tgl_rotasi'=> 'required',
         'jumlah_tonase'=> 'required',
         'harga'=> 'required|max:255',
-        'jetty'=> 'required|max:255',
-        'document_dll'=> 'required|max:255',
         'total_penjualan'=> 'required|max:255',
     ];
     public function index()

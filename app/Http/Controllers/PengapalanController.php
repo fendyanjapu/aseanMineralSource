@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PembelianBatu;
+use App\Models\PembelianDariJetty;
 use App\Models\Site;
 use App\Models\Pengapalan;
 use Illuminate\Http\Request;
@@ -19,6 +20,10 @@ class PengapalanController extends Controller
         'harga'=> 'required',
         'tonase'=> 'required|max:255',
         'harga_di_site'=> 'required|max:255',
+        'pembelian_dari_jetty_id'=> 'required',
+        'biaya_dokumen'=> 'required|max:255',
+        'biaya_jetty'=> 'required|max:255',
+        'biaya_operasional_dll'=> 'required|max:255',
     ];
     public function index()
     {
@@ -47,7 +52,8 @@ class PengapalanController extends Controller
         $kode = 'L'.date('y').$nextKode;
 
         $sites = Site::all();
-        return view('pengapalan.create', compact('sites', 'kode'));
+        $pembelianDariJetty = PembelianDariJetty::where('status_pengapalan', '=', '0')->get();
+        return view('pengapalan.create', compact('kode', 'sites', 'pembelianDariJetty'));
     }
 
     /**
@@ -57,14 +63,26 @@ class PengapalanController extends Controller
     {
         $this->authorize('create', Pengapalan::class);
 
+        $tujuan_upload = 'upload/pengapalan';
+        $bukti_biaya_dokumen = $request->file('bukti_biaya_dokumen');
+        $nama_bukti_biaya_dokumen = time()."_".$bukti_biaya_dokumen->getClientOriginalName(); 
+
+        $bukti_biaya_jetty = $request->file('bukti_biaya_jetty');
+        $nama_bukti_biaya_jetty = time()."_".$bukti_biaya_jetty->getClientOriginalName();
+        
+        $bukti_biaya_operasional_dll = $request->file('bukti_biaya_operasional_dll');
+        $nama_bukti_biaya_operasional_dll = time()."_".$bukti_biaya_operasional_dll->getClientOriginalName();
+
         $validatedData = $request->validate($this->rules);
         $validatedData['id_pembelian_batu'] = $request->id_pembelian_batu;
         $validatedData['harga_jual_per_tonase'] = $request->harga_jual_per_tonase;
-        $validatedData['document_dll'] = $request->document_dll;
         $validatedData['total_harga_penjualan'] = $request->total_harga_penjualan;
         $validatedData['laba_bersih'] = $request->laba_bersih;
         $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
+        $validatedData['bukti_biaya_dokumen'] = $nama_bukti_biaya_dokumen;
+        $validatedData['bukti_biaya_jetty'] = $nama_bukti_biaya_jetty;
+        $validatedData['bukti_biaya_operasional_dll'] = $nama_bukti_biaya_operasional_dll;
 
         $store = Pengapalan::create($validatedData);
 
@@ -75,9 +93,17 @@ class PengapalanController extends Controller
             foreach ($ids as $id) {
                 PembelianBatu::findOrFail($id)->update($data);
             }
+            $bukti_biaya_dokumen->move($tujuan_upload,$nama_bukti_biaya_dokumen);
+            $bukti_biaya_jetty->move($tujuan_upload,$nama_bukti_biaya_jetty);
+            $bukti_biaya_operasional_dll->move($tujuan_upload,$nama_bukti_biaya_operasional_dll);
         }
 
         return redirect()->route('pengapalan.index')->with('success','Data berhasil ditambah');
+    }
+
+    public function show(Pengapalan $pengapalan)
+    {
+        return view('pengapalan.show', compact('pengapalan'));
     }
 
     public function edit(Pengapalan $pengapalan)
@@ -85,8 +111,8 @@ class PengapalanController extends Controller
         $this->authorize('update', $pengapalan);
 
         $sites = Site::all();
-
-        return view('pengapalan.edit', compact('pengapalan', 'sites'));
+        $pembelianDariJetty = PembelianDariJetty::all();
+        return view('pengapalan.edit', compact('pengapalan', 'sites', 'pembelianDariJetty'));
     }
 
     /**
@@ -98,7 +124,6 @@ class PengapalanController extends Controller
 
         $validatedData = $request->validate($this->rules);
         $validatedData['harga_jual_per_tonase'] = $request->harga_jual_per_tonase;
-        $validatedData['document_dll'] = $request->document_dll;
         $validatedData['total_harga_penjualan'] = $request->total_harga_penjualan;
         $validatedData['laba_bersih'] = $request->laba_bersih;
         $validatedData['updated_by'] = auth()->user()->username;

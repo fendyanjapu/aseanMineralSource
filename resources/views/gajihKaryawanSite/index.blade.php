@@ -6,14 +6,14 @@
             $('#myTable').DataTable();
         });
     </script>
-    <h1 class="h3 mb-3">Data Pemasukan</h1>
+    <h1 class="h3 mb-3">Data Gajih Karyawan per Site</h1>
 
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title mb-0">
-                        <a class="btn btn-primary" href="{{ route('pemasukan.create') }}">
+                        <a class="btn btn-primary" href="{{ route('gajihKaryawanSite.create') }}">
                             <i class="align-middle" data-feather="plus-square"></i> <span class="align-middle">Tambah</span>
                         </a>
                     </h5>
@@ -31,41 +31,39 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Kode Transaksi</th>
-                                <th scope="col">Jumlah</th>
-                                <th scope="col">Sumber Dana</th>
-                                <th scope="col">Mode Transaksi</th>
-                                <th scope="col">Bukti Transaksi</th>
-                                <th scope="col">Tanggal</th>
+                                <th scope="col">Nama Karyawan</th>
+                                <th scope="col">Gajih Periode</th>
+                                <th scope="col">Total</th>
                                 @if (auth()->user()->level_id < 3)
                                     <th scope="col">Created By</th>
                                     <th scope="col">Created At</th>
                                 @endif
                                 <th scope="col" style="text-align: center">Action</th>
-
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($pemasukans as $pemasukan)
+                            @foreach ($gajihKaryawanSites as $gajihKaryawanSite)
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
-                                    <td>{{ $pemasukan->kode_transaksi }}</td>
-                                    <td>{{ $pemasukan->jumlah }}</td>
-                                    <td>{{ $pemasukan->sumber_dana }}</td>
-                                    <td>{{ $pemasukan->metode_transaksi }}</td>
-                                    <td><a href="{{ env('APP_URL') . '/upload/pemasukan/' . $pemasukan->bukti_transaksi }}"
-                                            target="_blank">Lihat</a></td>
-                                    <td>{{ $pemasukan->tanggal }}</td>
+                                    <td>{{ $gajihKaryawanSite->kode_transaksi }}</td>
+                                    <td>{{ $gajihKaryawanSite->karyawanSite?->nama }}</td>
+                                    <td>{{ $gajihKaryawanSite->gajih_periode }}</td>
+                                    <td>{{ $gajihKaryawanSite->total }}</td>
                                     @if (auth()->user()->level_id < 3)
-                                        <td>{{ $pemasukan->created_by }}</td>
-                                        <td>{{ $pemasukan->created_at }}</td>
+                                        <td>{{ $gajihKaryawanSite->created_by }}</td>
+                                        <td>{{ $gajihKaryawanSite->created_at }}</td>
                                     @endif
+
+
                                     @auth
-                                        @can('update', $pemasukan)
+                                        @can('update', $gajihKaryawanSite)
+
                                             <td style="display: flex; justify-content: center;">
-                                                <a href="{{ route('pemasukan.edit', ['pemasukan' => $pemasukan]) }}"
+                                                <a href="{{ route('gajihKaryawanSite.edit', ['gajihKaryawanSite' => $gajihKaryawanSite]) }}"
                                                     class="btn btn-success btn-sm">Edit</a>
 
-                                                <form action="{{ route('pemasukan.destroy', ['pemasukan' => $pemasukan]) }}"
+                                                <form
+                                                    action="{{ route('gajihKaryawanSite.destroy', ['gajihKaryawanSite' => $gajihKaryawanSite]) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('delete')

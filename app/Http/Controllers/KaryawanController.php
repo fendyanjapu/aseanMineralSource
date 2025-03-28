@@ -53,17 +53,6 @@ class KaryawanController extends Controller
         return redirect()->route('karyawan.index')->with('success','Data berhasil ditambah');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Karyawan $karyawan)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Karyawan $karyawan)
     {
         $this->authorize('update', $karyawan);

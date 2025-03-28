@@ -33,12 +33,9 @@
                                 <th scope="col">Kode Transaksi</th>
                                 <th scope="col">Site</th>
                                 <th scope="col">Tanggal Pembelian</th>
-                                <th scope="col">Nama Jetty</th>
                                 <th scope="col">Tanggal Rotasi</th>
                                 <th scope="col">Jumlah Tonase</th>
                                 <th scope="col">Harga</th>
-                                <th scope="col">Jetty</th>
-                                <th scope="col">Document dll</th>
                                 <th scope="col">Total Penjualan</th>
                                 @if (auth()->user()->level_id < 3)
                                     <th scope="col">Created By</th>
@@ -54,13 +51,10 @@
                                     <td>{{ $pembelianBatu->kode_transaksi }}</td>
                                     <td>{{ $pembelianBatu->site?->nama_site }}</td>
                                     <td>{{ date_format(date_create($pembelianBatu->tgl_pembelian), 'd-m-Y') }}</td>
-                                    <td>{{ $pembelianBatu->nama_jetty }}</td>
                                     <?php $tgl_rotasi = str_replace(',','<br>', $pembelianBatu->tgl_rotasi) ?>
                                     <td>{!! $tgl_rotasi !!}</td>
                                     <td>{{ $pembelianBatu->jumlah_tonase }}</td>
                                     <td>{{ $pembelianBatu->harga }}</td>
-                                    <td>{{ $pembelianBatu->jetty }}</td>
-                                    <td>{{ $pembelianBatu->document_dll }}</td>
                                     <td>{{ $pembelianBatu->total_penjualan }}</td>
                                     
                                     @if (auth()->user()->level_id < 3)

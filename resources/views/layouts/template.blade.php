@@ -37,6 +37,9 @@
 	<script src="https://cdn.datatables.net/buttons/3.2.2/js/buttons.print.min.js"></script>
 
 	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.2/css/buttons.dataTables.css">
+
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </head>
 
 <body>
@@ -89,7 +92,14 @@
 						<li class="sidebar-item">
 							<a class="sidebar-link" href="{{ route('karyawan.index') }}">
 								<i class="align-middle" data-feather="users"></i> <span class="align-middle">Data
-									Karyawan</span>
+									Karyawan Asean</span>
+							</a>
+						</li>
+
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('karyawanSite.index') }}">
+								<i class="align-middle" data-feather="users"></i> <span class="align-middle">Data
+									Karyawan Site</span>
 							</a>
 						</li>
 
@@ -106,12 +116,23 @@
 									Unit</span>
 							</a>
 						</li>
+
+						@if (auth()->user()->level_id == 2)
+							<li class="sidebar-item">
+								<a class="sidebar-link" href="{{ route('pemasukan.index') }}">
+									<i class="align-middle" data-feather="download"></i> <span class="align-middle">Data
+										Pemasukan Asean</span>
+								</a>
+							</li>
+						@endif
 					@endif
 
+					<li class="sidebar-header">
+						Transaksi
+					</li>
+
 					@if (auth()->user()->level_id < 4)
-						<li class="sidebar-header">
-							Transaksi
-						</li>
+						
 
 						<li class="sidebar-item">
 							<a class="sidebar-link" href="{{ route('pembelianBarang.index') }}">
@@ -121,20 +142,29 @@
 						</li>
 
 						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{ route('perbaikanUnit.index') }}">
-								<i class="align-middle" data-feather="settings"></i> <span class="align-middle">Perbaikan
-									Unit</span>
-							</a>
-						</li>
-
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{ route('pemasukan.index') }}">
+							<a class="sidebar-link" href="{{ route('pengeluaranSite.index') }}">
 								<i class="align-middle" data-feather="external-link"></i> <span
 									class="align-middle">Pengeluaran Site</span>
 							</a>
 						</li>
 
 					@endif
+
+					@if (auth()->user()->level_id < 3)
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('gajihKaryawanSite.index') }}">
+								<i class="align-middle" data-feather="dollar-sign"></i> <span
+									class="align-middle">Gajih Karyawan per Site</span>
+							</a>
+						</li>
+					@endif
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="{{ route('perbaikanUnit.index') }}">
+							<i class="align-middle" data-feather="settings"></i> <span class="align-middle">Perbaikan
+								Unit {{ auth()->user()->level_id == 4 ? 'Site' : '' }}</span>
+						</a>
+					</li>
 
 					<li class="sidebar-header">
 						Produktivitas
@@ -182,6 +212,14 @@
 								<i class="align-middle" data-feather="shopping-bag"></i> <span
 									class="align-middle">Pembelian
 									Dari Site</span>
+							</a>
+						</li>
+
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('pembelianDariJetty.index') }}">
+								<i class="align-middle" data-feather="shopping-bag"></i> <span
+									class="align-middle">Pembelian
+									Dari Jetty</span>
 							</a>
 						</li>
 

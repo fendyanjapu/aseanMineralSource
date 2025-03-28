@@ -15,8 +15,6 @@ class PerbaikanUnitController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', PerbaikanUnit::class);
-
         $perbaikanUnits  = PerbaikanUnit::all();
         
         return view('perbaikanUnit.index', compact('perbaikanUnits'));
@@ -27,8 +25,6 @@ class PerbaikanUnitController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', PerbaikanUnit::class);
-
         $query = PerbaikanUnit::where(DB::raw('YEAR(created_at)'), '=', date('Y'));
         if ($query->count() == 0) {
             $lastId = 0;
@@ -48,8 +44,6 @@ class PerbaikanUnitController extends Controller
      */
     public function store(Request $request)
     {
-        $this->authorize('create', PerbaikanUnit::class);
-        
         $rules = [
             'kode_transaksi'=> 'required|max:255',
             'unit_id'=> 'required',

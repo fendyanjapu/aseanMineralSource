@@ -152,6 +152,64 @@
 
                 <div class="card">
                     <div class="card-body">
+                        <label>Pembelian Dari Jetty</label>
+                        <select name="pembelian_dari_jetty_id" id="pembelian_dari_jetty_id" class="form-control">
+                            <option value=""></option>
+                            @foreach ($pembelianDariJetty as $item)
+                                <option value="{{ $item->id }}" {{ $item->id == $pengapalan->pembelian_dari_jetty_id ? 'selected' : '' }}>
+                                    {{ $item->kode_transaksi }} | {{ $item->tgl_pembelian }} | {{ $item->nama_jetty }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('site_id')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label>Biaya Jetty</label>
+                        <input type="text" class="form-control" name="biaya_jetty" id="biaya_jetty" placeholder="Biaya Jetty"
+                            value="{{ $pengapalan->biaya_jetty }}">
+                        @error('biaya_jetty')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label>Biaya Dokumen</label>
+                        <input type="text" class="form-control" name="biaya_dokumen" id="biaya_dokumen" placeholder="Biaya Dokumen"
+                            value="{{ $pengapalan->biaya_dokumen }}">
+                        @error('biaya_dokumen')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label>Biaya Operasional dll</label>
+                        <input type="text" class="form-control" name="biaya_operasional_dll" id="biaya_operasional_dll" placeholder="Biaya Operasional dll"
+                            value="{{ $pengapalan->biaya_operasional_dll }}">
+                        @error('biaya_dokumen')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
                         <label>Harga Jual Pertonase</label>
                         <input type="text" class="form-control" name="harga_jual_per_tonase" id="harga_jual_per_tonase"
                             placeholder="Harga Jual Pertonase" value="{{ $pengapalan->harga_jual_per_tonase }}"
@@ -167,24 +225,11 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <label>Document dll</label>
-                        <input type="text" class="form-control" name="document_dll" id="document_dll"
-                            placeholder="Document dll" value="{{ $pengapalan->document_dll }}"
-                            {{ auth()->user()->level_id != 2 ? 'readonly' : '' }}>
-                            <small>*diinput direksi</small>
-                        @error('document_dll')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
                         <label>Total Harga Penjualan</label>
                         <input type="text" class="form-control" name="total_harga_penjualan" id="total_harga_penjualan"
-                            placeholder="Total Harga Penjualan" value="{{ $pengapalan->total_harga_penjualan }}" readonly>
+                            placeholder="Total Harga Penjualan" value="{{ $pengapalan->total_harga_penjualan }}" 
+                            {{ auth()->user()->level_id != 2 ? 'readonly' : '' }}>
+                        <small>*diinput direksi</small>
                         @error('total_harga_penjualan')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -217,6 +262,10 @@
         $('a.buton').click(function (e) {
             e.preventDefault();
         });
+
+        $(function(){
+            $('#pembelian_dari_jetty_id').select2();
+        })
         		
 		function colorDate(dates) {
             // var dates = ['2025-03-05','2025-03-15','2025-03-25'];
@@ -303,19 +352,6 @@
                 }
             }
 
-            // let dataPembelian = $('#dataPembelian').val();
-            // let dataPembelianSite = $('#data_pembelian_site').val();
-
-            // if (dataPembelianSite == '') {
-            //     var sumData = [dataPembelian];
-            // } else {
-            //     var sumData = [dataPembelianSite];
-            //     sumData.push(dataPembelian);
-            // }
-            // let data_pembelian_site = sumData.toString();
-
-            // $('#data_pembelian_site').val(data_pembelian_site);
-
             $('#id_pembelian_batu').val(idPembelian);
             $('#tanggal_pembelian').val(tgl);
             $('#jmlTonase').val(jmlTonase);
@@ -327,6 +363,16 @@
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     ;
             });
+            labaBersih();
+        }
+
+        function reset() {
+            $('#id_pembelian_batu').val("");
+            $('#tanggal_pembelian').val("");
+            $('#jmlTonase').val("");
+            $('#sumHarga').val("");
+            $('#harga_di_site').val("");
+            labaBersih();
         }
 
         $('#tglPembelianBatu').change(function() {
@@ -376,18 +422,46 @@
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     ;
             });
-			totalPenjualan();
             labaBersih();
 		});
 
-        $('#document_dll').keyup(function(){
+        $('#biaya_jetty').keyup(function(){
             $(this).val(function (index, value) {
                 return value
                     .replace(/\D/g, "")
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     ;
             });
-			totalPenjualan();
+            labaBersih();
+		});
+
+        $('#biaya_dokumen').keyup(function(){
+            $(this).val(function (index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    ;
+            });
+            labaBersih();
+		});
+
+        $('#biaya_operasional_dll').keyup(function(){
+            $(this).val(function (index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    ;
+            });
+            labaBersih();
+		});
+
+        $('#total_harga_penjualan').keyup(function(){
+            $(this).val(function (index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    ;
+            });
             labaBersih();
 		});
 
@@ -413,10 +487,20 @@
         function labaBersih() {
             let total_harga_penjualan = $('#total_harga_penjualan').val();
             let harga_di_site = $('#harga_di_site').val();
+            let biaya_jetty = $('#biaya_jetty').val();
+            let biaya_dokumen = $('#biaya_dokumen').val();
+            let biaya_operasional_dll = $('#biaya_operasional_dll').val();
             let int_total_harga_penjualan = total_harga_penjualan.replace(/,/g, "");
             let int_harga_di_site = harga_di_site.replace(/,/g, "");
+            let int_biaya_jetty = biaya_jetty.replace(/,/g, "");
+            let int_biaya_dokumen = biaya_dokumen.replace(/,/g, "");
+            let int_biaya_operasional_dll = biaya_operasional_dll.replace(/,/g, "");
 
-            let laba_bersih = parseInt(int_total_harga_penjualan) - parseInt(int_harga_di_site);
+            let laba_bersih = parseInt(int_total_harga_penjualan) 
+                            - parseInt(int_harga_di_site)
+                            - parseInt(int_biaya_jetty)
+                            - parseInt(int_biaya_dokumen)
+                            - parseInt(int_biaya_operasional_dll);
 
             $('#laba_bersih').val(laba_bersih);
             $('#laba_bersih').val(function (index, value) {
@@ -425,6 +509,11 @@
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     ;
             });
+            if (laba_bersih < 0) {
+                let val_laba_bersih = $('#laba_bersih').val();
+                val_laba_bersih = "- "+val_laba_bersih;
+                $('#laba_bersih').val(val_laba_bersih);
+            }
         }
     </script>
 

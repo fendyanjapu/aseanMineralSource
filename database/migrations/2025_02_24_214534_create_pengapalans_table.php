@@ -23,9 +23,15 @@ return new class extends Migration
             $table->string('harga');
             $table->string('harga_di_site');
             $table->string('harga_jual_per_tonase')->nullable();
-            $table->string('document_dll')->nullable();
             $table->string('total_harga_penjualan')->nullable();
             $table->string('laba_bersih')->nullable();
+            $table->smallInteger('pembelian_dari_jetty_id');
+            $table->string('biaya_dokumen');
+            $table->string('bukti_biaya_dokumen');
+            $table->string('biaya_jetty');
+            $table->string('bukti_biaya_jetty');
+            $table->string('biaya_operasional_dll');
+            $table->string('bukti_biaya_operasional_dll');
             $table->string('created_by');
             $table->string('updated_by')->nullable();
             $table->smallInteger('user_id');

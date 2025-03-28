@@ -119,49 +119,10 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <label>Nama Jetty</label>
-                        <input type="text" class="form-control" name="nama_jetty" placeholder="Nama Jetty"
-                            value="{{ old('nama_jetty') }}">
-                        @error('nama_jetty')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
                         <label>Harga</label>
                         <input type="text" class="form-control" name="harga" id="harga" placeholder="Harga"
                             value="{{ old('harga') }}">
                         @error('harga')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <label>Jetty</label>
-                        <input type="text" class="form-control" name="jetty" id="jetty" placeholder="Jetty"
-                            value="{{ old('jetty') }}">
-                        @error('jetty')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <label>Document dll</label>
-                        <input type="text" class="form-control" name="document_dll" id="document_dll"
-                            placeholder="Document dll" value="{{ old('document_dll') }}">
-                        @error('document_dll')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
                             </div>
@@ -228,24 +189,6 @@
             totalPenjualan();
         });
         $("#harga").keyup(function (event) {
-            $(this).val(function (index, value) {
-                return value
-                    .replace(/\D/g, "")
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    ;
-            });
-            totalPenjualan();
-        });
-        $("#jetty").keyup(function (event) {
-            $(this).val(function (index, value) {
-                return value
-                    .replace(/\D/g, "")
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    ;
-            });
-            totalPenjualan();
-        });
-        $("#document_dll").keyup(function (event) {
             $(this).val(function (index, value) {
                 return value
                     .replace(/\D/g, "")
@@ -362,16 +305,10 @@
 
         function totalPenjualan() {
             let harga = $("#harga").val();
-            let jetty = $("#jetty").val();
-            let document_dll = $("#document_dll").val();
             let jumlah_tonase = $("#jumlah_tonase").val();
             let int_harga = harga.replace(/,/g, "");
-            let int_jetty = jetty.replace(/,/g, "");
-            let int_document_dll = document_dll.replace(/,/g, "");
 
-            let total_penjualan = (int_harga * jumlah_tonase) -
-                (int_jetty * jumlah_tonase) -
-                (int_document_dll * jumlah_tonase);
+            let total_penjualan = int_harga * jumlah_tonase
 
             $('#total_penjualan').val(total_penjualan);
             $('#total_penjualan').val(function (index, value) {

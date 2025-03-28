@@ -2,11 +2,11 @@
 
 @section('content')
     <div class="mb-3">
-        <h1 class="h3 d-inline align-middle">Edit Data Pemasukan</h1>
+        <h1 class="h3 d-inline align-middle">Edit Data gajihKaryawanSite</h1>
 
     </div>
 
-    <form action="{{ route('pemasukan.update', ['pemasukan' => $pemasukan]) }}" method="POST">
+    <form action="{{ route('gajihKaryawanSite.update', ['gajihKaryawanSite' => $gajihKaryawanSite]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row">
@@ -14,7 +14,8 @@
                 <div class="card">
                     <div class="card-body">
                         <label>Kode Transaksi</label>
-                        <input type="text" class="form-control" name="kode_transaksi" value="{{ $pemasukan->kode_transaksi }}" readonly>
+                        <input type="text" class="form-control" name="kode_transaksi" readonly
+                            value="{{ $gajihKaryawanSite->kode_transaksi }}">
                         @error('kode_transaksi')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -25,9 +26,29 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <label>Jumlah</label>
-                        <input type="text" class="form-control" name="jumlah" id="jumlah" placeholder="Jumlah" value="{{ $pemasukan->jumlah }}">
-                        @error('jumlah')
+                        <label>Karyawan</label>
+                        <select class="form-control" name="karyawan_site_id" id="karyawan_site_id">
+                            <option value=""></option>
+                            @foreach ($karyawanSites as $item)
+                                <option value="{{ $item->id }}" {{ $gajihKaryawanSite->karyawan_site_id == $item->id ? 'selected' : '' }}>
+                                    {{ $item->nama }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('karyawan_site_id')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label>Gajih Periode</label>
+                        <input type="text" class="form-control" name="gajih_periode"
+                            value="{{ $gajihKaryawanSite->gajih_periode }}">
+                        @error('gajih_periode')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
                             </div>
@@ -38,34 +59,10 @@
                 <div class="card">
 
                     <div class="card-body">
-                        <label>Sumber Dana</label>
-                        <input type="text" class="form-control" name="sumber_dana" placeholder="Sumber Dana" value="{{ $pemasukan->sumber_dana }}">
-                        @error('sumber_dana')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-
-                    <div class="card-body">
-                        <label>Metode Transaksi</label>
-                        <input type="text" class="form-control" name="metode_transaksi" placeholder="Metode Transaksi" value="{{ $pemasukan->metode_transaksi }}">
-                        @error('metode_transaksi')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <label>Tanggal</label>
-                        <input type="date" class="form-control" name="tanggal" placeholder="Tanggal" value="{{ $pemasukan->tanggal }}">
-                        @error('tanggal')
+                        <label>Total</label>
+                        <input type="text" class="form-control" name="total" id="total"
+                            value="{{ $gajihKaryawanSite->total }}">
+                        @error('total')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
                             </div>
@@ -81,7 +78,7 @@
     </form>
 
     <script>
-        $('#jumlah').keyup(function (event) {
+        $('#total').keyup(function (event) {
 
             // skip for arrow keys
             if (event.which >= 37 && event.which <= 40) return;
@@ -94,6 +91,11 @@
                     ;
             });
         });
+
+        $(function(){
+            $('#karyawan_site_id').select2();
+        })
     </script>
+
 
 @endsection

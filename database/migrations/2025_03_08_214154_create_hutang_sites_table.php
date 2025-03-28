@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('hutang_sites', function (Blueprint $table) {
             $table->id();
             $table->smallInteger('site_id');
-            $table->smallInteger('pemasukan_id')->nullable();
+            $table->smallInteger('pengeluaran_site_id')->nullable();
             $table->smallInteger('pembayaran_penjualan_id')->nullable();
             $table->string('hutang')->default('0');
             $table->string('dibayar')->default('0');

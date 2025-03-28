@@ -38,7 +38,9 @@
                                 <th scope="col">Tonase</th>
                                 <th scope="col">Harga di Site</th>
                                 <th scope="col">Harga Jual Pertonase</th>
-                                <th scope="col">Document dll</th>
+                                <th scope="col">Biaya Jetty</th>
+                                <th scope="col">Biaya Dokumen</th>
+                                <th scope="col">Biaya Operasional dll</th>
                                 <th scope="col">Total Harga Penjualan</th>
                                 <th scope="col">Laba Bersih</th>
                                 @if (auth()->user()->level_id == 1)
@@ -61,7 +63,11 @@
                                     <td>{{ $pengapalan->tonase }}</td>
                                     <td>{{ $pengapalan->harga_di_site }}</td>
                                     <td>{{ $pengapalan->harga_jual_per_tonase }}</td>
-                                    <td>{{ $pengapalan->document_dll }}</td>
+                                    <td>
+                                        {{ $pengapalan->biaya_jetty }}
+                                    </td>
+                                    <td>{{ $pengapalan->biaya_dokumen }}</td>
+                                    <td>{{ $pengapalan->biaya_operasional_dll }}</td>
                                     <td>{{ $pengapalan->total_harga_penjualan }}</td>
                                     <td>{{ $pengapalan->laba_bersih }}</td>
                                     @if (auth()->user()->level_id == 1)
@@ -73,14 +79,15 @@
                                         @can('update', $pengapalan)
                                             <td style="display: flex; justify-content: center;">
                                                 <a href="{{ route('pengapalan.edit', ['pengapalan' => $pengapalan]) }}"
-                                                    class="btn btn-success btn-sm">Edit</a>
-
+                                                    class="btn btn-success btn-sm" style="margin: 2px">Edit</a>
+                                                <a href="{{ route('pengapalan.show', ['pengapalan' => $pengapalan]) }}"
+                                                    class="btn btn-info btn-sm" style="margin: 2px">Lihat</a>     
                                                 <form action="{{ route('pengapalan.destroy', ['pengapalan' => $pengapalan]) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('delete')
                                                     <button class="btn btn-danger btn-sm"
-                                                        onclick="return confirm('Hapus data?')">Hapus</button>
+                                                        onclick="return confirm('Hapus data?')" style="margin: 2px">Hapus</button>
                                                 </form>
                                             </td>
                                         @else

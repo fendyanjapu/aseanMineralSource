@@ -11,19 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pembelian_batus', function (Blueprint $table) {
+        Schema::create('pengeluaran_sites', function (Blueprint $table) {
             $table->id();
             $table->string('kode_transaksi');
-            $table->smallInteger('site_id');
-            $table->date('tgl_pembelian');
-            $table->text('tgl_rotasi');
-            $table->float('jumlah_tonase');
-            $table->string('harga');
-            $table->string('total_penjualan');
-            $table->char('status_pengapalan', 1);
+            $table->string('jumlah', 20);
+            $table->string('sumber_dana');
+            $table->string('metode_transaksi');
+            $table->string('bukti_transaksi');
+            $table->date('tanggal');
             $table->string('created_by');
             $table->string('updated_by')->nullable();
+            $table->smallInteger('site_id');
             $table->smallInteger('user_id');
+            $table->char('status_hutang', 1);
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pembelian_batus');
+        Schema::dropIfExists('pemasukans');
     }
 };

@@ -18,13 +18,6 @@ class Pemasukan extends Model
         'tanggal',
         'created_by',
         'updated_by',
-        'site_id',
         'user_id',
-        'status_hutang',
     ];
-
-    public function site()
-    {
-        return $this->belongsTo(Site::class);
-    }
 }

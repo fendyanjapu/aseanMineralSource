@@ -9,11 +9,11 @@
     }
 </style>
     <div class="mb-3">
-        <h1 class="h3 d-inline align-middle">Edit Data Pembelian Batu Dari Site</h1>
+        <h1 class="h3 d-inline align-middle">Edit Data Pembelian Batu Dari Jetty</h1>
 
     </div>
 
-    <form action="{{ route('pembelianBatu.update', ['pembelianBatu' => $pembelianBatu]) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('pembelianDariJetty.update', ['pembelianDariJetty' => $pembelianDariJetty]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row">
@@ -22,7 +22,7 @@
                     <div class="card-body">
                         <label>Kode Transaksi</label>
                         <input type="text" class="form-control" name="kode_transaksi" readonly
-                            value="{{ $pembelianBatu->kode_transaksi }}">
+                            value="{{ $pembelianDariJetty->kode_transaksi }}">
                         @error('kode_transaksi')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -35,7 +35,7 @@
                     <div class="card-body">
                         <label>Tanggal Pembelian</label>
                         <input type="date" class="form-control col-lg-3" name="tgl_pembelian"
-                            value="{{ $pembelianBatu->tgl_pembelian }}">
+                            value="{{ $pembelianDariJetty->tgl_pembelian }}">
                         @error('tgl_pembelian')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -46,16 +46,10 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <label>Site</label>
-                        <select name="site_id" id="" class="form-control">
-                            <option value=""></option>
-                            @foreach ($sites as $site)
-                                <option value="{{ $site->id }}" {{ $site->id == $pembelianBatu->site_id ? 'selected' : '' }}>
-                                    {{ $site->nama_site }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('site_id')
+                        <label>Nama Jetty</label>
+                        <input type="text" class="form-control col-lg-3" name="nama_jetty"
+                            value="{{ $pembelianDariJetty->nama_jetty }}">
+                        @error('nama_jetty')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
                             </div>
@@ -95,7 +89,7 @@
                     <div class="card-body">
                         <label>Tanggal Rotasi</label>
                         <input type="text" class="form-control col-lg-3" name="tgl_rotasi" id="tanggal_rotasi"
-                            value="{{ $pembelianBatu->tgl_rotasi }}" readonly>
+                            value="{{ $pembelianDariJetty->tgl_rotasi }}" readonly>
                         @error('tgl_rotasi')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -108,7 +102,7 @@
                     <div class="card-body">
                         <label>Jumlah Tonase</label>
                         <input type="text" class="form-control" name="jumlah_tonase" id="jumlah_tonase" placeholder="Jumlah Tonase"
-                            value="{{ $pembelianBatu->jumlah_tonase }}" readonly>
+                            value="{{ $pembelianDariJetty->jumlah_tonase }}" readonly>
                         @error('jumlah_tonase')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -122,7 +116,7 @@
                     <div class="card-body">
                         <label>Harga</label>
                         <input type="text" class="form-control" name="harga" id="harga" placeholder="Harga"
-                            value="{{ $pembelianBatu->harga }}">
+                            value="{{ $pembelianDariJetty->harga }}">
                         @error('harga')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -135,7 +129,7 @@
                     <div class="card-body">
                         <label>Total Penjualan</label>
                         <input type="text" class="form-control" name="total_penjualan" id="total_penjualan" placeholder="Total Penjualan"
-                            value="{{ $pembelianBatu->total_penjualan }}" readonly>
+                            value="{{ $pembelianDariJetty->total_penjualan }}" readonly>
                         @error('total_penjualan')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -154,6 +148,20 @@
     <script>
         $('a.buton').click(function (e) {
             e.preventDefault();
+        });
+
+        $(document).ready(function(){
+            $.ajax({
+                type: "GET",
+                url: "{{ route('getRotasiJetty') }}",
+                cache: false,
+                success: function (result) {
+                    let data = $.parseJSON(result);
+                    let dates = data.tanggal;
+                    colorDate(dates);
+                }
+            });
+            totalRotasi();
         });
 
         function colorDate(dates) {
@@ -203,29 +211,12 @@
             totalRotasi();
         });
 
-        $("#site_id").change(function (event) {
-            let id = $(this).val();
-            $.ajax({
-                type: "GET",
-                data: "site_id=" + id,
-                url: "{{ route('getRotasi') }}",
-                cache: false,
-                success: function (result) {
-                    let data = $.parseJSON(result);
-                    let dates = data.tanggal;
-                    colorDate(dates);
-                }
-            });
-            totalRotasi();
-        });
-
         function totalRotasi() {
             let tgl_rotasi = $('#tgl_rotasi').val();
-            let site_id = $('#site_id').val();
             $.ajax({
                 type: "GET",
-                data: { tanggal: tgl_rotasi, site_id: site_id },
-                url: "{{ route('pembelianBatu.getTotalRotasi') }}",
+                data: { tanggal: tgl_rotasi },
+                url: "{{ route('pembelianDariJetty.getTotalRotasi') }}",
                 cache: false,
                 success: function (result) {
                     let data = $.parseJSON(result);

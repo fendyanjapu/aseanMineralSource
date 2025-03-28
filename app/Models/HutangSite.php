@@ -11,7 +11,7 @@ class HutangSite extends Model
 
     protected $fillable = [
         'site_id',
-        'pemasukan_id',
+        'pengeluaran_site_id',
         'pembayaran_penjualan_id',
         'hutang',
         'dibayar',

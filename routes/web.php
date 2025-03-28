@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\GajihKaryawanSiteController;
+use App\Http\Controllers\KaryawanSiteController;
 use App\Http\Controllers\KondisiBatuController;
 use App\Http\Controllers\KondisiLapanganController;
 use App\Http\Controllers\LaporanPemasukanController;
@@ -10,7 +12,9 @@ use App\Http\Controllers\PemasukanController;
 use App\Http\Controllers\PembayaranPenjualanController;
 use App\Http\Controllers\PembelianBarangController;
 use App\Http\Controllers\PembelianBatuController;
+use App\Http\Controllers\PembelianDariJettyController;
 use App\Http\Controllers\PengapalanController;
+use App\Http\Controllers\PengeluaranSiteController;
 use App\Http\Controllers\PenggajihanController;
 use App\Http\Controllers\PerbaikanUnitController;
 use App\Http\Controllers\RotasiUnitController;
@@ -58,8 +62,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/getDataPembelianbatu', [PengapalanController::class, 'getDataPembelianbatu'] )->name('getDataPembelianbatu');
     Route::get('/getTotalRotasi', [RotasiUnitController::class, 'getTotalRotasi'] )->name('getTotalRotasi');
     Route::get('/getRotasi', [RotasiUnitController::class, 'getRotasi'] )->name('getRotasi');
+    Route::get('/getRotasiJetty', [PembelianDariJettyController::class, 'getRotasiJetty'] )->name('getRotasiJetty');
     Route::get('/getTotalRotasiPembelian', [PembelianBatuController::class, 'getTotalRotasi'] )->name('pembelianBatu.getTotalRotasi');
+    Route::get('/getTotalRotasiPembelianJetty', [PembelianDariJettyController::class, 'getTotalRotasi'] )->name('pembelianDariJetty.getTotalRotasi');
     Route::get('/cekTglRotasi', [PembelianBatuController::class, 'cekTglRotasi'] )->name('cekTglRotasi');
+    Route::get('/cekTglRotasiJetty', [PembelianDariJettyController::class, 'cekTglRotasi'] )->name('cekTglRotasiJetty');
     Route::get('/getTotalHutang', [PembayaranPenjualanController::class, 'getTotalHutang'] )->name('getTotalHutang');
     Route::get('/getDataPembelian', [PembayaranPenjualanController::class, 'getDataPembelian'] )->name('getDataPembelian');
     Route::get('/cekPembelian', [PembayaranPenjualanController::class, 'cekPembelian'] )->name('cekPembelian');
@@ -78,19 +85,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('user', UserController::class)->except('show');
     Route::resource('userSite', UserSiteController::class)->except('show');
     Route::resource('karyawan', KaryawanController::class);
+    Route::resource('karyawanSite', KaryawanSiteController::class);
     Route::resource('barang', BarangController::class)->except('show');
     Route::resource('site', SiteController::class)->except('show');
     Route::resource('unit', UnitController::class)->except('show');
     Route::resource('pemasukan', PemasukanController::class)->except('show');
+    Route::resource('pengeluaranSite', PengeluaranSiteController::class)->except('show');
     Route::resource('pembelianBarang', PembelianBarangController::class)->except('show');
     Route::resource('perbaikanUnit', PerbaikanUnitController::class)->except('show');
-    Route::resource('penggajihan', PenggajihanController::class)->except('show');
+    Route::resource('gajihKaryawanSite', GajihKaryawanSiteController::class)->except('show');
     Route::resource('kondisiBatu', KondisiBatuController::class)->except('show');
     Route::resource('kondisiLapangan', KondisiLapanganController::class)->except('show');
     Route::resource('pembelianBatu', PembelianBatuController::class)->except('show');
     Route::resource('operasionalSite', OperasionalSiteController::class)->except('show');
-    Route::resource('pengapalan', PengapalanController::class)->except('show');
+    Route::resource('pengapalan', PengapalanController::class);
     Route::resource('rotasiUnit', RotasiUnitController::class)->except('show');
+    Route::resource('pembelianDariJetty', PembelianDariJettyController::class)->except('show');
     Route::resource('pembayaranPenjualan', PembayaranPenjualanController::class)->except('show','edit','update');
 });
 

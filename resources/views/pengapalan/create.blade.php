@@ -12,7 +12,7 @@
         <h1 class="h3 d-inline align-middle">Tambah Data Pengapalan</h1>
 
     </div>
-    <form action="{{ route('pengapalan.store') }}" method="POST">
+    <form action="{{ route('pengapalan.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-12 col-lg-6">
@@ -100,18 +100,6 @@
                 <input type="hidden" class="form-control" name="" id="id_pembelian" readonly>
                 <input type="hidden" class="form-control" name="" id="hargaSite" readonly>
                 <input type="hidden" class="form-control" name="id_pembelian_batu" id="id_pembelian_batu">
-                {{-- <div class="card">
-                    <div class="card-body">
-                        <label>Data Pembelian Batu</label>
-                        <input type="text" class="form-control" name="data_pembelian_batu" id="data_pembelian_batu" placeholder="Data Pembelian Batu"
-                            value="{{ old('data_pembelian_batu') }}" readonly>
-                        @error('data_pembelian_batu')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div> --}}
 
                 <div class="card">
                     <div class="card-body">
@@ -167,6 +155,101 @@
 
                 <div class="card">
                     <div class="card-body">
+                        <label>Pembelian Dari Jetty</label>
+                        <select name="pembelian_dari_jetty_id" id="pembelian_dari_jetty_id" class="form-control">
+                            <option value=""></option>
+                            @foreach ($pembelianDariJetty as $item)
+                                <option value="{{ $item->id }}">{{ $item->kode_transaksi }} | {{ $item->tgl_pembelian }} | {{ $item->nama_jetty }}</option>
+                            @endforeach
+                        </select>
+                        @error('site_id')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label>Biaya Jetty</label>
+                        <input type="text" class="form-control" name="biaya_jetty" id="biaya_jetty" placeholder="Biaya Jetty"
+                            value="{{ old('biaya_jetty') }}">
+                        @error('biaya_jetty')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label>Bukti Foto Biaya Jetty</label>
+                        <input type="file" class="form-control" name="bukti_biaya_jetty" accept="image/*,application/pdf" required>
+                        <small>*Maksimal file 2 MB</small>
+                        @error('bukti_biaya_jetty')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label>Biaya Dokumen</label>
+                        <input type="text" class="form-control" name="biaya_dokumen" id="biaya_dokumen" placeholder="Biaya Dokumen"
+                            value="{{ old('biaya_dokumen') }}">
+                        @error('biaya_dokumen')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label>Bukti Foto Biaya Dokumen</label>
+                        <input type="file" class="form-control" name="bukti_biaya_dokumen"  accept="image/*,application/pdf" required>
+                        <small>*Maksimal file 2 MB</small>
+                        @error('bukti_biaya_dokumen')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label>Biaya Operasional dll</label>
+                        <input type="text" class="form-control" name="biaya_operasional_dll" id="biaya_operasional_dll" placeholder="Biaya Operasional dll"
+                            value="{{ old('biaya_operasional_dll') }}">
+                        @error('biaya_dokumen')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label>Bukti Foto Biaya Operasional dll</label>
+                        <input type="file" class="form-control" name="bukti_biaya_operasional_dll" accept="image/*,application/pdf" required>
+                        <small>*Maksimal file 2 MB</small>
+                        @error('bukti_biaya_operasional_dll')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
                         <label>Harga Jual Pertonase</label>
                         <input type="text" class="form-control" name="harga_jual_per_tonase" id="harga_jual_per_tonase"
                             placeholder="Harga Jual Pertonase" value="{{ old('harga_jual_per_tonase') }}"
@@ -182,24 +265,11 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <label>Document dll</label>
-                        <input type="text" class="form-control" name="document_dll" id="document_dll"
-                            placeholder="Document dll" value="{{ old('document_dll') }}"
-                            {{ auth()->user()->level_id != 2 ? 'readonly' : '' }}>
-                            <small>*diinput direksi</small>
-                        @error('document_dll')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
                         <label>Total Harga Penjualan</label>
                         <input type="text" class="form-control" name="total_harga_penjualan" id="total_harga_penjualan"
-                            placeholder="Total Harga Penjualan" value="{{ old('total_harga_penjualan') }}" readonly>
+                            placeholder="Total Harga Penjualan" value="{{ old('total_harga_penjualan') }}" 
+                            {{ auth()->user()->level_id != 2 ? 'readonly' : '' }}>
+                        <small>*diinput direksi</small>
                         @error('total_harga_penjualan')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -318,19 +388,6 @@
                 }
             }
 
-            // let dataPembelian = $('#dataPembelian').val();
-            // let dataPembelianSite = $('#data_pembelian_site').val();
-
-            // if (dataPembelianSite == '') {
-            //     var sumData = [dataPembelian];
-            // } else {
-            //     var sumData = [dataPembelianSite];
-            //     sumData.push(dataPembelian);
-            // }
-            // let data_pembelian_site = sumData.toString();
-
-            // $('#data_pembelian_site').val(data_pembelian_site);
-
             $('#id_pembelian_batu').val(idPembelian);
             $('#tanggal_pembelian').val(tgl);
             $('#jmlTonase').val(jmlTonase);
@@ -342,6 +399,7 @@
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     ;
             });
+            labaBersih();
         }
 
         function reset() {
@@ -350,6 +408,7 @@
             $('#jmlTonase').val("");
             $('#sumHarga').val("");
             $('#harga_di_site').val("");
+            labaBersih();
         }
 
         $('#tglPembelianBatu').change(function() {
@@ -399,18 +458,46 @@
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     ;
             });
-			totalPenjualan();
-            labaBersih();
+            
 		});
 
-        $('#document_dll').keyup(function(){
+        $('#biaya_jetty').keyup(function(){
             $(this).val(function (index, value) {
                 return value
                     .replace(/\D/g, "")
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     ;
             });
-			totalPenjualan();
+            labaBersih();
+		});
+
+        $('#biaya_dokumen').keyup(function(){
+            $(this).val(function (index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    ;
+            });
+            labaBersih();
+		});
+
+        $('#biaya_operasional_dll').keyup(function(){
+            $(this).val(function (index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    ;
+            });
+            labaBersih();
+		});
+
+        $('#total_harga_penjualan').keyup(function(){
+            $(this).val(function (index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    ;
+            });
             labaBersih();
 		});
 
@@ -436,10 +523,20 @@
         function labaBersih() {
             let total_harga_penjualan = $('#total_harga_penjualan').val();
             let harga_di_site = $('#harga_di_site').val();
+            let biaya_jetty = $('#biaya_jetty').val();
+            let biaya_dokumen = $('#biaya_dokumen').val();
+            let biaya_operasional_dll = $('#biaya_operasional_dll').val();
             let int_total_harga_penjualan = total_harga_penjualan.replace(/,/g, "");
             let int_harga_di_site = harga_di_site.replace(/,/g, "");
+            let int_biaya_jetty = biaya_jetty.replace(/,/g, "");
+            let int_biaya_dokumen = biaya_dokumen.replace(/,/g, "");
+            let int_biaya_operasional_dll = biaya_operasional_dll.replace(/,/g, "");
 
-            let laba_bersih = parseInt(int_total_harga_penjualan) - parseInt(int_harga_di_site);
+            let laba_bersih = parseInt(int_total_harga_penjualan) 
+                            - parseInt(int_harga_di_site)
+                            - parseInt(int_biaya_jetty)
+                            - parseInt(int_biaya_dokumen)
+                            - parseInt(int_biaya_operasional_dll);
 
             $('#laba_bersih').val(laba_bersih);
             $('#laba_bersih').val(function (index, value) {
@@ -448,6 +545,11 @@
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     ;
             });
+            if (laba_bersih < 0) {
+                let val_laba_bersih = $('#laba_bersih').val();
+                val_laba_bersih = "- "+val_laba_bersih;
+                $('#laba_bersih').val(val_laba_bersih);
+            }
         }
     </script>
 

@@ -2,19 +2,18 @@
 
 @section('content')
     <div class="mb-3">
-        <h1 class="h3 d-inline align-middle">Edit Data Pemasukan</h1>
+        <h1 class="h3 d-inline align-middle">Tambah Data Pengeluaran Site</h1>
 
     </div>
 
-    <form action="{{ route('pemasukan.update', ['pemasukan' => $pemasukan]) }}" method="POST">
+    <form action="{{ route('pengeluaranSite.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        @method('PUT')
         <div class="row">
             <div class="col-12 col-lg-6">
                 <div class="card">
                     <div class="card-body">
                         <label>Kode Transaksi</label>
-                        <input type="text" class="form-control" name="kode_transaksi" value="{{ $pemasukan->kode_transaksi }}" readonly>
+                        <input type="text" class="form-control" name="kode_transaksi" value="{{ $kode }}" readonly>
                         @error('kode_transaksi')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -25,8 +24,28 @@
 
                 <div class="card">
                     <div class="card-body">
+                        <label>Site</label>
+                        <select name="site_id" id="" class="form-control">
+                            <option value=""></option>
+                            @foreach ($sites as $site)
+                                <option value="{{ $site->id }}" {{ old('site_id') == $site->id ? 'selected' : '' }}>
+                                    {{ $site->nama_site }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('site_id')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
                         <label>Jumlah</label>
-                        <input type="text" class="form-control" name="jumlah" id="jumlah" placeholder="Jumlah" value="{{ $pemasukan->jumlah }}">
+                        <input type="text" class="form-control" name="jumlah" id="jumlah" placeholder="Jumlah"
+                            value="{{ old('jumlah') }}">
                         @error('jumlah')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -39,7 +58,8 @@
 
                     <div class="card-body">
                         <label>Sumber Dana</label>
-                        <input type="text" class="form-control" name="sumber_dana" placeholder="Sumber Dana" value="{{ $pemasukan->sumber_dana }}">
+                        <input type="text" class="form-control" name="sumber_dana" placeholder="Sumber Dana"
+                            value="{{ old('sumber_dana') }}">
                         @error('sumber_dana')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -52,7 +72,8 @@
 
                     <div class="card-body">
                         <label>Metode Transaksi</label>
-                        <input type="text" class="form-control" name="metode_transaksi" placeholder="Metode Transaksi" value="{{ $pemasukan->metode_transaksi }}">
+                        <input type="text" class="form-control" name="metode_transaksi" placeholder="Metode Transaksi"
+                            value="{{ old('metode_transaksi') }}">
                         @error('metode_transaksi')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -62,9 +83,24 @@
                 </div>
 
                 <div class="card">
+
+                    <div class="card-body">
+                        <label>Bukti Transaksi</label>
+                        <input type="file" class="form-control" name="bukti_transaksi" accept="image/*,application/pdf" required>
+                        @error('bukti_transaksi')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+
+                </div>
+
+                <div class="card">
                     <div class="card-body">
                         <label>Tanggal</label>
-                        <input type="date" class="form-control" name="tanggal" placeholder="Tanggal" value="{{ $pemasukan->tanggal }}">
+                        <input type="date" class="form-control" name="tanggal" placeholder="Tanggal"
+                            value="{{ old('tanggal') }}">
                         @error('tanggal')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>

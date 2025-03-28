@@ -6,14 +6,14 @@
             $('#myTable').DataTable();
         });
     </script>
-    <h1 class="h3 mb-3">Data Pemasukan</h1>
+    <h1 class="h3 mb-3">Data Pengeluaran Site</h1>
 
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title mb-0">
-                        <a class="btn btn-primary" href="{{ route('pemasukan.create') }}">
+                        <a class="btn btn-primary" href="{{ route('pengeluaranSite.create') }}">
                             <i class="align-middle" data-feather="plus-square"></i> <span class="align-middle">Tambah</span>
                         </a>
                     </h5>
@@ -31,6 +31,7 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Kode Transaksi</th>
+                                <th scope="col">Site</th>
                                 <th scope="col">Jumlah</th>
                                 <th scope="col">Sumber Dana</th>
                                 <th scope="col">Mode Transaksi</th>
@@ -45,27 +46,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($pemasukans as $pemasukan)
+                            @foreach ($pengeluaranSites as $pengeluaranSite)
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
-                                    <td>{{ $pemasukan->kode_transaksi }}</td>
-                                    <td>{{ $pemasukan->jumlah }}</td>
-                                    <td>{{ $pemasukan->sumber_dana }}</td>
-                                    <td>{{ $pemasukan->metode_transaksi }}</td>
-                                    <td><a href="{{ env('APP_URL') . '/upload/pemasukan/' . $pemasukan->bukti_transaksi }}"
+                                    <td>{{ $pengeluaranSite->kode_transaksi }}</td>
+                                    <td>{{ $pengeluaranSite->site?->nama_site }}</td>
+                                    <td>{{ $pengeluaranSite->jumlah }}</td>
+                                    <td>{{ $pengeluaranSite->sumber_dana }}</td>
+                                    <td>{{ $pengeluaranSite->metode_transaksi }}</td>
+                                    <td><a href="{{ env('APP_URL') . '/upload/pengeluaranSite/' . $pengeluaranSite->bukti_transaksi }}"
                                             target="_blank">Lihat</a></td>
-                                    <td>{{ $pemasukan->tanggal }}</td>
+                                    <td>{{ $pengeluaranSite->tanggal }}</td>
                                     @if (auth()->user()->level_id < 3)
-                                        <td>{{ $pemasukan->created_by }}</td>
-                                        <td>{{ $pemasukan->created_at }}</td>
+                                        <td>{{ $pengeluaranSite->created_by }}</td>
+                                        <td>{{ $pengeluaranSite->created_at }}</td>
                                     @endif
                                     @auth
-                                        @can('update', $pemasukan)
+                                        @can('update', $pengeluaranSite)
                                             <td style="display: flex; justify-content: center;">
-                                                <a href="{{ route('pemasukan.edit', ['pemasukan' => $pemasukan]) }}"
+                                                <a href="{{ route('pengeluaranSite.edit', ['pengeluaranSite' => $pengeluaranSite]) }}"
                                                     class="btn btn-success btn-sm">Edit</a>
 
-                                                <form action="{{ route('pemasukan.destroy', ['pemasukan' => $pemasukan]) }}"
+                                                <form action="{{ route('pengeluaranSite.destroy', ['pengeluaranSite' => $pengeluaranSite]) }}"
                                                     method="post">
                                                     @csrf
                                                     @method('delete')

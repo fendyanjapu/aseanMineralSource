@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PembelianBatu extends Model
+class PembelianDariJetty extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'kode_transaksi',
-        'site_id',
+        'nama_jetty',
         'tgl_pembelian',
         'tgl_rotasi',
         'jumlah_tonase',
@@ -22,9 +22,4 @@ class PembelianBatu extends Model
         'updated_by',
         'user_id',
     ];
-
-    public function site()
-    {
-        return $this->belongsTo(Site::class);
-    }
 }

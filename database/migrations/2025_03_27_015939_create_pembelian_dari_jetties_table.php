@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pembelian_batus', function (Blueprint $table) {
+        Schema::create('pembelian_dari_jetties', function (Blueprint $table) {
             $table->id();
             $table->string('kode_transaksi');
-            $table->smallInteger('site_id');
+            $table->string('nama_jetty');
             $table->date('tgl_pembelian');
             $table->text('tgl_rotasi');
             $table->float('jumlah_tonase');
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pembelian_batus');
+        Schema::dropIfExists('pembelian_dari_jetties');
     }
 };

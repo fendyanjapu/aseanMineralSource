@@ -10,16 +10,16 @@ class PemasukanPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->level_id < 4;
+        return $user->level_id == 2;
     }
 
     public function create(User $user): bool
     {
-        return $user->level_id < 4;
+        return $user->level_id == 2;
     }
     public function update(User $user, Pemasukan $pemasukan): bool
     {
-        return ($user->level_id < 3 || $pemasukan->user_id === $user->id);
+        return $user->level_id == 2;
     }
 
     /**
@@ -27,7 +27,7 @@ class PemasukanPolicy
      */
     public function delete(User $user, Pemasukan $pemasukan): bool
     {
-        return ($user->level_id < 3 || $pemasukan->user_id === $user->id);
+        return $user->level_id == 2;
     }
 
 }

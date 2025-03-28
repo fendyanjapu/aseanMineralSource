@@ -9,20 +9,22 @@
     }
 </style>
     <div class="mb-3">
-        <h1 class="h3 d-inline align-middle">Edit Data Pembelian Batu Dari Site</h1>
+        <h1 class="h3 d-inline align-middle">Tambah Data Pembelian Batu Dari Jetty</h1>
 
     </div>
-
-    <form action="{{ route('pembelianBatu.update', ['pembelianBatu' => $pembelianBatu]) }}" method="POST" enctype="multipart/form-data">
+    @if (session()->has('error'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('error') }}
+        </div>
+    @endif
+    <form action="{{ route('pembelianDariJetty.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        @method('PUT')
         <div class="row">
             <div class="col-12 col-lg-6">
                 <div class="card">
                     <div class="card-body">
                         <label>Kode Transaksi</label>
-                        <input type="text" class="form-control" name="kode_transaksi" readonly
-                            value="{{ $pembelianBatu->kode_transaksi }}">
+                        <input type="text" class="form-control" name="kode_transaksi" readonly value="{{ $kode }}">
                         @error('kode_transaksi')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -35,7 +37,7 @@
                     <div class="card-body">
                         <label>Tanggal Pembelian</label>
                         <input type="date" class="form-control col-lg-3" name="tgl_pembelian"
-                            value="{{ $pembelianBatu->tgl_pembelian }}">
+                            value="{{ old('tgl_pembelian') }}">
                         @error('tgl_pembelian')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -46,16 +48,10 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <label>Site</label>
-                        <select name="site_id" id="" class="form-control">
-                            <option value=""></option>
-                            @foreach ($sites as $site)
-                                <option value="{{ $site->id }}" {{ $site->id == $pembelianBatu->site_id ? 'selected' : '' }}>
-                                    {{ $site->nama_site }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('site_id')
+                        <label>Nama Jetty</label>
+                        <input type="text" class="form-control col-lg-3" name="nama_jetty" placeholder="Nama Jetty"
+                            value="{{ old('nama_jetty') }}">
+                        @error('nama_jetty')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
                             </div>
@@ -77,7 +73,7 @@
                             <tr>
                                 <td><input type="text" class="form-control col-lg-3" name="total_rotasi" id="total_rotasi"
                                         readonly></td>
-                                <td><input type="text" class="form-control col-lg-3" name="tonase" id="tonase" readonly>
+                                <td><input type="text" class="form-control col-lg-3" name="tonase" id="tonase"  readonly>
                                 </td>
                                 <td>
                                     <a href="#" onclick="tambahRotasi()" class="btn btn-sm btn-success buton">Tambah</a>
@@ -86,16 +82,14 @@
                                 </td>
                             </tr>
                         </table>
-
-
                     </div>
                 </div>
 
                 <div class="card">
                     <div class="card-body">
                         <label>Tanggal Rotasi</label>
-                        <input type="text" class="form-control col-lg-3" name="tgl_rotasi" id="tanggal_rotasi"
-                            value="{{ $pembelianBatu->tgl_rotasi }}" readonly>
+                        <input type="text" class="form-control" name="tgl_rotasi" id="tanggal_rotasi"
+                            placeholder="Tanggal Rotasi" value="{{ old('tgl_rotasi') }}" readonly>
                         @error('tgl_rotasi')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -107,8 +101,8 @@
                 <div class="card">
                     <div class="card-body">
                         <label>Jumlah Tonase</label>
-                        <input type="text" class="form-control" name="jumlah_tonase" id="jumlah_tonase" placeholder="Jumlah Tonase"
-                            value="{{ $pembelianBatu->jumlah_tonase }}" readonly>
+                        <input type="text" class="form-control" name="jumlah_tonase" id="jumlah_tonase"
+                            placeholder="Jumlah Tonase" value="{{ old('jumlah_tonase') }}" readonly>
                         @error('jumlah_tonase')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -117,12 +111,11 @@
                     </div>
                 </div>
 
-
                 <div class="card">
                     <div class="card-body">
                         <label>Harga</label>
                         <input type="text" class="form-control" name="harga" id="harga" placeholder="Harga"
-                            value="{{ $pembelianBatu->harga }}">
+                            value="{{ old('harga') }}">
                         @error('harga')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -134,8 +127,8 @@
                 <div class="card">
                     <div class="card-body">
                         <label>Total Penjualan</label>
-                        <input type="text" class="form-control" name="total_penjualan" id="total_penjualan" placeholder="Total Penjualan"
-                            value="{{ $pembelianBatu->total_penjualan }}" readonly>
+                        <input type="text" class="form-control" name="total_penjualan" id="total_penjualan"
+                            placeholder="Total Penjualan" value="{{ old('total_penjualan') }}" readonly>
                         @error('total_penjualan')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -145,7 +138,7 @@
                 </div>
 
                 <button class="btn btn-success" type="submit">Simpan</button>
-                <a href="#" onclick="self.history.back()" class="btn btn-danger">Batal</a>
+                <a href="{{ route('pembelianDariJetty.index') }}" class="btn btn-danger">Batal</a>
             </div>
 
         </div>
@@ -154,6 +147,20 @@
     <script>
         $('a.buton').click(function (e) {
             e.preventDefault();
+        });
+
+        $(document).ready(function(){
+            $.ajax({
+                type: "GET",
+                url: "{{ route('getRotasiJetty') }}",
+                cache: false,
+                success: function (result) {
+                    let data = $.parseJSON(result);
+                    let dates = data.tanggal;
+                    colorDate(dates);
+                }
+            });
+            totalRotasi();
         });
 
         function colorDate(dates) {
@@ -203,29 +210,12 @@
             totalRotasi();
         });
 
-        $("#site_id").change(function (event) {
-            let id = $(this).val();
-            $.ajax({
-                type: "GET",
-                data: "site_id=" + id,
-                url: "{{ route('getRotasi') }}",
-                cache: false,
-                success: function (result) {
-                    let data = $.parseJSON(result);
-                    let dates = data.tanggal;
-                    colorDate(dates);
-                }
-            });
-            totalRotasi();
-        });
-
         function totalRotasi() {
             let tgl_rotasi = $('#tgl_rotasi').val();
-            let site_id = $('#site_id').val();
             $.ajax({
                 type: "GET",
-                data: { tanggal: tgl_rotasi, site_id: site_id },
-                url: "{{ route('pembelianBatu.getTotalRotasi') }}",
+                data: { tanggal: tgl_rotasi },
+                url: "{{ route('pembelianDariJetty.getTotalRotasi') }}",
                 cache: false,
                 success: function (result) {
                     let data = $.parseJSON(result);
@@ -237,45 +227,49 @@
 
         function tambahRotasi() {
             let tgl_rotasi = $('#tgl_rotasi').val();
+            let tanggal_rotasi = $('#tanggal_rotasi').val();
 
-            $.ajax({
-                type: "GET",
-                data: { tanggal: tgl_rotasi },
-                url: "{{ route('cekTglRotasi') }}",
-                cache: false,
-                success: function (result) {
-                    let data = $.parseJSON(result);
-                    cek = data;
+            if (tgl_rotasi == tanggal_rotasi) {
+                alert('Tidak boleh tanggal rotasi yang sama!')
+            } else {
+                $.ajax({
+                    type: "GET",
+                    data: { tanggal: tgl_rotasi },
+                    url: "{{ route('cekTglRotasiJetty') }}",
+                    cache: false,
+                    success: function (result) {
+                        let data = $.parseJSON(result);
+                        cek = data;
 
-                    if (cek == 1) {
-                        alert('Tanggal rotasi sudah ada!')
-                    } else {
-                        let tonase = $('#tonase').val();
-
-                        if (tonase == 0) {
-                            alert('Tidak ada produksi!');
+                        if (cek == 1) {
+                            alert('Tanggal rotasi sudah ada!')
                         } else {
-                            let tanggal_rotasi = $('#tanggal_rotasi').val();
-                            let jumlah_tonase = $('#jumlah_tonase').val();
                             let tonase = $('#tonase').val();
-                            if (tanggal_rotasi == '') {
-                                var jumTgl = [tgl_rotasi];
+
+                            if (tonase == 0) {
+                                alert('Tidak ada produksi!');
                             } else {
-                                var jumTgl = [tanggal_rotasi];
-                                jumTgl.push(tgl_rotasi);
+                                let jumlah_tonase = $('#jumlah_tonase').val();
+                                let tonase = $('#tonase').val();
+                                if (tanggal_rotasi == '') {
+                                    var jumTgl = [tgl_rotasi];
+                                } else {
+                                    var jumTgl = [tanggal_rotasi];
+                                    jumTgl.push(tgl_rotasi);
+                                }
+                                if (jumlah_tonase == '') {
+                                    var jmlTonase = tonase;
+                                } else {
+                                    var jmlTonase = parseInt(jumlah_tonase) + parseInt(tonase);
+                                }
+                                let tglRotasi = jumTgl.toString();
+                                $('#tanggal_rotasi').val(tglRotasi);
+                                $('#jumlah_tonase').val(jmlTonase);
                             }
-                            if (jumlah_tonase == '') {
-                                var jmlTonase = tonase;
-                            } else {
-                                var jmlTonase = parseInt(jumlah_tonase) + parseInt(tonase);
-                            }
-                            let tglRotasi = jumTgl.toString();
-                            $('#tanggal_rotasi').val(tglRotasi);
-                            $('#jumlah_tonase').val(jmlTonase);
                         }
                     }
-                }
-            });
+                });
+            }
         }
 
         function hapusRotasi() {

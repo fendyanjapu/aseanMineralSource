@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="mb-3">
-        <h1 class="h3 d-inline align-middle">Tambah Data Pengeluaran Site</h1>
+        <h1 class="h3 d-inline align-middle">Tambah Data Pemasukan</h1>
 
     </div>
 
@@ -15,25 +15,6 @@
                         <label>Kode Transaksi</label>
                         <input type="text" class="form-control" name="kode_transaksi" value="{{ $kode }}" readonly>
                         @error('kode_transaksi')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <label>Site</label>
-                        <select name="site_id" id="" class="form-control">
-                            <option value=""></option>
-                            @foreach ($sites as $site)
-                                <option value="{{ $site->id }}" {{ old('site_id') == $site->id ? 'selected' : '' }}>
-                                    {{ $site->nama_site }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('site_id')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
                             </div>

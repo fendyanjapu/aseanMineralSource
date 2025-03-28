@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\HutangSite;
-use App\Models\Site;
 use App\Models\Pemasukan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,6 +9,9 @@ use Illuminate\Support\Facades\File;
 
 class PemasukanController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         $this->authorize('viewAny', Pemasukan::class);
@@ -35,10 +36,9 @@ class PemasukanController extends Controller
         }
         $nextId = $lastId + 1;
         $nextKode = str_pad($nextId,5,'0',STR_PAD_LEFT);
-        $kode = 'PS'.date('y').$nextKode;
+        $kode = 'PA'.date('y').$nextKode;
 
-        $sites = Site::all();
-        return view('pemasukan.create', compact('sites', 'kode'));
+        return view('pemasukan.create', compact('kode'));
     }
 
     /**
@@ -50,7 +50,6 @@ class PemasukanController extends Controller
         
         $rules = [
             'kode_transaksi'=> 'required|max:255',
-            'site_id'=> 'required',
             'jumlah'=> 'required|max:255',
             'sumber_dana'=> 'required|max:255',
             'metode_transaksi'=> 'required|max:255',
@@ -65,18 +64,9 @@ class PemasukanController extends Controller
         $validatedData = $request->validate($rules);
         $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
-        $validatedData['status_hutang'] = '1';
         $validatedData['bukti_transaksi'] = $nama_gbr;
 
         $store = Pemasukan::create($validatedData);
-
-        $hutang = str_replace(',', '', $request->jumlah);
-        $data = [
-            'site_id' => $request->site_id,
-            'pemasukan_id' => $store->id,
-            'hutang' => $hutang
-        ];
-        HutangSite::create($data);
 
         if ($store) { $gambar->move($tujuan_upload,$nama_gbr); }
         return redirect()->route('pemasukan.index')->with('success','Data berhasil ditambah');
@@ -97,8 +87,7 @@ class PemasukanController extends Controller
     {
         $this->authorize('update', $pemasukan);
 
-        $sites = Site::all();
-        return view('pemasukan.edit', compact('pemasukan','sites'));
+        return view('pemasukan.edit', compact('pemasukan'));
     }
 
     /**
@@ -110,7 +99,6 @@ class PemasukanController extends Controller
         
         $rules = [
             'kode_transaksi'=> 'required|max:255',
-            'site_id'=> 'required',
             'jumlah'=> 'required|max:255',
             'sumber_dana'=> 'required|max:255',
             'metode_transaksi'=> 'required|max:255',
@@ -120,13 +108,6 @@ class PemasukanController extends Controller
         $validatedData = $request->validate($rules);
         $validatedData['updated_by'] = auth()->user()->username;
         Pemasukan::findOrFail($pemasukan->id)->update($validatedData);
-
-        $hutang = str_replace(',', '', $request->jumlah);
-        $data = [
-            'site_id' => $request->site_id,
-            'hutang' => $hutang
-        ];
-        HutangSite::where('pemasukan_id', '=', $pemasukan->id)->update($data);
 
         return redirect(route('pemasukan.index'))->with('success','Data berhasil diubah');
     }
@@ -140,7 +121,6 @@ class PemasukanController extends Controller
 
         $query = Pemasukan::findOrFail($pemasukan->id);
         $file  = $query->bukti_transaksi;
-        HutangSite::where('pemasukan_id', '=', $pemasukan->id)->delete();
         Pemasukan::destroy($pemasukan->id);
         $file_path = public_path('upload/pemasukan/'.$file);
         if (File::exists($file_path)) {
