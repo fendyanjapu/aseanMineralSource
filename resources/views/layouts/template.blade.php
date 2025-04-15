@@ -249,6 +249,9 @@
 								Source</span>
 						</a>
 						<div class="dropdown-menu dropdown-menu-end">
+							<a class="dropdown-item" href="{{ route('pemasukan.laporan') }}"><i
+								class="align-middle me-1" data-feather="file"></i>
+							Pemasukan</a>
 							<a class="dropdown-item" href="{{ route('pengeluaran.laporan') }}"><i
 									class="align-middle me-1" data-feather="file"></i>
 								Pengeluaran</a>

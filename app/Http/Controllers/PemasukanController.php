@@ -53,6 +53,7 @@ class PemasukanController extends Controller
             'jumlah'=> 'required|max:255',
             'sumber_dana'=> 'required|max:255',
             'metode_transaksi'=> 'required|max:255',
+            'keterangan'=> 'required',
             'tanggal'=> 'required|date',
             'bukti_transaksi' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ];
@@ -75,9 +76,24 @@ class PemasukanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Pemasukan $pemasukan)
+    public function laporan(Request $request)
     {
-        //
+        $dariTanggal = $request->dari_tanggal;
+        $sampaiTanggal = $request->sampai_tanggal;
+        if ($dariTanggal != null && $sampaiTanggal != null) {
+            $query = Pemasukan::where('tanggal', '>=', $dariTanggal)
+                        ->where('tanggal', '<=', $sampaiTanggal);
+            
+        } else {
+            $query = Pemasukan::where('tanggal', '<=', '2000-01-01');
+        }
+        
+        $pemasukans = $query->get();
+        return view('pemasukan.laporan', compact(
+            'pemasukans', 
+            'dariTanggal', 
+            'sampaiTanggal',
+        ));
     }
 
     /**
@@ -102,6 +118,7 @@ class PemasukanController extends Controller
             'jumlah'=> 'required|max:255',
             'sumber_dana'=> 'required|max:255',
             'metode_transaksi'=> 'required|max:255',
+            'keterangan'=> 'required',
             'tanggal'=> 'required|date',
         ];
 

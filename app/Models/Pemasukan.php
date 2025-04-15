@@ -15,6 +15,7 @@ class Pemasukan extends Model
         'sumber_dana',
         'metode_transaksi',
         'bukti_transaksi',
+        'keterangan',
         'tanggal',
         'created_by',
         'updated_by',

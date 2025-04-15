@@ -34,6 +34,7 @@
                                 <th scope="col">Jumlah</th>
                                 <th scope="col">Sumber Dana</th>
                                 <th scope="col">Mode Transaksi</th>
+                                <th scope="col">Keterangan</th>
                                 <th scope="col">Bukti Transaksi</th>
                                 <th scope="col">Tanggal</th>
                                 @if (auth()->user()->level_id < 3)
@@ -52,6 +53,7 @@
                                     <td>{{ $pemasukan->jumlah }}</td>
                                     <td>{{ $pemasukan->sumber_dana }}</td>
                                     <td>{{ $pemasukan->metode_transaksi }}</td>
+                                    <td>{{ $pemasukan->keterangan }}</td>
                                     <td><a href="{{ env('APP_URL') . '/upload/pemasukan/' . $pemasukan->bukti_transaksi }}"
                                             target="_blank">Lihat</a></td>
                                     <td>{{ $pemasukan->tanggal }}</td>

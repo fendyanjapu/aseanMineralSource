@@ -81,6 +81,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('operasionalSite/laporan', [OperasionalSiteController::class, 'laporan'])->name('operasionalSite.laporan');
     Route::get('pengeluaran/laporan', [PembelianBarangController::class, 'laporan'])->name('pengeluaran.laporan');
     Route::get('pembayaranPenjualan/laporan', [PembayaranPenjualanController::class, 'laporan'])->name('pembayaranPenjualan.laporan');
+    Route::get('pemasukan/laporan', [PemasukanController::class, 'laporan'])->name('pemasukan.laporan');
 
     Route::resource('user', UserController::class)->except('show');
     Route::resource('userSite', UserSiteController::class)->except('show');

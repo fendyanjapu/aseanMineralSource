@@ -62,6 +62,19 @@
                 </div>
 
                 <div class="card">
+
+                    <div class="card-body">
+                        <label>Keterangan</label>
+                        <textarea class="form-control" name="keterangan" placeholder="Keterangan">{{ $pemasukan->keterangan }}</textarea>
+                        @error('keterangan')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
                     <div class="card-body">
                         <label>Tanggal</label>
                         <input type="date" class="form-control" name="tanggal" placeholder="Tanggal" value="{{ $pemasukan->tanggal }}">

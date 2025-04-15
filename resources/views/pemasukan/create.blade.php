@@ -66,6 +66,19 @@
                 <div class="card">
 
                     <div class="card-body">
+                        <label>Keterangan</label>
+                        <textarea class="form-control" name="keterangan" placeholder="Keterangan">{{ old('keterangan') }}</textarea>
+                        @error('keterangan')
+                            <div class="text-danger">
+                                <small>{{ $message }}</small>
+                            </div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="card">
+
+                    <div class="card-body">
                         <label>Bukti Transaksi</label>
                         <input type="file" class="form-control" name="bukti_transaksi" accept="image/*,application/pdf" required>
                         @error('bukti_transaksi')

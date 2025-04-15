@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('sumber_dana');
             $table->string('metode_transaksi');
             $table->string('bukti_transaksi');
+            $table->text('keterangan');
             $table->date('tanggal');
             $table->string('created_by');
             $table->string('updated_by')->nullable();
