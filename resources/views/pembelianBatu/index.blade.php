@@ -55,7 +55,7 @@
                                     <td>{!! $tgl_rotasi !!}</td>
                                     <td>{{ $pembelianBatu->jumlah_tonase }}</td>
                                     <td>{{ $pembelianBatu->harga }}</td>
-                                    <td>{{ $pembelianBatu->total_penjualan }}</td>
+                                    <td>{{ number_format($pembelianBatu->total_penjualan) }}</td>
                                     
                                     @if (auth()->user()->level_id < 3)
                                         <td>{{ $pembelianBatu->created_by }}</td>

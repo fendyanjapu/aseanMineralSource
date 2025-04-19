@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('kode_transaksi');
             $table->string('nama_jetty');
             $table->date('tgl_pembelian');
-            $table->text('tgl_rotasi');
             $table->float('jumlah_tonase');
             $table->string('harga');
             $table->string('total_penjualan');

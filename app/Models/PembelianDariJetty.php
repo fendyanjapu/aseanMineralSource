@@ -13,7 +13,6 @@ class PembelianDariJetty extends Model
         'kode_transaksi',
         'nama_jetty',
         'tgl_pembelian',
-        'tgl_rotasi',
         'jumlah_tonase',
         'harga',
         'total_penjualan',

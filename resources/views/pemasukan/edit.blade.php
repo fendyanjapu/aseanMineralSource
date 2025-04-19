@@ -94,19 +94,27 @@
     </form>
 
     <script>
+        $(document).ready(function(){
+            jumlah();
+        });
+        
         $('#jumlah').keyup(function (event) {
 
             // skip for arrow keys
             if (event.which >= 37 && event.which <= 40) return;
 
+            jumlah();
+        });
+
+        function jumlah() {
             // format number
-            $(this).val(function (index, value) {
+            $('#jumlah').val(function (index, value) {
                 return value
                     .replace(/\D/g, "")
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     ;
             });
-        });
+        }
     </script>
 
 @endsection

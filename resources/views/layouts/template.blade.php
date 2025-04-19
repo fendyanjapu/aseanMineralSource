@@ -144,7 +144,7 @@
 						<li class="sidebar-item">
 							<a class="sidebar-link" href="{{ route('pengeluaranSite.index') }}">
 								<i class="align-middle" data-feather="external-link"></i> <span
-									class="align-middle">Pengeluaran Site</span>
+									class="align-middle">Pengeluaran Asean Untuk Site</span>
 							</a>
 						</li>
 
@@ -255,6 +255,9 @@
 							<a class="dropdown-item" href="{{ route('pengeluaran.laporan') }}"><i
 									class="align-middle me-1" data-feather="file"></i>
 								Pengeluaran</a>
+							<a class="dropdown-item" href="{{ route('pengeluaranSite.laporan') }}"><i
+									class="align-middle me-1" data-feather="file"></i>
+								Pengeluaran Asean Untuk Site</a>
 							<a class="dropdown-item" href="{{ route('pembelianBatu.laporan') }}"><i
 									class="align-middle me-1" data-feather="file"></i>
 								Pembelian dari Site</a>

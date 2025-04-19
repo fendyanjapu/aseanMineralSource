@@ -13,7 +13,6 @@ class PembelianDariJettyController extends Controller
         'kode_transaksi'=> 'required|max:255',
         'nama_jetty'=> 'required|max:255',
         'tgl_pembelian'=> 'required|date',
-        'tgl_rotasi'=> 'required',
         'jumlah_tonase'=> 'required',
         'harga'=> 'required|max:255',
         'total_penjualan'=> 'required|max:255',
@@ -53,7 +52,10 @@ class PembelianDariJettyController extends Controller
     {
         $this->authorize('create', PembelianDariJetty::class);
         
+        $total_penjualan = str_replace(',', '', $request->total_penjualan);
+
         $validatedData = $request->validate($this->rules);
+        $validatedData['total_penjualan'] = $total_penjualan;
         $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
         $validatedData['status_pengapalan'] = "0";
@@ -77,7 +79,10 @@ class PembelianDariJettyController extends Controller
     {
         $this->authorize('update', $pembelianDariJetty);
 
+        $total_penjualan = str_replace(',', '', $request->total_penjualan);
+
         $validatedData = $request->validate($this->rules);
+        $validatedData['total_penjualan'] = $total_penjualan;
         $validatedData['updated_by'] = auth()->user()->username;
         PembelianDariJetty::findOrFail($pembelianDariJetty->id)->update($validatedData);
 

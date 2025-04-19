@@ -72,6 +72,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/cekPembelian', [PembayaranPenjualanController::class, 'cekPembelian'] )->name('cekPembelian');
     Route::get('/getPengeluaranSite', [PembayaranPenjualanController::class, 'getPengeluaranSite'] )->name('getPengeluaranSite');
     Route::get('/getOperasional', [PembayaranPenjualanController::class, 'getOperasional'] )->name('getOperasional');
+    Route::get('/getProduksiTonase', [DashboardController::class, 'produksiTonase'] )->name('getProduksiTonase');
+    Route::get('/getHutangSite', [DashboardController::class, 'hutangSite'] )->name('getHutangSite');
 
     Route::get('pembelianBatu/laporan', [PembelianBatuController::class, 'laporan'])->name('pembelianBatu.laporan');
     Route::get('penjualanSite/laporan', [PembelianBatuController::class, 'penjualanSite'])->name('PenjualanSite.laporan');
@@ -82,6 +84,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('pengeluaran/laporan', [PembelianBarangController::class, 'laporan'])->name('pengeluaran.laporan');
     Route::get('pembayaranPenjualan/laporan', [PembayaranPenjualanController::class, 'laporan'])->name('pembayaranPenjualan.laporan');
     Route::get('pemasukan/laporan', [PemasukanController::class, 'laporan'])->name('pemasukan.laporan');
+    Route::get('pengeluaranSite/laporan', [PengeluaranSiteController::class, 'laporan'])->name('pengeluaranSite.laporan');
 
     Route::resource('user', UserController::class)->except('show');
     Route::resource('userSite', UserSiteController::class)->except('show');

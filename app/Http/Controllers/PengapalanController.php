@@ -73,10 +73,12 @@ class PengapalanController extends Controller
         $bukti_biaya_operasional_dll = $request->file('bukti_biaya_operasional_dll');
         $nama_bukti_biaya_operasional_dll = time()."_".$bukti_biaya_operasional_dll->getClientOriginalName();
 
+        $total_harga_penjualan = str_replace(',', '', $request->total_harga_penjualan);
+
         $validatedData = $request->validate($this->rules);
         $validatedData['id_pembelian_batu'] = $request->id_pembelian_batu;
         $validatedData['harga_jual_per_tonase'] = $request->harga_jual_per_tonase;
-        $validatedData['total_harga_penjualan'] = $request->total_harga_penjualan;
+        $validatedData['total_harga_penjualan'] = $total_harga_penjualan;
         $validatedData['laba_bersih'] = $request->laba_bersih;
         $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
@@ -122,9 +124,11 @@ class PengapalanController extends Controller
     {
         $this->authorize('update', $pengapalan);
 
+        $total_harga_penjualan = str_replace(',', '', $request->total_harga_penjualan);
+
         $validatedData = $request->validate($this->rules);
         $validatedData['harga_jual_per_tonase'] = $request->harga_jual_per_tonase;
-        $validatedData['total_harga_penjualan'] = $request->total_harga_penjualan;
+        $validatedData['total_harga_penjualan'] = $total_harga_penjualan;
         $validatedData['laba_bersih'] = $request->laba_bersih;
         $validatedData['updated_by'] = auth()->user()->username;
         Pengapalan::findOrFail($pengapalan->id)->update($validatedData);

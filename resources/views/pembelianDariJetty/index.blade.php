@@ -33,7 +33,6 @@
                                 <th scope="col">Kode Transaksi</th>
                                 <th scope="col">Nama Jetty</th>
                                 <th scope="col">Tanggal Pembelian</th>
-                                <th scope="col">Tanggal Rotasi</th>
                                 <th scope="col">Jumlah Tonase</th>
                                 <th scope="col">Harga</th>
                                 <th scope="col">Total Penjualan</th>
@@ -51,11 +50,9 @@
                                     <td>{{ $pembelianDariJetty->kode_transaksi }}</td>
                                     <td>{{ $pembelianDariJetty->nama_jetty }}</td>
                                     <td>{{ date_format(date_create($pembelianDariJetty->tgl_pembelian), 'd-m-Y') }}</td>
-                                    <?php $tgl_rotasi = str_replace(',','<br>', $pembelianDariJetty->tgl_rotasi) ?>
-                                    <td>{!! $tgl_rotasi !!}</td>
                                     <td>{{ $pembelianDariJetty->jumlah_tonase }}</td>
                                     <td>{{ $pembelianDariJetty->harga }}</td>
-                                    <td>{{ $pembelianDariJetty->total_penjualan }}</td>
+                                    <td>{{ number_format($pembelianDariJetty->total_penjualan) }}</td>
                                     
                                     @if (auth()->user()->level_id < 3)
                                         <td>{{ $pembelianDariJetty->created_by }}</td>

@@ -68,7 +68,7 @@
                                     </td>
                                     <td>{{ $pengapalan->biaya_dokumen }}</td>
                                     <td>{{ $pengapalan->biaya_operasional_dll }}</td>
-                                    <td>{{ $pengapalan->total_harga_penjualan }}</td>
+                                    <td>{{ number_format($pengapalan->total_harga_penjualan) }}</td>
                                     <td>{{ $pengapalan->laba_bersih }}</td>
                                     @if (auth()->user()->level_id == 1)
                                         <td>{{ $pengapalan->created_by }}</td>

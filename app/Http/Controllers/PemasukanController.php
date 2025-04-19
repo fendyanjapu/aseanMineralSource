@@ -62,7 +62,9 @@ class PemasukanController extends Controller
         $tujuan_upload = 'upload/pemasukan';
         $nama_gbr = time()."_".$gambar->getClientOriginalName(); 
 
+        $jumlah = str_replace(',', '', $request->jumlah);
         $validatedData = $request->validate($rules);
+        $validatedData['jumlah'] = $jumlah;
         $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
         $validatedData['bukti_transaksi'] = $nama_gbr;
@@ -122,7 +124,9 @@ class PemasukanController extends Controller
             'tanggal'=> 'required|date',
         ];
 
+        $jumlah = str_replace(',', '', $request->jumlah);
         $validatedData = $request->validate($rules);
+        $validatedData['jumlah'] = $jumlah;
         $validatedData['updated_by'] = auth()->user()->username;
         Pemasukan::findOrFail($pemasukan->id)->update($validatedData);
 

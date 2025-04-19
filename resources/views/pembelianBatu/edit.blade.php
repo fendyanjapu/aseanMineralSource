@@ -315,6 +315,15 @@
                     ;
             });
         }
+
+        $(document).ready(function(){
+            $('#total_penjualan').val(function (index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    ;
+            });
+        });
     </script>
 
 @endsection

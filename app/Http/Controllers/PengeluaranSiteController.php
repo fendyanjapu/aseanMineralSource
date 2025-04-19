@@ -62,7 +62,10 @@ class PengeluaranSiteController extends Controller
         $tujuan_upload = 'upload/pengeluaranSite';
         $nama_gbr = time()."_".$gambar->getClientOriginalName(); 
 
+        $jumlah = str_replace(',', '', $request->jumlah);
+        
         $validatedData = $request->validate($rules);
+        $validatedData['jumlah'] = $jumlah;
         $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
         $validatedData['status_hutang'] = '1';
@@ -82,17 +85,6 @@ class PengeluaranSiteController extends Controller
         return redirect()->route('pengeluaranSite.index')->with('success','Data berhasil ditambah');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(PengeluaranSite $pengeluaranSite)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(PengeluaranSite $pengeluaranSite)
     {
         $this->authorize('update', $pengeluaranSite);
@@ -117,7 +109,9 @@ class PengeluaranSiteController extends Controller
             'tanggal'=> 'required|date',
         ];
 
+        $jumlah = str_replace(',', '', $request->jumlah);
         $validatedData = $request->validate($rules);
+        $validatedData['jumlah'] = $jumlah;
         $validatedData['updated_by'] = auth()->user()->username;
         PengeluaranSite::findOrFail($pengeluaranSite->id)->update($validatedData);
 
@@ -148,5 +142,32 @@ class PengeluaranSiteController extends Controller
         }
 
         return redirect(route('pengeluaranSite.index'))->with('success','Data berhasil dihapus');
+    }
+
+    public function laporan(Request $request)
+    {
+        $dariTanggal = $request->dari_tanggal;
+        $sampaiTanggal = $request->sampai_tanggal;
+        $site_id = $request->site_id;
+        if ($dariTanggal != null && $sampaiTanggal != null) {
+            $query = PengeluaranSite::where('tanggal', '>=', $dariTanggal)
+                        ->where('tanggal', '<=', $sampaiTanggal);
+            
+        } else {
+            $query = PengeluaranSite::where('tanggal', '<=', '2000-01-01');
+        }
+
+        if ($site_id != 'all') {
+            $query->where('site_id', '=', $site_id);
+        }
+        $pengeluaranSites = $query->get();
+        $sites = Site::all();
+        return view('pengeluaranSite.laporan', compact(
+            'pengeluaranSites', 
+            'dariTanggal', 
+            'sampaiTanggal', 
+            'site_id',
+            'sites'
+        ));
     }
 }

@@ -50,7 +50,7 @@
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
                                     <td>{{ $pemasukan->kode_transaksi }}</td>
-                                    <td>{{ $pemasukan->jumlah }}</td>
+                                    <td>{{ number_format($pemasukan->jumlah) }}</td>
                                     <td>{{ $pemasukan->sumber_dana }}</td>
                                     <td>{{ $pemasukan->metode_transaksi }}</td>
                                     <td>{{ $pemasukan->keterangan }}</td>

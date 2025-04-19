@@ -59,50 +59,9 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <label>Pilih Tanggal Rotasi</label>
-                        <input type="text" class="form-control col-lg-3" name="" id="tgl_rotasi">
-                        <br>
-                        <table>
-                            <tr>
-                                <td><label>Total Rotasi</label></td>
-                                <td><label>Tonase</label></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td><input type="text" class="form-control col-lg-3" name="total_rotasi" id="total_rotasi"
-                                        readonly></td>
-                                <td><input type="text" class="form-control col-lg-3" name="tonase" id="tonase" readonly>
-                                </td>
-                                <td>
-                                    <a href="#" onclick="tambahRotasi()" class="btn btn-sm btn-success buton">Tambah</a>
-                                    <a href="#" onclick="hapusRotasi()" class="btn btn-sm btn-danger buton">Hapus</a>
-                                    <a href="#" onclick="resetRotasi()" class="btn btn-sm btn-info buton">Reset</a>
-                                </td>
-                            </tr>
-                        </table>
-
-
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <label>Tanggal Rotasi</label>
-                        <input type="text" class="form-control col-lg-3" name="tgl_rotasi" id="tanggal_rotasi"
-                            value="{{ $pembelianDariJetty->tgl_rotasi }}" readonly>
-                        @error('tgl_rotasi')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
                         <label>Jumlah Tonase</label>
-                        <input type="text" class="form-control" name="jumlah_tonase" id="jumlah_tonase" placeholder="Jumlah Tonase"
-                            value="{{ $pembelianDariJetty->jumlah_tonase }}" readonly>
+                        <input type="number" class="form-control" name="jumlah_tonase" id="jumlah_tonase" placeholder="Jumlah Tonase" step=".01"
+                            value="{{ $pembelianDariJetty->jumlah_tonase }}">
                         @error('jumlah_tonase')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -150,53 +109,10 @@
             e.preventDefault();
         });
 
-        $(document).ready(function(){
-            $.ajax({
-                type: "GET",
-                url: "{{ route('getRotasiJetty') }}",
-                cache: false,
-                success: function (result) {
-                    let data = $.parseJSON(result);
-                    let dates = data.tanggal;
-                    colorDate(dates);
-                }
-            });
-            totalRotasi();
-        });
-
-        function colorDate(dates) {
-            // var dates = ['2025-03-05','2025-03-15','2025-03-25'];
-            dateArray = dates.split(",");
-            jQuery(function(){
-                jQuery('#tgl_rotasi').datepicker({
-                    changeMonth : true,
-                    changeYear : true,
-                    beforeShowDay : function(date){
-                        var y = date.getFullYear().toString(); // get full year
-                        var m = (date.getMonth() + 1).toString(); // get month.
-                        var d = date.getDate().toString(); // get Day
-                        if(m.length == 1){ m = '0' + m; } // append zero(0) if single digit
-                        if(d.length == 1){ d = '0' + d; } // append zero(0) if single digit
-                        var currDate = y+'-'+m+'-'+d;
-                        if(dateArray.indexOf(currDate) >= 0){
-                            return [true, "ui-highlight"];	
-                        }else{
-                            return [true];
-                        }					
-                    }
-                });
-            })
-        }
-
         $("#jumlah_tonase").keyup(function (event) {
-            $(this).val(function (index, value) {
-                return value
-                    .replace(/\D/g, "")
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    ;
-            });
             totalPenjualan();
         });
+
         $("#harga").keyup(function (event) {
             $(this).val(function (index, value) {
                 return value
@@ -207,96 +123,14 @@
             totalPenjualan();
         });
 
-        $("#tgl_rotasi").change(function (event) {
-            totalRotasi();
-        });
-
-        function totalRotasi() {
-            let tgl_rotasi = $('#tgl_rotasi').val();
-            $.ajax({
-                type: "GET",
-                data: { tanggal: tgl_rotasi },
-                url: "{{ route('pembelianDariJetty.getTotalRotasi') }}",
-                cache: false,
-                success: function (result) {
-                    let data = $.parseJSON(result);
-                    $('#total_rotasi').val(data.totalRotasi);
-                    $('#tonase').val(data.jumlahTonase);
-                }
-            });
-        }
-
-        function tambahRotasi() {
-            let tgl_rotasi = $('#tgl_rotasi').val();
-
-            $.ajax({
-                type: "GET",
-                data: { tanggal: tgl_rotasi },
-                url: "{{ route('cekTglRotasi') }}",
-                cache: false,
-                success: function (result) {
-                    let data = $.parseJSON(result);
-                    cek = data;
-
-                    if (cek == 1) {
-                        alert('Tanggal rotasi sudah ada!')
-                    } else {
-                        let tonase = $('#tonase').val();
-
-                        if (tonase == 0) {
-                            alert('Tidak ada produksi!');
-                        } else {
-                            let tanggal_rotasi = $('#tanggal_rotasi').val();
-                            let jumlah_tonase = $('#jumlah_tonase').val();
-                            let tonase = $('#tonase').val();
-                            if (tanggal_rotasi == '') {
-                                var jumTgl = [tgl_rotasi];
-                            } else {
-                                var jumTgl = [tanggal_rotasi];
-                                jumTgl.push(tgl_rotasi);
-                            }
-                            if (jumlah_tonase == '') {
-                                var jmlTonase = tonase;
-                            } else {
-                                var jmlTonase = parseInt(jumlah_tonase) + parseInt(tonase);
-                            }
-                            let tglRotasi = jumTgl.toString();
-                            $('#tanggal_rotasi').val(tglRotasi);
-                            $('#jumlah_tonase').val(jmlTonase);
-                        }
-                    }
-                }
-            });
-        }
-
-        function hapusRotasi() {
-            let tanggal_rotasi = $('#tanggal_rotasi').val();
-            let tgl_rotasi = $('#tgl_rotasi').val();
-            let jumlah_tonase = $('#jumlah_tonase').val();
-            let tonase = $('#tonase').val();
-            let jumTgl = tanggal_rotasi.replace(tgl_rotasi, '');
-            jumTgl = jumTgl.substring(0, jumTgl.length - 1);
-
-            if (jumlah_tonase == '') {
-                var jmlTonase = "";
-            } else {
-                var jmlTonase = parseInt(jumlah_tonase) - parseInt(tonase);
-            }
-            $('#tanggal_rotasi').val(jumTgl);
-            $('#jumlah_tonase').val(jmlTonase);
-        }
-
-        function resetRotasi() {
-            $('#tanggal_rotasi').val("");
-            $('#jumlah_tonase').val("");
-        }
-
         function totalPenjualan() {
             let harga = $("#harga").val();
             let jumlah_tonase = $("#jumlah_tonase").val();
             let int_harga = harga.replace(/,/g, "");
+            let float_jumlah_tonase = parseFloat(jumlah_tonase).toFixed(2);
+            let float_int_harga = parseFloat(int_harga).toFixed(2);
 
-            let total_penjualan = int_harga * jumlah_tonase
+            let total_penjualan = float_jumlah_tonase * float_int_harga;
 
             $('#total_penjualan').val(total_penjualan);
             $('#total_penjualan').val(function (index, value) {
@@ -306,6 +140,15 @@
                     ;
             });
         }
+
+        $(document).ready(function(){
+            $('#total_penjualan').val(function (index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    ;
+            });
+        });
     </script>
 
 @endsection

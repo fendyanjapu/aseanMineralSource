@@ -55,7 +55,10 @@ class PembelianBatuController extends Controller
     {
         $this->authorize('create', PembelianBatu::class);
         
+        $total_penjualan = str_replace(',', '', $request->total_penjualan);
+
         $validatedData = $request->validate($this->rules);
+        $validatedData['total_penjualan'] = $total_penjualan;
         $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
         $validatedData['status_pengapalan'] = "0";
@@ -81,7 +84,10 @@ class PembelianBatuController extends Controller
     {
         $this->authorize('update', $pembelianBatu);
 
+        $total_penjualan = str_replace(',', '', $request->total_penjualan);
+
         $validatedData = $request->validate($this->rules);
+        $validatedData['total_penjualan'] = $total_penjualan;
         $validatedData['updated_by'] = auth()->user()->username;
         PembelianBatu::findOrFail($pembelianBatu->id)->update($validatedData);
 

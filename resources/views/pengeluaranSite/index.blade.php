@@ -6,7 +6,7 @@
             $('#myTable').DataTable();
         });
     </script>
-    <h1 class="h3 mb-3">Data Pengeluaran Site</h1>
+    <h1 class="h3 mb-3">Data Pengeluaran Asean Untuk Site</h1>
 
     <div class="row">
         <div class="col-12">
@@ -51,7 +51,7 @@
                                     <th scope="row">{{ $loop->iteration }}</th>
                                     <td>{{ $pengeluaranSite->kode_transaksi }}</td>
                                     <td>{{ $pengeluaranSite->site?->nama_site }}</td>
-                                    <td>{{ $pengeluaranSite->jumlah }}</td>
+                                    <td>{{ number_format($pengeluaranSite->jumlah) }}</td>
                                     <td>{{ $pengeluaranSite->sumber_dana }}</td>
                                     <td>{{ $pengeluaranSite->metode_transaksi }}</td>
                                     <td><a href="{{ env('APP_URL') . '/upload/pengeluaranSite/' . $pengeluaranSite->bukti_transaksi }}"

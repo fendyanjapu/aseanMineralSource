@@ -1,52 +1,40 @@
 @extends('layouts.template')
 
 @section('content')
+<style>
+	.box {
+		height: 150px;
+	}
+</style>
+<h2 class="h3 mb-3">Informasi Keuangan</h2>
 <div class="row">
 	<div class="col-xl-6 col-xxl-5 d-flex">
 		<div class="w-100">
 			<div class="row">
 				<div class="col-sm-6">
-					<div class="card">
+					<div class="card box">
 						<div class="card-body">
 							<div class="row">
 								<div class="col mt-0">
-									<h5 class="card-title">Saldo</h5>
-								</div>
-
-								<div class="col-auto">
-									<div class="stat text-primary">
-										<i class="align-middle" data-feather="dollar-sign"></i>
-									</div>
+									<h5 class="card-title">Pemasukan Asean Mineral Source</h5>
 								</div>
 							</div>
-							<h1 class="mt-1 mb-3">2.382</h1>
-							<div class="mb-0">
-								<span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -3.65% </span>
-								<span class="text-muted">Since last week</span>
-							</div>
+							<br>
+							<h2 class="card-title">Rp {{ number_format($pemasukan) }}</h2>
 						</div>
 					</div>
 					
 				</div>
 				<div class="col-sm-6">
-					<div class="card">
+					<div class="card box">
 						<div class="card-body">
 							<div class="row">
 								<div class="col mt-0">
-									<h5 class="card-title">Pemasukan</h5>
-								</div>
-
-								<div class="col-auto">
-									<div class="stat text-primary">
-										<i class="align-middle" data-feather="download"></i>
-									</div>
+									<h5 class="card-title">Pengeluaran Asean Mineral Source</h5>
 								</div>
 							</div>
-							<h1 class="mt-1 mb-3">$21.300</h1>
-							<div class="mb-0">
-								<span class="text-success"> <i class="mdi mdi-arrow-bottom-right"></i> 6.65% </span>
-								<span class="text-muted">Since last week</span>
-							</div>
+							<br>
+							<h2 class="card-title">Rp {{ number_format($pengeluaran) }}</h2>
 						</div>
 					</div>
 					
@@ -59,24 +47,15 @@
 		<div class="w-100">
 			<div class="row">
 				<div class="col-sm-6">
-					<div class="card">
+					<div class="card box">
 						<div class="card-body">
 							<div class="row">
 								<div class="col mt-0">
-									<h5 class="card-title">Pengeluaran</h5>
-								</div>
-
-								<div class="col-auto">
-									<div class="stat text-primary">
-										<i class="align-middle" data-feather="external-link"></i>
-									</div>
+									<h5 class="card-title">Saldo Asean Mineral Source</h5>
 								</div>
 							</div>
-							<h1 class="mt-1 mb-3">2.382</h1>
-							<div class="mb-0">
-								<span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> -3.65% </span>
-								<span class="text-muted">Since last week</span>
-							</div>
+							<br>
+							<h2 class="card-title">Rp {{ number_format($saldo) }}</h2>
 						</div>
 					</div>
 					
@@ -86,4 +65,232 @@
 		</div>
 	</div>
 </div>
+<br>
+<h2 class="h3 mb-3">Informasi Penjualan</h2>
+<div class="row">
+	<div class="col-xl-6 col-xxl-5 d-flex">
+		<div class="w-100">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="card box">
+						<div class="card-body">
+							<div class="row">
+								<div class="col mt-0">
+									<h5 class="card-title">Total Pembelian Dari Site + Jetty<br>(Rupiah & Tonase)</h5>
+								</div>
+							</div>
+							<br>
+							<h2 class="card-title">Rp {{ number_format($totalPembelianRP) }}</h2>
+							<h2 class="card-title">Tonase {{ $totalPembelianTonase }}</h2>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="card box">
+						<div class="card-body">
+							<div class="row">
+								<div class="col mt-0">
+									<h5 class="card-title">Total Pengapalan<br>(Rupiah & Tonase)</h5>
+								</div>
+							</div>
+							<br>
+							{{-- <h2 class="card-title">Rp {{ number_format($pengapalanRP) }}</h2>
+							<h2 class="card-title">Tonase {{ $pengapalanTonase }}</h2> --}}
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xl-6 col-xxl-5 d-flex">
+		<div class="w-100">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="card box">
+						<div class="card-body">
+							<div class="row">
+								<div class="col mt-0">
+									<h5 class="card-title">Total Tonase yang Masih Belum Pengapalan (Tonase)</h5>
+								</div>
+							</div>
+							<br>
+							<h2 class="card-title"></h2>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="card box">
+						<div class="card-body">
+							<div class="row">
+								<div class="col mt-0">
+									<h5 class="card-title">Total Laba Bersih</h5>
+								</div>
+							</div>
+							<br>
+							<h2 class="card-title"></h2>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<h2 class="h3 mb-3">Informasi Produksi Site</h2>
+<div class="row">
+	<div class="col-xl-6 col-xxl-5 d-flex">
+		<div class="w-100">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="card box">
+						<div class="card-body">
+							<div class="row">
+								<div class="col mt-0">
+									<h5 class="card-title">Nama Site</h5>
+								</div>
+							</div>
+							<br>
+							<h2 class="card-title">
+								<select name="" id="siteProduksi" class="form-control">
+									<option value=""></option>
+									@foreach ($sites as $site)
+									<option value="{{ $site->id }}">{{ $site->nama_site }}</option>
+									@endforeach
+								</select>
+							</h2>
+						</div>
+					</div>
+					
+				</div>
+				<div class="col-sm-6">
+					<div class="card box">
+						<div class="card-body">
+							<div class="row">
+								<div class="col mt-0">
+									<h5 class="card-title">Total Tonase Produksi</h5>
+								</div>
+							</div>
+							<br>
+							<h2 class="card-title" id="tonaseProduksi"></h2>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<br>
+<h2 class="h3 mb-3">Informasi Hutang Site</h2>
+<div class="row">
+	<div class="col-xl-6 col-xxl-5 d-flex">
+		<div class="w-100">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="card box">
+						<div class="card-body">
+							<div class="row">
+								<div class="col mt-0">
+									<h5 class="card-title">Nama Site</h5>
+								</div>
+							</div>
+							<br>
+							<h2 class="card-title">
+								<select name="" id="siteHutang" class="form-control">
+									<option value=""></option>
+									@foreach ($sites as $site)
+									<option value="{{ $site->id }}">{{ $site->nama_site }}</option>
+									@endforeach
+								</select>
+							</h2>
+						</div>
+					</div>
+					
+				</div>
+				<div class="col-sm-6">
+					<div class="card box">
+						<div class="card-body">
+							<div class="row">
+								<div class="col mt-0">
+									<h5 class="card-title">Total Hutang</h5>
+								</div>
+							</div>
+							<br>
+							<h2 class="card-title" id="totalHutang"></h2>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xl-6 col-xxl-5 d-flex">
+		<div class="w-100">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="card box">
+						<div class="card-body">
+							<div class="row">
+								<div class="col mt-0">
+									<h5 class="card-title">Pembayaran Hutang</h5>
+								</div>
+							</div>
+							<br>
+							<h2 class="card-title" id="pembayaranHutang"></h2>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="card box">
+						<div class="card-body">
+							<div class="row">
+								<div class="col mt-0">
+									<h5 class="card-title">Sisa Hutang</h5>
+								</div>
+							</div>
+							<br>
+							<h2 class="card-title" id="sisaHutang"></h2>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<script>
+	$('#siteProduksi').change(function(){
+		let site_id = $(this).val();
+		$.ajax({
+			type: "GET",
+                data: { site_id: site_id },
+                url: "{{ route('getProduksiTonase') }}",
+                cache: false,
+                success: function (result) {
+					let data = $.parseJSON(result);
+					$('#tonaseProduksi').text(data.jumlahTonase);
+				}
+		});
+	})
+	$('#siteHutang').change(function(){
+		let site_id = $(this).val();
+		$.ajax({
+			type: "GET",
+                data: { site_id: site_id },
+                url: "{{ route('getHutangSite') }}",
+                cache: false,
+                success: function (result) {
+					let data = $.parseJSON(result);
+					$('#totalHutang').text('Rp '+data.totalHutang);
+					$('#pembayaranHutang').text('Rp '+data.pembayaranHutang);
+					$('#sisaHutang').text('Rp '+data.sisaHutang);
+				}
+		});
+	})
+</script>
 @endsection

@@ -484,6 +484,15 @@
             });
         }
 
+        $(document).ready(function(){
+            $('#total_harga_penjualan').val(function (index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    ;
+            });
+        });
+
         function labaBersih() {
             let total_harga_penjualan = $('#total_harga_penjualan').val();
             let harga_di_site = $('#harga_di_site').val();
