@@ -6,6 +6,8 @@
 		height: 150px;
 	}
 </style>
+
+@if (auth()->user()->level_id < 4)
 <h2 class="h3 mb-3">Informasi Keuangan</h2>
 <div class="row">
 	<div class="col-xl-6 col-xxl-5 d-flex">
@@ -65,6 +67,9 @@
 		</div>
 	</div>
 </div>
+@endif
+
+@if (auth()->user()->level_id < 3)
 <br>
 <h2 class="h3 mb-3">Informasi Penjualan</h2>
 <div class="row">
@@ -137,6 +142,8 @@
 		</div>
 	</div>
 </div>
+@endif
+
 <br>
 <h2 class="h3 mb-3">Informasi Produksi Site</h2>
 <div class="row">
