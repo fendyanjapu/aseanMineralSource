@@ -64,7 +64,10 @@ class OperasionalSiteController extends Controller
         $tujuan_upload = 'upload/operasionalSite';
         $nama_gbr = time()."_".$gambar->getClientOriginalName(); 
 
+        $biaya = str_replace(',', '', $request->biaya);
+
         $validatedData = $request->validate($rules);
+        $validatedData['biaya'] = $biaya;
         $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
         $validatedData['bukti_transaksi'] = $nama_gbr;

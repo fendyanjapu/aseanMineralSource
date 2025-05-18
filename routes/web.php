@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/getOperasional', [PembayaranPenjualanController::class, 'getOperasional'] )->name('getOperasional');
     Route::get('/getProduksiTonase', [DashboardController::class, 'produksiTonase'] )->name('getProduksiTonase');
     Route::get('/getHutangSite', [DashboardController::class, 'hutangSite'] )->name('getHutangSite');
+    Route::get('/getPengeluaranSiteDash', [DashboardController::class, 'pengeluaranSite'] )->name('getPengeluaranSiteDash');
 
     Route::get('pembelianBatu/laporan', [PembelianBatuController::class, 'laporan'])->name('pembelianBatu.laporan');
     Route::get('penjualanSite/laporan', [PembelianBatuController::class, 'penjualanSite'])->name('PenjualanSite.laporan');

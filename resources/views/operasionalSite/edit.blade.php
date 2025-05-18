@@ -91,14 +91,25 @@
     </form>
 
     <script>
+        $(document).ready(function(){
+            biaya();
+        });
+
         $("#biaya").keyup(function (event) {
-            $(this).val(function (index, value) {
+            // skip for arrow keys
+            if (event.which >= 37 && event.which <= 40) return;
+
+            biaya();
+        });
+
+        function biaya() {
+            $("#biaya").val(function (index, value) {
                 return value
                     .replace(/\D/g, "")
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     ;
             });
-        });
+        }
     </script>
 
 @endsection

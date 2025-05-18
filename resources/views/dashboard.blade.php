@@ -263,6 +263,86 @@
 
 </div>
 
+<br>
+<h2 class="h3 mb-3">Informasi Pengeluaran Site</h2>
+<div class="row">
+	<div class="col-xl-6 col-xxl-5 d-flex">
+		<div class="w-100">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="card box">
+						<div class="card-body">
+							<div class="row">
+								<div class="col mt-0">
+									<h5 class="card-title">Nama Site</h5>
+								</div>
+							</div>
+							<br>
+							<h2 class="card-title">
+								<select name="" id="sitePengeluaran" class="form-control">
+									<option value=""></option>
+									@foreach ($sites as $site)
+									<option value="{{ $site->id }}">{{ $site->nama_site }}</option>
+									@endforeach
+								</select>
+							</h2>
+						</div>
+					</div>
+					
+				</div>
+				<div class="col-sm-6">
+					<div class="card box">
+						<div class="card-body">
+							<div class="row">
+								<div class="col mt-0">
+									<h5 class="card-title">Total Pemasukan Site</h5>
+								</div>
+							</div>
+							<br>
+							<h2 class="card-title" id="pemasukanSite"></h2>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xl-6 col-xxl-5 d-flex">
+		<div class="w-100">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="card box">
+						<div class="card-body">
+							<div class="row">
+								<div class="col mt-0">
+									<h5 class="card-title">Total Pengeluaran Site</h5>
+								</div>
+							</div>
+							<br>
+							<h2 class="card-title" id="operasionalSite"></h2>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="card box">
+						<div class="card-body">
+							<div class="row">
+								<div class="col mt-0">
+									<h5 class="card-title">Saldo Site</h5>
+								</div>
+							</div>
+							<br>
+							<h2 class="card-title" id="saldoSite"></h2>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
 <script>
 	$('#siteProduksi').change(function(){
 		let site_id = $(this).val();
@@ -289,6 +369,21 @@
 					$('#totalHutang').text('Rp '+data.totalHutang);
 					$('#pembayaranHutang').text('Rp '+data.pembayaranHutang);
 					$('#sisaHutang').text('Rp '+data.sisaHutang);
+				}
+		});
+	})
+	$('#sitePengeluaran').change(function(){
+		let site_id = $(this).val();
+		$.ajax({
+			type: "GET",
+                data: { site_id: site_id },
+                url: "{{ route('getPengeluaranSiteDash') }}",
+                cache: false,
+                success: function (result) {
+					let data = $.parseJSON(result);
+					$('#pemasukanSite').text('Rp '+data.pemasukanSite);
+					$('#operasionalSite').text('Rp '+data.operasionalSite);
+					$('#saldoSite').text('Rp '+data.saldoSite);
 				}
 		});
 	})

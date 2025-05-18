@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OperasionalSite;
 use App\Models\Pemasukan;
 use App\Models\Pengapalan;
 use App\Models\RotasiUnit;
@@ -67,6 +68,20 @@ class DashboardController extends Controller
             'totalHutang' => number_format($totalHutang),
             'pembayaranHutang' => number_format($pembayaranHutang),
             'sisaHutang' => number_format($sisaHutang),
+        ];
+        return json_encode($data);
+    }
+
+    public function pengeluaranSite(Request $request)
+    {
+        $site_id = $request->site_id;
+        $pemasukanSite = PengeluaranSite::where('site_id', '=', $site_id)->sum('jumlah');
+        $operasionalSite = OperasionalSite::where('site_id', '=', $site_id)->sum('biaya');
+        $saldoSite = $pemasukanSite - $operasionalSite;
+        $data = [
+            'pemasukanSite' => number_format($pemasukanSite),
+            'operasionalSite' => number_format($operasionalSite),
+            'saldoSite' => number_format($saldoSite),
         ];
         return json_encode($data);
     }

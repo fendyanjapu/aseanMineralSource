@@ -52,7 +52,7 @@
                                     <td>{{ $operasionalSite->kode_transaksi }}</td>
                                     <td>{{ date_format(date_create($operasionalSite->tanggal), 'd-m-Y') }}</td>
                                     <td>{{ $operasionalSite->nama_transaksi }}</td>
-                                    <td>{{ $operasionalSite->biaya }}</td>
+                                    <td>{{ number_format($operasionalSite->biaya) }}</td>
                                     <td><a href="{{ env('APP_URL') . '/upload/operasionalSite/' . $operasionalSite->bukti_transaksi }}"
                                         target="_blank">Lihat</a></td>
                                     <td>{{ $operasionalSite->site?->nama_site }}</td>
