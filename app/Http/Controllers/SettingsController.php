@@ -61,7 +61,7 @@ class SettingsController extends Controller
         Session::put('site_id', $request->site_id);
         Session::put('nama_site', $site->nama_site);
         Session::put('level', '4');
-        return redirect()->route('settings.changeSite')->with('success','Berhasil ganti site');
+        return redirect()->route('dashboard');
     }
 
     public function switchChecker() {

@@ -2,24 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Operasional;
-use App\Models\OperasionalSite;
-use App\Models\Pemasukan;
-use App\Models\PembelianBarang;
-use App\Models\Pengapalan;
-use App\Models\PerbaikanUnit;
-use App\Models\RotasiUnit;
 use App\Models\Site;
+use App\Models\Pemasukan;
+use App\Models\Pengapalan;
+use App\Models\RotasiUnit;
+use App\Models\Operasional;
 use Illuminate\Http\Request;
 use App\Models\PembelianBatu;
+use App\Models\PerbaikanUnit;
+use App\Models\OperasionalSite;
+use App\Models\PembelianBarang;
 use App\Models\PengeluaranSite;
 use App\Models\PembelianDariJetty;
+use Illuminate\Support\Facades\Session;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $sites = Site::all();
+        if (Session::get('level') == 4) {
+            $sites = Site::where('id', '=', Session::get('site_id'))->get();
+        } else {
+            $sites = Site::all();
+        }
+
         $pemasukan = Pemasukan::sum('jumlah');
         $pengeluaranSite = PengeluaranSite::sum('jumlah');
         $pengeluaranOperasional = Operasional::sum('biaya');
