@@ -23,7 +23,7 @@ class User extends Authenticatable
         'password',
         'level_id',
         'jenis_user_id',
-        'site_id',
+        'is_checker',
         'created_by',
         'updated_by',
     ];

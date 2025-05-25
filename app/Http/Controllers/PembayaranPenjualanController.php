@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pemasukan;
-use App\Models\PembelianBatu;
 use App\Models\Site;
+use App\Models\Pemasukan;
 use App\Models\HutangSite;
 use Illuminate\Http\Request;
+use App\Models\PembelianBatu;
 use Illuminate\Support\Facades\DB;
 use App\Models\PembayaranPenjualan;
+use Illuminate\Support\Facades\File;
 
 class PembayaranPenjualanController extends Controller
 {
@@ -62,22 +63,32 @@ class PembayaranPenjualanController extends Controller
             'jumlah_hutang_site' => 'required',
             'total_pembayaran_site' => 'required',
             'tanggal_transaksi' => 'required',
-            'bukti_transaksi' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'sisa_hutang_site' => 'required',
         ];
-
-        $gambar = $request->file('bukti_transaksi');
-        $tujuan_upload = 'upload/pembayaranPenjualan';
-        $nama_gbr = time()."_".$gambar->getClientOriginalName(); 
 
         $validatedData = $request->validate($rules);
         $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
-        $validatedData['bukti_transaksi'] = $nama_gbr;
+
+        $tujuan_upload = 'upload/pembayaranPenjualan';
+        $bukti_transaksi = '';
+        $jumlahFile = $request->jumlah_bukti_transaksi;
+        if ($jumlahFile != '' && $jumlahFile != 0) {
+            for ($i = 1; $i <= $jumlahFile; $i++) {
+                $fileSize = $request->file('bukti_transaksi_'.$i)->getSize();
+                if ($fileSize <= 4194304) { // 4 MB
+                    $gambar = $request->file('bukti_transaksi_'.$i);
+                    $nama_gbr = time().'-'.$gambar->getClientOriginalName();
+                    $gambar->move($tujuan_upload,$nama_gbr);
+                    $bukti_transaksi .= $nama_gbr.',';
+                }
+            }
+        }
+        $validatedData['bukti_transaksi'] = $bukti_transaksi;
+
         $store = PembayaranPenjualan::create($validatedData);
 
         if ($store) {
-            $gambar->move($tujuan_upload,$nama_gbr);
 
             $data = ['status_hutang' => '0'];
             $explode_kode = explode(',', $request->dana_operasional_site);
@@ -139,7 +150,19 @@ class PembayaranPenjualanController extends Controller
         $dana_operasional_site = $pembayaranPenjualan->dana_operasional_site;
         $pembayaran_penjualan_id = $pembayaranPenjualan->id;
 
+        $query = PembayaranPenjualan::findOrFail($pembayaranPenjualan->id);
+        $files  = $query->bukti_transaksi;
+
         $delete = PembayaranPenjualan::destroy($pembayaranPenjualan->id);
+
+        $file = explode(",",$files);
+        $jumlahFile = count($file) - 1;
+        for ($i = 0; $i < $jumlahFile; $i++) {
+            $file_path = public_path('upload/pembayaranPenjualan/'.$file[$i]);
+            if (File::exists($file_path)) {
+                File::delete($file_path);
+            }
+        }
 
         if ($delete) {
             $data = ['status_hutang' => '1'];

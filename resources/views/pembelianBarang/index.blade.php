@@ -53,12 +53,13 @@
                                     <td>{{ $pembelianBarang->kode_transaksi }}</td>
                                     <td>{{ $pembelianBarang->barang?->nama }}</td>
                                     <td>{{ $pembelianBarang->jumlah }}</td>
-                                    <td>{{ $pembelianBarang->harga_satuan }}</td>
-                                    <td>{{ $pembelianBarang->total_harga }}</td>
+                                    <td>{{ number_format($pembelianBarang->harga_satuan) }}</td>
+                                    <td>{{ number_format($pembelianBarang->total_harga) }}</td>
                                     <td>{{ $pembelianBarang->tanggal }}</td>
                                     <td>{{ $pembelianBarang->keterangan }}</td>
-                                    <td><a href="{{ env('APP_URL') . '/upload/pembelianBarang/' . $pembelianBarang->bukti_transaksi }}"
-                                            target="_blank">Lihat</a></td>
+                                    <td>
+                                        @include('layouts.buktiTransaksi', ['tabel' => 'pembelianBarang'])
+                                    </td>
                                     @if (auth()->user()->level_id < 3)
                                         <td>{{ $pembelianBarang->created_by }}</td>
                                         <td>{{ $pembelianBarang->created_at }}</td>

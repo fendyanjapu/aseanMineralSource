@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Site;
+use App\Models\SiteUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -16,8 +17,13 @@ class UserSiteController extends Controller
         $this->authorize('viewAny', User::class);
 
         $users = User::where('jenis_user_id', '=', 2)->get();
+
+        $site_user = [];
+        foreach ($users as $user) {
+            $site_user[$user->id] = SiteUser::where('user_id', '=', $user->id)->get();
+        }
         
-        return view('userSite.index', compact('users'));
+        return view('userSite.index', compact('users', 'site_user'));
     }
 
     /**
@@ -51,13 +57,23 @@ class UserSiteController extends Controller
                 'regex:/[@$!%*#?&]/', // must contain a special character
             ],
             'level_id'=> 'required',
-            'site_id'=> 'required',
+            'is_checker'=> 'required',
         ];
 
         $validatedData = $request->validate($rules);
         $validatedData['jenis_user_id'] = 2;
         $validatedData['created_by'] = auth()->user()->username;
-        User::create($validatedData);
+        $store = User::create($validatedData);
+
+        $sites = $request->site;
+        foreach ($sites as $site) {
+            $data = [
+                'user_id' => $store->id,
+                'site_id' => $site
+            ];
+            SiteUser::create($data);
+        }
+
         return redirect()->route('userSite.index')->with('success','Data berhasil ditambah');
     }
 
@@ -76,7 +92,21 @@ class UserSiteController extends Controller
     {
         $this->authorize('update', $userSite);
 
-        return view('userSite.edit', compact('userSite'));
+        $sites = Site::all();
+        $siteUser[] = '';
+
+        foreach ($sites as $site) {
+            $siteUsers = SiteUser::where('user_id', '=', $userSite->id)
+                                    ->where('site_id', '=', $site->id)
+                                    ->count();
+            if ($siteUsers > 0) {
+                $siteUser[$site->id] = 'checked';
+            } else {
+                $siteUser[$site->id] = '';
+            }
+        }
+
+        return view('userSite.edit', compact('userSite', 'sites', 'siteUser'));
     }
 
     /**
@@ -89,12 +119,22 @@ class UserSiteController extends Controller
         $rules = [
             'name'=> 'required|max:255',
             'username'=> 'required|max:255',
-            'site_id'=> 'required',
+            'is_checker'=> 'required',
         ];
 
         $validatedData = $request->validate($rules);
         $validatedData['updated_by'] = auth()->user()->username;
         User::findOrFail($userSite->id)->update($validatedData);
+
+        SiteUser::where('user_id', '=', $userSite->id)->delete();
+        $sites = $request->site;
+        foreach ($sites as $site) {
+            $data = [
+                'user_id' => $userSite->id,
+                'site_id' => $site
+            ];
+            SiteUser::create($data);
+        }
 
         return redirect(route('userSite.index'))->with('success','Data berhasil diubah');
     }
@@ -107,6 +147,9 @@ class UserSiteController extends Controller
         $this->authorize('delete', $userSite);
 
         User::destroy($userSite->id);
+
+        SiteUser::where('user_id', '=', $userSite->id)->delete();
+        
         return redirect(route('userSite.index'))->with('success','Data berhasil dihapus');
     }
 }

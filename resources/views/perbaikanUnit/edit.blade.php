@@ -82,27 +82,58 @@
                     </div>
                 </div>
 
+                <div class="card">
+                    <div class="card-body">
+                        <label>Bukti Transaksi</label><br>
+                        @include('layouts.buktiTransaksiEdit', [
+                            'id' => $perbaikanUnit->id,
+                            'tabel' => 'perbaikanUnit'
+                        ])
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label>Tambah Bukti Transaksi</label>
+                        <input type="number" name="jumlah_bukti_transaksi" id="jumlah_bukti_transaksi" class="form-control" value="0">
+                    </div>
+                </div>
+
+                <div class="card" id="bukti_transaksis">
+                    
+                </div>
+
                 <button class="btn btn-success" type="submit">Simpan</button>
-                <a href="#" onclick="self.history.back()" class="btn btn-danger">Batal</a>
+                <a href="#" onclick="window.location.replace(document.referrer)" class="btn btn-danger">Kembali</a>
             </div>
 
         </div>
     </form>
 
+    @include('layouts.buktiTransaksiJS')
+
     <script>
+        $(document).ready(function(){
+            total_harga();
+        });
+        
         $('#total_harga').keyup(function (event) {
 
             // skip for arrow keys
             if (event.which >= 37 && event.which <= 40) return;
 
+            total_harga();
+        });
+
+        function total_harga() {
             // format number
-            $(this).val(function (index, value) {
+            $('#total_harga').val(function (index, value) {
                 return value
                     .replace(/\D/g, "")
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     ;
             });
-        });
+        }
     </script>
 
 @endsection

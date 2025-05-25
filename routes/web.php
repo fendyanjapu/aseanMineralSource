@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\BuktiTransaksiController;
 use App\Http\Controllers\GajihKaryawanSiteController;
 use App\Http\Controllers\KaryawanSiteController;
 use App\Http\Controllers\KondisiBatuController;
 use App\Http\Controllers\KondisiLapanganController;
 use App\Http\Controllers\LaporanPemasukanController;
 use App\Http\Controllers\LaporanPengeluaranController;
+use App\Http\Controllers\OperasionalController;
 use App\Http\Controllers\OperasionalSiteController;
 use App\Http\Controllers\PemasukanController;
 use App\Http\Controllers\PembayaranPenjualanController;
@@ -51,7 +53,10 @@ Route::get('/getHarga', [PembayaranPenjualanController::class, 'getHarga'] )->na
 Route::group(['middleware' => 'auth'], function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::get('settings/changeSite', [SettingsController::class, 'changeSite'])->name('settings.changeSite');
+    Route::get('settings/switchChecker', [SettingsController::class, 'switchChecker'])->name('settings.switchChecker');
     Route::post('settings', [SettingsController::class, 'store'])->name('settings.store');
+    Route::post('settings/relogin', [SettingsController::class, 'relogin'])->name('settings.relogin');
 
     Route::get('laporanPemasukan', [LaporanPemasukanController::class, 'index'])->name('laporanPemasukan');
     Route::get('laporanPengeluaran', [LaporanPengeluaranController::class, 'index'])->name('laporanPengeluaran');
@@ -86,6 +91,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('pembayaranPenjualan/laporan', [PembayaranPenjualanController::class, 'laporan'])->name('pembayaranPenjualan.laporan');
     Route::get('pemasukan/laporan', [PemasukanController::class, 'laporan'])->name('pemasukan.laporan');
     Route::get('pengeluaranSite/laporan', [PengeluaranSiteController::class, 'laporan'])->name('pengeluaranSite.laporan');
+    Route::get('buktiTransaksi/add', [BuktiTransaksiController::class, 'add'])->name('buktiTransaksi.add');
+    Route::get('buktiTransaksi/delete', [BuktiTransaksiController::class, 'delete'])->name('buktiTransaksi.delete');
 
     Route::resource('user', UserController::class)->except('show');
     Route::resource('userSite', UserSiteController::class)->except('show');
@@ -107,6 +114,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('rotasiUnit', RotasiUnitController::class)->except('show');
     Route::resource('pembelianDariJetty', PembelianDariJettyController::class)->except('show');
     Route::resource('pembayaranPenjualan', PembayaranPenjualanController::class)->except('show','edit','update');
+    Route::resource('operasional', OperasionalController::class)->except('show');
 });
 
 

@@ -131,7 +131,7 @@
 						Transaksi
 					</li>
 
-					@if (auth()->user()->level_id < 4)
+					@if (Session::get('level') < 4)
 						
 
 						<li class="sidebar-item">
@@ -162,9 +162,23 @@
 					<li class="sidebar-item">
 						<a class="sidebar-link" href="{{ route('perbaikanUnit.index') }}">
 							<i class="align-middle" data-feather="settings"></i> <span class="align-middle">Perbaikan
-								Unit {{ auth()->user()->level_id == 4 ? 'Site' : '' }}</span>
+								Unit {{ Session::get('level') == 4 ? 'Site' : '' }}</span>
 						</a>
 					</li>
+
+					@if (Session::get('level') < 4)
+
+						<li class="sidebar-header">
+							Operasional
+						</li>
+
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ route('operasional.index') }}">
+								<i class="align-middle" data-feather="link"></i> <span class="align-middle">Operasional</span>
+							</a>
+						</li>
+						
+					@endif
 
 					<li class="sidebar-header">
 						Produktivitas
@@ -315,7 +329,16 @@
 
 							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#"
 								data-bs-toggle="dropdown">
-								<span class="text-dark">{{ auth()->user()->name }}</span>
+								<?php
+									$level = auth()->user()->level_id;
+									$level_name = auth()->user()->level->level;
+									if (Session::get('level') == 3) {
+										$level = 3;
+										$level_name = 'Checker';
+									}
+								?>
+								<span class="text-dark">{{ auth()->user()->name }} - {{ $level_name }} 
+									{{ $level == 4 ? '('.Session::get('nama_site').')' : '' }}</span>
 							</a>
 							<div class="dropdown-menu dropdown-menu-end">
 								<a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="user"></i>
@@ -323,6 +346,16 @@
 								<a class="dropdown-item" href="{{ route('settings.index') }}"><i
 										class="align-middle me-1" data-feather="settings"></i>
 									Settings</a>
+								@if (auth()->user()->level_id == 4)
+									<a class="dropdown-item" href="{{ route('settings.changeSite') }}"><i
+										class="align-middle me-1" data-feather="arrow-right"></i>
+									Ganti Site</a>
+								@endif
+								@if ($level == 4 && auth()->user()->is_checker == 1)
+									<a class="dropdown-item" href="{{ route('settings.switchChecker') }}"><i
+										class="align-middle me-1" data-feather="arrow-right"></i>
+									Ganti ke  Checker</a>
+								@endif
 								<div class="dropdown-divider"></div>
 								<form action="{{ route('logout') }}" method="POST">
 									@csrf

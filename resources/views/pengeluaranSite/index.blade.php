@@ -54,8 +54,9 @@
                                     <td>{{ number_format($pengeluaranSite->jumlah) }}</td>
                                     <td>{{ $pengeluaranSite->sumber_dana }}</td>
                                     <td>{{ $pengeluaranSite->metode_transaksi }}</td>
-                                    <td><a href="{{ env('APP_URL') . '/upload/pengeluaranSite/' . $pengeluaranSite->bukti_transaksi }}"
-                                            target="_blank">Lihat</a></td>
+                                    <td>
+                                        @include('layouts.buktiTransaksi', ['tabel' => 'pengeluaranSite'])
+                                    </td>
                                     <td>{{ $pengeluaranSite->tanggal }}</td>
                                     @if (auth()->user()->level_id < 3)
                                         <td>{{ $pengeluaranSite->created_by }}</td>

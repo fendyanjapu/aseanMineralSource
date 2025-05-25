@@ -66,6 +66,16 @@
                                             <input class="form-control form-control-lg" type="password" name="password"
                                                 placeholder="Enter your password" />
                                         </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Site</label>
+                                            <select class="form-control form-control-lg" name="site_id">
+                                                <option value=""></option>
+                                                @foreach ($sites as $site)
+                                                    <option value="{{ $site->id }}">{{ $site->nama_site }}</option>
+                                                @endforeach
+                                            </select>
+                                            <small>*Jika login sebagai operator</small>
+                                        </div>
                                         {{-- <div>
                                             <div class="form-check align-items-center">
                                                 <input id="customControlInline" type="checkbox" class="form-check-input"

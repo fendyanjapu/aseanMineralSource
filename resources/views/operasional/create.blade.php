@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="mb-3">
-        <h1 class="h3 d-inline align-middle">Tambah Data Operasional Site</h1>
+        <h1 class="h3 d-inline align-middle">Tambah Data Operasional Asean Mineral Source</h1>
 
     </div>
     @if (session()->has('error'))
@@ -10,7 +10,7 @@
             {{ session('error') }}
         </div>
     @endif
-    <form action="{{ route('operasionalSite.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('operasional.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-12 col-lg-6">
@@ -57,24 +57,6 @@
                         <input type="text" class="form-control" name="biaya" id="biaya" placeholder="Biaya"
                             value="{{ old('biaya') }}">
                         @error('biaya')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <label>Site</label>
-                        <select name="site_id" id="" class="form-control">
-                            @foreach ($sites as $site)
-                                <option value="{{ $site->id }}" {{ old('site_id') == $site->id ? 'selected' : '' }}>
-                                    {{ $site->nama_site }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('site_id')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
                             </div>

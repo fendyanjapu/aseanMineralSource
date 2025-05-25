@@ -211,14 +211,13 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <label>Bukti Transaksi</label>
-                        <input type="file" class="form-control" name="bukti_transaksi" accept="image/*,application/pdf">
-                        @error('bukti_transaksi')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
+                        <label>Jumlah Bukti Transaksi</label>
+                        <input type="number" name="jumlah_bukti_transaksi" id="jumlah_bukti_transaksi" class="form-control" value="0">
                     </div>
+                </div>
+
+                <div class="card" id="bukti_transaksis">
+                    
                 </div>
 
                 <div class="card">
@@ -239,6 +238,8 @@
 
         </div>
     </form>
+
+    @include('layouts.buktiTransaksiJS')
 
     <script>
         $('a.buton').click(function (e) {

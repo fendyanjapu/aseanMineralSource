@@ -2,19 +2,20 @@
 
 namespace App\Policies;
 
-use App\Models\RotasiUnit;
 use App\Models\User;
+use App\Models\RotasiUnit;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Session;
 
 class RotasiUnitPolicy
 {
     public function create(User $user): bool
     {
-        return ($user->level_id == 1 || $user->level_id == 4);
+        return ($user->level_id == 1 || Session::get('level') == 4);
     }
     public function update(User $user, RotasiUnit $rotasiUnit): bool
     {
-        return ($user->level_id == 1 || $user->level_id == 3 || $rotasiUnit->user_id === $user->id);
+        return ($user->level_id == 1 || Session::get('level') == 3 || $rotasiUnit->user_id === $user->id);
     }
 
     /**
@@ -22,6 +23,6 @@ class RotasiUnitPolicy
      */
     public function delete(User $user, RotasiUnit $rotasiUnit): bool
     {
-        return ($user->level_id == 1 || $user->level_id == 3 || $rotasiUnit->user_id === $user->id);
+        return ($user->level_id == 1 || Session::get('level') == 3 || $rotasiUnit->user_id === $user->id);
     }
 }

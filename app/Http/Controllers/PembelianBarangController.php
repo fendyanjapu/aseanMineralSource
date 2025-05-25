@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Operasional;
 use App\Models\User;
 use App\Models\Barang;
 use Illuminate\Http\Request;
@@ -52,7 +53,7 @@ class PembelianBarangController extends Controller
     public function store(Request $request)
     {
         $this->authorize('create', PembelianBarang::class);
-
+        
         $rules = [
             'kode_transaksi'=> 'required|max:255',
             'barang_id'=> 'required',
@@ -61,21 +62,34 @@ class PembelianBarangController extends Controller
             'total_harga'=> 'required',
             'keterangan'=> 'required',
             'tanggal'=> 'required|date',
-            'bukti_transaksi' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ];
 
-        $gambar = $request->file('bukti_transaksi');
-        $tujuan_upload = 'upload/pembelianBarang';
-        $nama_gbr = time()."_".$gambar->getClientOriginalName(); 
+        $harga_satuan = str_replace(',', '', $request->harga_satuan);
+        $total_harga = str_replace(',', '', $request->total_harga);
 
         $validatedData = $request->validate($rules);
+        $validatedData['harga_satuan'] = $harga_satuan;
+        $validatedData['total_harga'] = $total_harga;
         $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
-        $validatedData['bukti_transaksi'] = $nama_gbr;
 
-        $store = PembelianBarang::create($validatedData);
+        $tujuan_upload = 'upload/pembelianBarang';
+        $bukti_transaksi = '';
+        $jumlahFile = $request->jumlah_bukti_transaksi;
+        if ($jumlahFile != '' && $jumlahFile != 0) {
+            for ($i = 1; $i <= $jumlahFile; $i++) {
+                $fileSize = $request->file('bukti_transaksi_'.$i)->getSize();
+                if ($fileSize <= 4194304) { // 4 MB
+                    $gambar = $request->file('bukti_transaksi_'.$i);
+                    $nama_gbr = time().'-'.$gambar->getClientOriginalName();
+                    $gambar->move($tujuan_upload,$nama_gbr);
+                    $bukti_transaksi .= $nama_gbr.',';
+                }
+            }
+        }
+        $validatedData['bukti_transaksi'] = $bukti_transaksi;
+        PembelianBarang::create($validatedData);
 
-        if ($store) { $gambar->move($tujuan_upload,$nama_gbr); }
         return redirect()->route('pembelianBarang.index')->with('success','Data berhasil ditambah');
     }
 
@@ -91,16 +105,21 @@ class PembelianBarangController extends Controller
                         ->where('tanggal', '<=', $sampaiTanggal);
             $query2 = PerbaikanUnit::where('tanggal', '>=', $dariTanggal)
                         ->where('tanggal', '<=', $sampaiTanggal);
+            $query3 = Operasional::where('tanggal', '>=', $dariTanggal)
+                        ->where('tanggal', '<=', $sampaiTanggal);
         } else {
             $query = PembelianBarang::where('tanggal', '<=', '2000-01-01');
             $query2 = PerbaikanUnit::where('tanggal', '<=', '2000-01-01');
+            $query3 = Operasional::where('tanggal', '<=', '2000-01-01');
         }
 
-        $pembelianBarangs = $query->get();
-        $perbaikanUnits = $query2->get();
+        $pembelianBarangs = $query->orderBy('tanggal')->get();
+        $perbaikanUnits = $query2->orderBy('tanggal')->get();
+        $operasionals = $query3->orderBy('tanggal')->get();
         return view('pembelianBarang.laporan', compact(
             'pembelianBarangs',
             'perbaikanUnits',
+            'operasionals',
             'dariTanggal', 
             'sampaiTanggal', 
         ));
@@ -136,7 +155,30 @@ class PembelianBarangController extends Controller
             'tanggal'=> 'required|date',
         ];
 
+        $tujuan_upload = 'upload/pembelianBarang';
+        $bukti_transaksi = '';
+        $jumlahFile = $request->jumlah_bukti_transaksi;
+        if ($jumlahFile != '' && $jumlahFile != 0) {
+            for ($i = 1; $i <= $jumlahFile; $i++) {
+                $fileSize = $request->file('bukti_transaksi_'.$i)->getSize();
+                if ($fileSize <= 4194304) { // 4 MB
+                    $gambar = $request->file('bukti_transaksi_'.$i);
+                    $nama_gbr = time().'-'.$gambar->getClientOriginalName();
+                    $gambar->move($tujuan_upload,$nama_gbr);
+                    $bukti_transaksi .= $nama_gbr.',';
+                }
+            }
+        }
+
+        $bukti_transaksi_baru = $pembelianBarang->bukti_transaksi.$bukti_transaksi;
+        
+        $harga_satuan = str_replace(',', '', $request->harga_satuan);
+        $total_harga = str_replace(',', '', $request->total_harga);
+
         $validatedData = $request->validate($rules);
+        $validatedData['bukti_transaksi'] = $bukti_transaksi_baru;
+        $validatedData['harga_satuan'] = $harga_satuan;
+        $validatedData['total_harga'] = $total_harga;
         $validatedData['updated_by'] = auth()->user()->username;
         PembelianBarang::findOrFail($pembelianBarang->id)->update($validatedData);
 
@@ -151,12 +193,17 @@ class PembelianBarangController extends Controller
         $this->authorize('delete', $pembelianBarang);
 
         $query = PembelianBarang::findOrFail($pembelianBarang->id);
-        $file  = $query->bukti_transaksi;
+        $files  = $query->bukti_transaksi;
 
         pembelianBarang::destroy($pembelianBarang->id);
-        $file_path = public_path('upload/pembelianBarang/'.$file);
-        if (File::exists($file_path)) {
-            File::delete($file_path);
+
+        $file = explode(",",$files);
+        $jumlahFile = count($file) - 1;
+        for ($i = 0; $i < $jumlahFile; $i++) {
+            $file_path = public_path('upload/pembelianBarang/'.$file[$i]);
+            if (File::exists($file_path)) {
+                File::delete($file_path);
+            }
         }
 
         return redirect(route('pembelianBarang.index'))->with('success','Data berhasil dihapus');

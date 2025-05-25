@@ -54,10 +54,11 @@
                                     <td>{{ $perbaikanUnit->unit->kode }}</td>
                                     <td>{{ $perbaikanUnit->unit->no_identitas_unit }}</td>
                                     <td>{{ $perbaikanUnit->detail_perbaikan }}</td>
-                                    <td>{{ $perbaikanUnit->total_harga }}</td>
+                                    <td>{{ number_format($perbaikanUnit->total_harga) }}</td>
                                     <td>{{ $perbaikanUnit->tanggal }}</td>
-                                    <td><a href="{{ env('APP_URL') . '/upload/perbaikanUnit/' . $perbaikanUnit->bukti_transaksi }}"
-                                            target="_blank">Lihat</a></td>
+                                    <td>
+                                        @include('layouts.buktiTransaksi', ['tabel' => 'perbaikanUnit'])
+                                    </td>
                                     @if (auth()->user()->level_id < 3)
                                         <td>{{ $perbaikanUnit->created_by }}</td>
                                         <td>{{ $perbaikanUnit->created_at }}</td>

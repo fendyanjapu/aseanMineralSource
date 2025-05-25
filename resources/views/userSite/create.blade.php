@@ -26,7 +26,8 @@
 
                     <div class="card-body">
                         <label>Username</label>
-                        <input type="text" class="form-control" name="username" value="{{ old('username') }}" placeholder="Username">
+                        <input type="text" class="form-control" name="username" value="{{ old('username') }}"
+                            placeholder="Username">
                         @error('username')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
@@ -75,23 +76,52 @@
                 <div class="card">
                     <div class="card-body">
                         <label>Site</label>
-                        <select name="site_id" id="" class="form-control">
-                            <option value=""></option>
+                        <div>
                             @foreach ($sites as $site)
-                                <option value="{{ $site->id }}">{{ $site->nama_site }}</option>
+                                <label class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="site[]" value="{{ $site->id }}">
+                                    <span class="form-check-label">
+                                        {{ $site->nama_site }}
+                                    </span>
+                                </label>
                             @endforeach
-                        </select>
-                        @error('site_id')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
+                        </div>
                     </div>
                 </div>
 
-                <button class="btn btn-success" type="submit">Simpan</button>
-                <a href="#" onclick="self.history.back()" class="btn btn-danger">Batal</a>
+                <div class="card">
+                    <div class="card-body">
+                        <label>Checker</label>
+                        <div>
+                            <label class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="is_checker"
+                                    value="1" checked>
+                                <span class="form-check-label">
+                                    Ya
+                                </span>
+                            </label>
+                            <label class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="is_checker"
+                                    value="0">
+                                <span class="form-check-label">
+                                    Tidak
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    @error('is_checker')
+                        <div class="text-danger">
+                            <small>{{ $message }}</small>
+                        </div>
+                    @enderror
+                </div>
+                
             </div>
+        </div>
+
+        <button class="btn btn-success" type="submit">Simpan</button>
+        <a href="#" onclick="self.history.back()" class="btn btn-danger">Batal</a>
+        </div>
         </div>
     </form>
 

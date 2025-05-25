@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Site;
 use App\Models\User;
+use App\Models\SiteUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class SettingsController extends Controller
 {
@@ -44,5 +47,31 @@ class SettingsController extends Controller
         } else {
             return redirect()->route('settings.index')->with('error','Password gagal diubah!');
         }
+    }
+
+    public function changeSite()
+    {
+        $sites = SiteUser::where('user_id', '=', auth()->user()->id)->get();
+        return view('changeSite', compact('sites'));
+    }
+
+    public function relogin(Request $request)
+    {
+        $site = Site::where('id', '=', $request->site_id)->first();
+        Session::put('site_id', $request->site_id);
+        Session::put('nama_site', $site->nama_site);
+        Session::put('level', '4');
+        return redirect()->route('settings.changeSite')->with('success','Berhasil ganti site');
+    }
+
+    public function switchChecker() {
+        if (auth()->user()->level_id == 4 && auth()->user()->is_checker == 1) {
+            Session::put('level', '3');
+            return redirect()->route('dashboard');
+        } else {
+            return redirect()->route('dashboard');
+        }
+        
+        
     }
 }

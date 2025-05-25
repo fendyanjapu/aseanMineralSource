@@ -55,12 +55,7 @@ class PengeluaranSiteController extends Controller
             'sumber_dana'=> 'required|max:255',
             'metode_transaksi'=> 'required|max:255',
             'tanggal'=> 'required|date',
-            'bukti_transaksi' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ];
-
-        $gambar = $request->file('bukti_transaksi');
-        $tujuan_upload = 'upload/pengeluaranSite';
-        $nama_gbr = time()."_".$gambar->getClientOriginalName(); 
 
         $jumlah = str_replace(',', '', $request->jumlah);
         
@@ -69,7 +64,22 @@ class PengeluaranSiteController extends Controller
         $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
         $validatedData['status_hutang'] = '1';
-        $validatedData['bukti_transaksi'] = $nama_gbr;
+
+        $tujuan_upload = 'upload/pengeluaranSite';
+        $bukti_transaksi = '';
+        $jumlahFile = $request->jumlah_bukti_transaksi;
+        if ($jumlahFile != '' && $jumlahFile != 0) {
+            for ($i = 1; $i <= $jumlahFile; $i++) {
+                $fileSize = $request->file('bukti_transaksi_'.$i)->getSize();
+                if ($fileSize <= 4194304) { // 4 MB
+                    $gambar = $request->file('bukti_transaksi_'.$i);
+                    $nama_gbr = time().'-'.$gambar->getClientOriginalName();
+                    $gambar->move($tujuan_upload,$nama_gbr);
+                    $bukti_transaksi .= $nama_gbr.',';
+                }
+            }
+        }
+        $validatedData['bukti_transaksi'] = $bukti_transaksi;
 
         $store = PengeluaranSite::create($validatedData);
 
@@ -81,7 +91,6 @@ class PengeluaranSiteController extends Controller
         ];
         HutangSite::create($data);
 
-        if ($store) { $gambar->move($tujuan_upload,$nama_gbr); }
         return redirect()->route('pengeluaranSite.index')->with('success','Data berhasil ditambah');
     }
 
@@ -109,8 +118,25 @@ class PengeluaranSiteController extends Controller
             'tanggal'=> 'required|date',
         ];
 
+        $tujuan_upload = 'upload/pengeluaranSite';
+        $bukti_transaksi = '';
+        $jumlahFile = $request->jumlah_bukti_transaksi;
+        if ($jumlahFile != '' && $jumlahFile != 0) {
+            for ($i = 1; $i <= $jumlahFile; $i++) {
+                $fileSize = $request->file('bukti_transaksi_'.$i)->getSize();
+                if ($fileSize <= 4194304) { // 4 MB
+                    $gambar = $request->file('bukti_transaksi_'.$i);
+                    $nama_gbr = time().'-'.$gambar->getClientOriginalName();
+                    $gambar->move($tujuan_upload,$nama_gbr);
+                    $bukti_transaksi .= $nama_gbr.',';
+                }
+            }
+        }
+        $bukti_transaksi_baru = $pengeluaranSite->bukti_transaksi.$bukti_transaksi;
+
         $jumlah = str_replace(',', '', $request->jumlah);
         $validatedData = $request->validate($rules);
+        $validatedData['bukti_transaksi'] = $bukti_transaksi_baru;
         $validatedData['jumlah'] = $jumlah;
         $validatedData['updated_by'] = auth()->user()->username;
         PengeluaranSite::findOrFail($pengeluaranSite->id)->update($validatedData);
@@ -133,12 +159,18 @@ class PengeluaranSiteController extends Controller
         $this->authorize('delete', $pengeluaranSite);
 
         $query = PengeluaranSite::findOrFail($pengeluaranSite->id);
-        $file  = $query->bukti_transaksi;
+        $files  = $query->bukti_transaksi;
+
         HutangSite::where('pengeluaran_site_id', '=', $pengeluaranSite->id)->delete();
         PengeluaranSite::destroy($pengeluaranSite->id);
-        $file_path = public_path('upload/pengeluaranSite/'.$file);
-        if (File::exists($file_path)) {
-            File::delete($file_path);
+
+        $file = explode(",",$files);
+        $jumlahFile = count($file) - 1;
+        for ($i = 0; $i < $jumlahFile; $i++) {
+            $file_path = public_path('upload/pengeluaranSite/'.$file[$i]);
+            if (File::exists($file_path)) {
+                File::delete($file_path);
+            }
         }
 
         return redirect(route('pengeluaranSite.index'))->with('success','Data berhasil dihapus');

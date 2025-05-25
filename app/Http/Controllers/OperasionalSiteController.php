@@ -7,12 +7,17 @@ use Illuminate\Http\Request;
 use App\Models\OperasionalSite;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 class OperasionalSiteController extends Controller
 {
     public function index()
     {
-        $operasionalSites  = OperasionalSite::all();
+        if (Session::get('level') == 4) {
+            $operasionalSites  = OperasionalSite::where('site_id', '=', Session::get('site_id'))->get();
+        } else {
+            $operasionalSites  = OperasionalSite::all();
+        }
         
         return view('operasionalSite.index', compact('operasionalSites'));
     }
@@ -55,14 +60,9 @@ class OperasionalSiteController extends Controller
             'tanggal'=> 'required|date',
             'nama_transaksi'=> 'required|max:255',
             'biaya'=> 'required|max:255',
-            'bukti_transaksi' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
             'site_id'=> 'required',
             
         ];
-
-        $gambar = $request->file('bukti_transaksi');
-        $tujuan_upload = 'upload/operasionalSite';
-        $nama_gbr = time()."_".$gambar->getClientOriginalName(); 
 
         $biaya = str_replace(',', '', $request->biaya);
 
@@ -70,11 +70,24 @@ class OperasionalSiteController extends Controller
         $validatedData['biaya'] = $biaya;
         $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
-        $validatedData['bukti_transaksi'] = $nama_gbr;
+
+        $tujuan_upload = 'upload/operasionalSite';
+        $bukti_transaksi = '';
+        $jumlahFile = $request->jumlah_bukti_transaksi;
+        if ($jumlahFile != '' && $jumlahFile != 0) {
+            for ($i = 1; $i <= $jumlahFile; $i++) {
+                $fileSize = $request->file('bukti_transaksi_'.$i)->getSize();
+                if ($fileSize <= 4194304) { // 4 MB
+                    $gambar = $request->file('bukti_transaksi_'.$i);
+                    $nama_gbr = time().'-'.$gambar->getClientOriginalName();
+                    $gambar->move($tujuan_upload,$nama_gbr);
+                    $bukti_transaksi .= $nama_gbr.',';
+                }
+            }
+        }
+        $validatedData['bukti_transaksi'] = $bukti_transaksi;
 
         $store = OperasionalSite::create($validatedData);
-
-        if ($store) { $gambar->move($tujuan_upload,$nama_gbr); }
         return redirect()->route('operasionalSite.index')->with('success','Data berhasil ditambah');
     }
 
@@ -116,7 +129,7 @@ class OperasionalSiteController extends Controller
      */
     public function edit(OperasionalSite $operasionalSite)
     {
-        $this->authorize('delete', $operasionalSite);
+        $this->authorize('update', $operasionalSite);
 
         if (auth()->user()->site_id != null) {
             $sites = Site::where('id', '=', auth()->user()->site_id)->get();
@@ -132,7 +145,7 @@ class OperasionalSiteController extends Controller
      */
     public function update(Request $request, OperasionalSite $operasionalSite)
     {
-        $this->authorize('delete', $operasionalSite);
+        $this->authorize('update', $operasionalSite);
 
         $rules = [
             'kode_transaksi'=> 'required|max:255',
@@ -142,7 +155,27 @@ class OperasionalSiteController extends Controller
             'site_id'=> 'required',
         ];
 
+        $biaya = str_replace(',', '', $request->biaya);
+
+        $tujuan_upload = 'upload/operasionalSite';
+        $bukti_transaksi = '';
+        $jumlahFile = $request->jumlah_bukti_transaksi;
+        if ($jumlahFile != '' && $jumlahFile != 0) {
+            for ($i = 1; $i <= $jumlahFile; $i++) {
+                $fileSize = $request->file('bukti_transaksi_'.$i)->getSize();
+                if ($fileSize <= 4194304) { // 4 MB
+                    $gambar = $request->file('bukti_transaksi_'.$i);
+                    $nama_gbr = time().'-'.$gambar->getClientOriginalName();
+                    $gambar->move($tujuan_upload,$nama_gbr);
+                    $bukti_transaksi .= $nama_gbr.',';
+                }
+            }
+        }
+        $bukti_transaksi_baru = $operasionalSite->bukti_transaksi.$bukti_transaksi;
+
         $validatedData = $request->validate($rules);
+        $validatedData['bukti_transaksi'] = $bukti_transaksi_baru;
+        $validatedData['biaya'] = $biaya;
         $validatedData['updated_by'] = auth()->user()->username;
         OperasionalSite::findOrFail($operasionalSite->id)->update($validatedData);
 
@@ -157,12 +190,17 @@ class OperasionalSiteController extends Controller
         $this->authorize('delete', $operasionalSite);
         
         $query = OperasionalSite::findOrFail($operasionalSite->id);
-        $file  = $query->bukti_transaksi;
+        $files  = $query->bukti_transaksi;
 
         OperasionalSite::destroy($operasionalSite->id);
-        $file_path = public_path('upload/operasionalSite/'.$file);
-        if (File::exists($file_path)) {
-            File::delete($file_path);
+
+        $file = explode(",",$files);
+        $jumlahFile = count($file) - 1;
+        for ($i = 0; $i < $jumlahFile; $i++) {
+            $file_path = public_path('upload/operasionalSite/'.$file[$i]);
+            if (File::exists($file_path)) {
+                File::delete($file_path);
+            }
         }
 
         return redirect(route('operasionalSite.index'))->with('success','Data berhasil dihapus');

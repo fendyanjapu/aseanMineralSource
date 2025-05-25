@@ -2,20 +2,21 @@
 
 namespace App\Policies;
 
-use App\Models\PembelianBarang;
 use App\Models\User;
+use App\Models\PembelianBarang;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Session;
 
 class PembelianBarangPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->level_id < 4;
+        return Session::get('level') < 4;
     }
 
     public function create(User $user): bool
     {
-        return $user->level_id < 4;
+        return Session::get('level') < 4;
     }
 
     

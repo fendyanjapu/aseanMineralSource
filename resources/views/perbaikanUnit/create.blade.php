@@ -68,20 +68,6 @@
                 </div>
 
                 <div class="card">
-
-                    <div class="card-body">
-                        <label>Bukti Transaksi</label>
-                        <input type="file" class="form-control" name="bukti_transaksi" accept="image/*,application/pdf" required>
-                        @error('bukti_transaksi')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-
-                </div>
-
-                <div class="card">
                     <div class="card-body">
                         <label>Tanggal</label>
                         <input type="date" class="form-control" name="tanggal" placeholder="Tanggal"
@@ -94,12 +80,25 @@
                     </div>
                 </div>
 
+                <div class="card">
+                    <div class="card-body">
+                        <label>Jumlah Bukti Transaksi</label>
+                        <input type="number" name="jumlah_bukti_transaksi" id="jumlah_bukti_transaksi" class="form-control" value="0">
+                    </div>
+                </div>
+
+                <div class="card" id="bukti_transaksis">
+                    
+                </div>
+
                 <button class="btn btn-success" type="submit">Simpan</button>
                 <a href="#" onclick="self.history.back()" class="btn btn-danger">Batal</a>
             </div>
 
         </div>
     </form>
+
+    @include('layouts.buktiTransaksiJS')
 
     <script>
         $('#total_harga').keyup(function (event) {

@@ -6,6 +6,7 @@ use App\Models\Site;
 use Illuminate\Http\Request;
 use App\Models\KondisiLapangan;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 class KondisiLapanganController extends Controller
 {
@@ -14,8 +15,8 @@ class KondisiLapanganController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->level_id == 4) {
-            $kondisiLapangans = KondisiLapangan::where('site_id', '=', auth()->user()->site_id)->get();
+        if (Session::get('level') == 4) {
+            $kondisiLapangans = KondisiLapangan::where('site_id', '=', Session::get('site_id'))->get();
         } else {
             $kondisiLapangans = KondisiLapangan::all();
         }
@@ -29,8 +30,8 @@ class KondisiLapanganController extends Controller
     {
         $this->authorize('create', KondisiLapangan::class);
 
-        if (auth()->user()->level_id == 4) {
-            $sites = Site::where('id', '=', auth()->user()->site_id)->get();
+        if (Session::get('level') == 4) {
+            $sites = Site::where('id', '=', Session::get('site_id'))->get();
         } else {
             $sites = Site::all();
         }
@@ -84,8 +85,8 @@ class KondisiLapanganController extends Controller
     {
         $this->authorize('update', $kondisiLapangan);
 
-        if (auth()->user()->level_id == 4) {
-            $sites = Site::where('id', '=', auth()->user()->site_id)->get();
+        if (Session::get('level') == 4) {
+            $sites = Site::where('id', '=', Session::get('site_id'))->get();
         } else {
             $sites = Site::all();
         }

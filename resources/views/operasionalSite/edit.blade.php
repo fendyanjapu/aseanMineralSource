@@ -10,7 +10,7 @@
             {{ session('error') }}
         </div>
     @endif
-    <form action="{{ route('operasionalSite.update', ['operasionalSite' => $operasionalSite]) }}" method="POST">
+    <form action="{{ route('operasionalSite.update', ['operasionalSite' => $operasionalSite]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row">
@@ -83,12 +83,35 @@
                     </div>
                 </div>
 
+                <div class="card">
+                    <div class="card-body">
+                        <label>Bukti Transaksi</label><br>
+                        @include('layouts.buktiTransaksiEdit', [
+                            'id' => $operasionalSite->id,
+                            'tabel' => 'operasionalSite'
+                        ])
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label>Tambah Bukti Transaksi</label>
+                        <input type="number" name="jumlah_bukti_transaksi" id="jumlah_bukti_transaksi" class="form-control" value="0">
+                    </div>
+                </div>
+
+                <div class="card" id="bukti_transaksis">
+                    
+                </div>
+
                 <button class="btn btn-success" type="submit">Simpan</button>
-                <a href="#" onclick="self.history.back()" class="btn btn-danger">Batal</a>
+                <a href="#" onclick="window.location.replace(document.referrer)" class="btn btn-danger">Kembali</a>
             </div>
 
         </div>
     </form>
+
+    @include('layouts.buktiTransaksiJS')
 
     <script>
         $(document).ready(function(){

@@ -93,8 +93,9 @@
                                     <td>{{ $pembayaranPenjualan->jumlah_hutang_site }}</td>
                                     <td>{{ $pembayaranPenjualan->total_pembayaran_site }}</td>
                                     <td>{{ $pembayaranPenjualan->tanggal_transaksi }}</td>
-                                    <td><a href="{{ env('APP_URL') . '/upload/pembayaranPenjualan/' . $pembayaranPenjualan->bukti_transaksi }}"
-                                            target="_blank">Lihat</a></td>
+                                    <td>
+                                        @include('layouts.buktiTransaksi', ['tabel' => 'pembayaranPenjualan'])
+                                    </td>
                                     <td>{{ $pembayaranPenjualan->sisa_hutang_site }}</td>
                                     @if (auth()->user()->level_id < 3)
                                         <td>{{ $pembayaranPenjualan->created_by }}</td>

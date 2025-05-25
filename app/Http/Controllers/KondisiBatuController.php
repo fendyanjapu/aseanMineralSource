@@ -6,6 +6,7 @@ use App\Models\Site;
 use App\Models\KondisiBatu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Session;
 
 class KondisiBatuController extends Controller
 {
@@ -14,8 +15,8 @@ class KondisiBatuController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->level_id == 4) {
-            $kondisiBatus = KondisiBatu::where('site_id', '=', auth()->user()->site_id)->get();
+        if (Session::get('level') == 4) {
+            $kondisiBatus = KondisiBatu::where('site_id', '=', Session::get('site_id'))->get();
         } else {
             $kondisiBatus = KondisiBatu::all();
         }
@@ -30,8 +31,8 @@ class KondisiBatuController extends Controller
     {
         $this->authorize('create', KondisiBatu::class);
 
-        if (auth()->user()->level_id == 4) {
-            $sites = Site::where('id', '=', auth()->user()->site_id)->get();
+        if (Session::get('level') == 4) {
+            $sites = Site::where('id', '=', Session::get('site_id'))->get();
         } else {
             $sites = Site::all();
         }
@@ -83,8 +84,8 @@ class KondisiBatuController extends Controller
     {
         $this->authorize('update', $kondisiBatu);
 
-        if (auth()->user()->level_id == 4) {
-            $sites = Site::where('id', '=', auth()->user()->site_id)->get();
+        if (Session::get('level') == 4) {
+            $sites = Site::where('id', '=', Session::get('site_id'))->get();
         } else {
             $sites = Site::all();
         }

@@ -6,7 +6,7 @@
 
     </div>
 
-    <form action="{{ route('pengeluaranSite.update', ['pengeluaranSite' => $pengeluaranSite]) }}" method="POST">
+    <form action="{{ route('pengeluaranSite.update', ['pengeluaranSite' => $pengeluaranSite]) }}" enctype="multipart/form-data" method="POST">
         @csrf
         @method('PUT')
         <div class="row">
@@ -92,12 +92,35 @@
                     </div>
                 </div>
 
+                <div class="card">
+                    <div class="card-body">
+                        <label>Bukti Transaksi</label><br>
+                        @include('layouts.buktiTransaksiEdit', [
+                            'id' => $pengeluaranSite->id,
+                            'tabel' => 'pengeluaranSite'
+                        ])
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <label>Tambah Bukti Transaksi</label>
+                        <input type="number" name="jumlah_bukti_transaksi" id="jumlah_bukti_transaksi" class="form-control" value="0">
+                    </div>
+                </div>
+
+                <div class="card" id="bukti_transaksis">
+                    
+                </div>
+
                 <button class="btn btn-success" type="submit">Simpan</button>
-                <a href="#" onclick="self.history.back()" class="btn btn-danger">Batal</a>
+                <a href="#" onclick="window.location.replace(document.referrer)" class="btn btn-danger">Kembali</a>
             </div>
 
         </div>
     </form>
+
+    @include('layouts.buktiTransaksiJS')
 
     <script>
         $(document).ready(function(){

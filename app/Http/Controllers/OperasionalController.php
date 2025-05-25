@@ -2,22 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Unit;
+use App\Models\Operasional;
 use Illuminate\Http\Request;
-use App\Models\PerbaikanUnit;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
-class PerbaikanUnitController extends Controller
+class OperasionalController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $perbaikanUnits  = PerbaikanUnit::all();
-        
-        return view('perbaikanUnit.index', compact('perbaikanUnits'));
+        $this->authorize('viewAny', Operasional::class);
+
+        $operasionals = Operasional::all();
+
+        return view('operasional.index', compact('operasionals'));
     }
 
     /**
@@ -25,7 +26,9 @@ class PerbaikanUnitController extends Controller
      */
     public function create()
     {
-        $query = PerbaikanUnit::where(DB::raw('YEAR(created_at)'), '=', date('Y'));
+        $this->authorize('create', Operasional::class);
+        
+        $query = Operasional::where(DB::raw('YEAR(created_at)'), '=', date('Y'));
         if ($query->count() == 0) {
             $lastId = 0;
         } else {
@@ -33,10 +36,9 @@ class PerbaikanUnitController extends Controller
         }
         $nextId = $lastId + 1;
         $nextKode = str_pad($nextId,5,'0',STR_PAD_LEFT);
-        $kode = 'PU'.date('y').$nextKode;
-
-        $units = Unit::all();
-        return view('perbaikanUnit.create', compact('units', 'kode'));
+        $kode = 'KA'.date('y').$nextKode;
+        
+        return view('operasional.create', compact('kode'));
     }
 
     /**
@@ -44,22 +46,24 @@ class PerbaikanUnitController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize('create', Operasional::class);
+
         $rules = [
             'kode_transaksi'=> 'required|max:255',
-            'unit_id'=> 'required',
-            'detail_perbaikan'=> 'required',
-            'total_harga'=> 'required',
             'tanggal'=> 'required|date',
+            'nama_transaksi'=> 'required|max:255',
+            'biaya'=> 'required|max:255',
+            
         ];
 
-        $total_harga = str_replace(',', '', $request->total_harga);
+        $biaya = str_replace(',', '', $request->biaya);
 
         $validatedData = $request->validate($rules);
-        $validatedData['total_harga'] = $total_harga;
+        $validatedData['biaya'] = $biaya;
         $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
 
-        $tujuan_upload = 'upload/perbaikanUnit';
+        $tujuan_upload = 'upload/operasional';
         $bukti_transaksi = '';
         $jumlahFile = $request->jumlah_bukti_transaksi;
         if ($jumlahFile != '' && $jumlahFile != 0) {
@@ -75,14 +79,14 @@ class PerbaikanUnitController extends Controller
         }
         $validatedData['bukti_transaksi'] = $bukti_transaksi;
 
-        PerbaikanUnit::create($validatedData);
-        return redirect()->route('perbaikanUnit.index')->with('success','Data berhasil ditambah');
+        $store = Operasional::create($validatedData);
+        return redirect()->route('operasional.index')->with('success','Data berhasil ditambah');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(PerbaikanUnit $perbaikanUnit)
+    public function show(Operasional $operasional)
     {
         //
     }
@@ -90,31 +94,28 @@ class PerbaikanUnitController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(PerbaikanUnit $perbaikanUnit)
+    public function edit(Operasional $operasional)
     {
-        $this->authorize('update', $perbaikanUnit);
+        $this->authorize('update', $operasional);
 
-        $units = Unit::all();
-
-        return view('perbaikanUnit.edit', compact('perbaikanUnit', 'units'));
+        return view('operasional.edit', compact('operasional'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, PerbaikanUnit $perbaikanUnit)
+    public function update(Request $request, Operasional $operasional)
     {
-        $this->authorize('update', $perbaikanUnit);
-        
+        $this->authorize('update', $operasional);
+
         $rules = [
             'kode_transaksi'=> 'required|max:255',
-            'unit_id'=> 'required',
-            'detail_perbaikan'=> 'required',
-            'total_harga'=> 'required',
             'tanggal'=> 'required|date',
+            'nama_transaksi'=> 'required|max:255',
+            'biaya'=> 'required|max:255',
         ];
 
-        $tujuan_upload = 'upload/perbaikanUnit';
+        $tujuan_upload = 'upload/operasional';
         $bukti_transaksi = '';
         $jumlahFile = $request->jumlah_bukti_transaksi;
         if ($jumlahFile != '' && $jumlahFile != 0) {
@@ -129,40 +130,40 @@ class PerbaikanUnitController extends Controller
             }
         }
 
-        $bukti_transaksi_baru = $perbaikanUnit->bukti_transaksi.$bukti_transaksi;
+        $bukti_transaksi_baru = $operasional->bukti_transaksi.$bukti_transaksi;
 
-        $total_harga = str_replace(',', '', $request->total_harga);
+        $biaya = str_replace(',', '', $request->biaya);
 
         $validatedData = $request->validate($rules);
         $validatedData['bukti_transaksi'] = $bukti_transaksi_baru;
-        $validatedData['total_harga'] = $total_harga;
+        $validatedData['biaya'] = $biaya;
         $validatedData['updated_by'] = auth()->user()->username;
-        PerbaikanUnit::findOrFail($perbaikanUnit->id)->update($validatedData);
+        Operasional::findOrFail($operasional->id)->update($validatedData);
 
-        return redirect(route('perbaikanUnit.index'))->with('success','Data berhasil diubah');
+        return redirect(route('operasional.index'))->with('success','Data berhasil diubah');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PerbaikanUnit $perbaikanUnit)
+    public function destroy(Operasional $operasional)
     {
-        $this->authorize('delete', $perbaikanUnit);
-
-        $query = perbaikanUnit::findOrFail($perbaikanUnit->id);
+        $this->authorize('delete', $operasional);
+        
+        $query = Operasional::findOrFail($operasional->id);
         $files  = $query->bukti_transaksi;
 
-        PerbaikanUnit::destroy($perbaikanUnit->id);
+        Operasional::destroy($operasional->id);
 
         $file = explode(",",$files);
         $jumlahFile = count($file) - 1;
         for ($i = 0; $i < $jumlahFile; $i++) {
-            $file_path = public_path('upload/perbaikanUnit/'.$file[$i]);
+            $file_path = public_path('upload/operasional/'.$file[$i]);
             if (File::exists($file_path)) {
                 File::delete($file_path);
             }
         }
 
-        return redirect(route('perbaikanUnit.index'))->with('success','Data berhasil dihapus');
+        return redirect(route('operasional.index'))->with('success','Data berhasil dihapus');
     }
 }

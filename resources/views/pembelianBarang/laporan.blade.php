@@ -82,7 +82,17 @@
                                     <td>{{ $perbaikanUnit->tanggal }}</td>
                                     <td>Perbaikan Unit</td>
                                     <td>{{ $perbaikanUnit->unit?->merk."-".$perbaikanUnit->unit?->no_identitas_unit }}</td>
-                                    <td>{{ $perbaikanUnit->total_harga }}</td>
+                                    <td>{{ number_format($perbaikanUnit->total_harga) }}</td>
+                                </tr>
+                            @endforeach
+                            @foreach ($operasionals as $operasional)
+                                <tr>
+                                    <th scope="row" style="text-align: center">{{ ++$no }}</th>
+                                    <td>{{ $operasional->kode_transaksi }}</td>
+                                    <td>{{ $operasional->tanggal }}</td>
+                                    <td>Operasional</td>
+                                    <td>{{ $operasional->nama_transaksi }}</td>
+                                    <td>{{ number_format($operasional->biaya) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

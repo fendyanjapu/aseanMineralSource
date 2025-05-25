@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Operasional;
 use App\Models\OperasionalSite;
 use App\Models\Pemasukan;
+use App\Models\PembelianBarang;
 use App\Models\Pengapalan;
+use App\Models\PerbaikanUnit;
 use App\Models\RotasiUnit;
 use App\Models\Site;
 use Illuminate\Http\Request;
@@ -18,7 +21,11 @@ class DashboardController extends Controller
     {
         $sites = Site::all();
         $pemasukan = Pemasukan::sum('jumlah');
-        $pengeluaran = PengeluaranSite::sum('jumlah');
+        $pengeluaranSite = PengeluaranSite::sum('jumlah');
+        $pengeluaranOperasional = Operasional::sum('biaya');
+        $perbaikanUnit = PerbaikanUnit::sum('total_harga');
+        $pembelianBarang = PembelianBarang::sum('total_harga');
+        $pengeluaran = $pengeluaranSite + $pengeluaranOperasional + $perbaikanUnit + $pembelianBarang;
         $saldo = $pemasukan - $pengeluaran;
 
         $pembelianDariSiteRP = PembelianBatu::sum('total_penjualan');
