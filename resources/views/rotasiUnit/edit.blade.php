@@ -22,18 +22,6 @@
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-body">
-                        <label>No Nota</label><br>
-                        <input type="text" class="form-control col-lg-3" name="no_nota" placeholder="No Nota"
-                            value="{{ $rotasiUnit->no_nota }}">
-                        @error('no_nota')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
 
                 <div class="card">
                     <div class="card-body">
@@ -74,18 +62,7 @@
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-body">
-                        <label>Jarak</label>
-                        <input type="text" class="form-control" name="jarak" placeholder="Jarak"
-                            value="{{ $rotasiUnit->jarak }}">
-                        @error('jarak')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
+                
 
                 <div class="card">
                     <div class="card-body">
@@ -126,44 +103,7 @@
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-body">
-                        <label>Premi Tonase</label>
-                        <input type="text" class="form-control" name="premi_tonase" id="premi_tonase"
-                            placeholder="Premi Tonase" value="{{ $rotasiUnit->premi_tonase }}">
-                        @error('premi_tonase')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <label>Premi Per rite</label>
-                        <input type="text" class="form-control" name="premi_per_rite" id="premi_per_rite"
-                            placeholder="Premi Per rite" value="{{ $rotasiUnit->premi_per_rite }}">
-                        @error('premi_per_rite')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <label>Total Biaya</label>
-                        <input type="text" class="form-control" name="total_biaya" id="total_biaya"
-                            placeholder="Total Biaya" value="{{ $rotasiUnit->total_biaya }}" readonly>
-                        @error('total_biaya')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
+                
 
                 <div class="card">
                     <div class="card-body">

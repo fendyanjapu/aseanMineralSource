@@ -69,7 +69,6 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Kode Transaksi</th>
-                                <th scope="col">No Nota</th>
                                 <th scope="col">Tanggal</th>
                                 <th scope="col">Nopol</th>
                                 <th scope="col">Supir</th>
@@ -87,7 +86,6 @@
                                 <tr>
                                     <th scope="row" style="text-align: center">{{ $loop->iteration }}</th>
                                     <td>{{ $rotasiUnit->kode_transaksi }}</td>
-                                    <td>{{ $rotasiUnit->no_nota }}</td>
                                     <td>{{ date_format(date_create($rotasiUnit->tanggal), 'd-m-Y') }}</td>
                                     <td>{{ $rotasiUnit->nopol }}</td>
                                     <td>{{ $rotasiUnit->supir }}</td>

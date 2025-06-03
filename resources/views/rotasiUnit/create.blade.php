@@ -28,18 +28,7 @@
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-body">
-                        <label>No Nota</label><br>
-                        <input type="text" class="form-control col-lg-3" name="no_nota" placeholder="No Nota"
-                            value="{{ old('no_nota') }}">
-                        @error('no_nota')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
+                
 
                 <div class="card">
                     <div class="card-body">
@@ -80,18 +69,7 @@
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-body">
-                        <label>Jarak</label>
-                        <input type="text" class="form-control" name="jarak" placeholder="Jarak"
-                            value="{{ old('jarak') }}">
-                        @error('jarak')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
+                
 
                 <div class="card">
                     <div class="card-body">
@@ -132,44 +110,7 @@
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-body">
-                        <label>Premi Tonase</label>
-                        <input type="text" class="form-control" name="premi_tonase" id="premi_tonase"
-                            placeholder="Premi Tonase" value="{{ old('premi_tonase') }}">
-                        @error('premi_tonase')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <label>Premi Per rite</label>
-                        <input type="text" class="form-control" name="premi_per_rite" id="premi_per_rite"
-                            placeholder="Premi Per rite" value="{{ old('premi_per_rite') }}">
-                        @error('premi_per_rite')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <label>Total Biaya</label>
-                        <input type="text" class="form-control" name="total_biaya" id="total_biaya"
-                            placeholder="Total Biaya" value="{{ old('total_biaya') }}" readonly>
-                        @error('total_biaya')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
+                
 
                 <div class="card">
                     <div class="card-body">

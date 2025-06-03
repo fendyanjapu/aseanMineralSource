@@ -6,22 +6,18 @@ use App\Models\Site;
 use App\Models\RotasiUnit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class RotasiUnitController extends Controller
 {
     private $rules = [
         'kode_transaksi'=> 'required|max:255',
-        'no_nota'=> 'required|max:255',
         'tanggal'=> 'required|date',
         'nopol'=> 'required|max:255',
         'supir'=> 'required|max:255',
-        'jarak'=> 'required|max:255',
         'berat_kendaraan'=> 'required|max:255',
         'berat_kotor'=> 'required|max:255',
         'berat_bersih'=> 'required|max:255',
-        'premi_tonase'=> 'required|max:255',
-        'premi_per_rite'=> 'required|max:255',
-        'total_biaya'=> 'required|max:255',
         'total_rotasi'=> 'required|max:255',
         'site_id'=> 'required',
     ];
@@ -48,8 +44,8 @@ class RotasiUnitController extends Controller
         $nextKode = str_pad($nextId,5,'0',STR_PAD_LEFT);
         $kode = 'R'.date('y').$nextKode;
 
-        if (auth()->user()->site_id != null) {
-            $sites = Site::where('id', '=', auth()->user()->site_id)->get();
+        if (Session::get('site_id') != null) {
+            $sites = Site::where('id', '=', Session::get('site_id'))->get();
         } else {
             $sites = Site::all();
         }
@@ -92,7 +88,7 @@ class RotasiUnitController extends Controller
                 $query->where('site_id', '=', $site_id);
             }
         } else {
-            $query->where('site_id', '=', auth()->user()->site_id);
+            $query->where('site_id', '=', Session::get('site_id'));
         }
         $rotasiUnits = $query->get();
         $sites = Site::all();
@@ -112,7 +108,11 @@ class RotasiUnitController extends Controller
     {
         $this->authorize('update', $rotasiUnit);
 
-        $sites = Site::all();
+        if (Session::get('site_id') != null) {
+            $sites = Site::where('id', '=', Session::get('site_id'))->get();
+        } else {
+            $sites = Site::all();
+        }
 
         return view('rotasiUnit.edit', compact('rotasiUnit', 'sites'));
     }
