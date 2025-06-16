@@ -13,12 +13,8 @@ class RotasiUnitController extends Controller
     private $rules = [
         'kode_transaksi'=> 'required|max:255',
         'tanggal'=> 'required|date',
-        'nopol'=> 'required|max:255',
-        'supir'=> 'required|max:255',
-        'berat_kendaraan'=> 'required|max:255',
-        'berat_kotor'=> 'required|max:255',
-        'berat_bersih'=> 'required|max:255',
-        'total_rotasi'=> 'required|max:255',
+        'total_tonase'=> 'required',
+        'jumlah_rotasi'=> 'required',
         'site_id'=> 'required',
     ];
     public function index()
@@ -59,13 +55,18 @@ class RotasiUnitController extends Controller
     {
         $this->authorize('create', RotasiUnit::class);
         
+        $total_tonase = str_replace(',', '', $request->total_tonase);
+        $jumlah_rotasi = str_replace(',', '', $request->jumlah_rotasi);
+
         $validatedData = $request->validate($this->rules);
+        $validatedData['total_tonase'] = $total_tonase;
+        $validatedData['jumlah_rotasi'] = $jumlah_rotasi;
         $validatedData['created_by'] = auth()->user()->username;
         $validatedData['user_id'] = auth()->user()->id;
 
         RotasiUnit::create($validatedData);
 
-        return redirect()->route('rotasiUnit.create')->with('success','Data berhasil ditambah');
+        return redirect()->route('rotasiUnit.index')->with('success','Data berhasil ditambah');
     }
 
     /**
@@ -124,7 +125,12 @@ class RotasiUnitController extends Controller
     {
         $this->authorize('update', $rotasiUnit);
 
+        $total_tonase = str_replace(',', '', $request->total_tonase);
+        $jumlah_rotasi = str_replace(',', '', $request->jumlah_rotasi);
+
         $validatedData = $request->validate($this->rules);
+        $validatedData['total_tonase'] = $total_tonase;
+        $validatedData['jumlah_rotasi'] = $jumlah_rotasi;
         $validatedData['updated_by'] = auth()->user()->username;
         RotasiUnit::findOrFail($rotasiUnit->id)->update($validatedData);
 

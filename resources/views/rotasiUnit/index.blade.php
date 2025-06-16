@@ -34,12 +34,8 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Kode Transaksi</th>
                                 <th scope="col">Tanggal</th>
-                                <th scope="col">Nopol</th>
-                                <th scope="col">Supir</th>
-                                <th scope="col">Berat Kendaraan</th>
-                                <th scope="col">Berat Kotor</th>
-                                <th scope="col">Berat Bersih</th>
-                                <th scope="col">Total Rotasi</th>
+                                <th scope="col">Jumlah Rotasi</th>
+                                <th scope="col">Total Tonase</th>
                                 <th scope="col">Site</th>
                                 @if (auth()->user()->level_id < 3)
                                     <th scope="col">Created By</th>
@@ -54,12 +50,8 @@
                                     <th scope="row">{{ $loop->iteration }}</th>
                                     <td>{{ $rotasiUnit->kode_transaksi }}</td>
                                     <td>{{ date_format(date_create($rotasiUnit->tanggal), 'd-m-Y') }}</td>
-                                    <td>{{ $rotasiUnit->nopol }}</td>
-                                    <td>{{ $rotasiUnit->supir }}</td>
-                                    <td>{{ $rotasiUnit->berat_kendaraan }}</td>
-                                    <td>{{ $rotasiUnit->berat_kotor }}</td>
-                                    <td>{{ $rotasiUnit->berat_bersih }}</td>
-                                    <td>{{ $rotasiUnit->total_rotasi }}</td>
+                                    <td>{{ number_format($rotasiUnit->jumlah_rotasi) }}</td>
+                                    <td>{{ number_format($rotasiUnit->total_tonase) }}</td>
                                     <td>{{ $rotasiUnit->site?->nama_site }}</td>
                                     @if (auth()->user()->level_id < 3)
                                         <td>{{ $rotasiUnit->created_by }}</td>

@@ -61,12 +61,12 @@ class DashboardController extends Controller
         $query = RotasiUnit::where('site_id', '=', $request->site_id);
         $totalRotasi = $query->count();
         if ($totalRotasi > 0) {
-            $jumlahTonase = $query->sum('berat_bersih');
+            $jumlahTonase = $query->sum('total_tonase');
         } else {
             $jumlahTonase = 0;
         }
         $data = [
-            'jumlahTonase' => number_format($jumlahTonase,2),
+            'jumlahTonase' => number_format($jumlahTonase),
         ];
         return json_encode($data);
     }

@@ -15,12 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('kode_transaksi');
             $table->date('tanggal');
-            $table->string('nopol');
-            $table->string('supir');
-            $table->float('berat_kendaraan');
-            $table->float('berat_kotor');
-            $table->float('berat_bersih');
-            $table->string('total_rotasi');
+            $table->string('total_tonase');
+            $table->string('jumlah_rotasi');
             $table->smallInteger('site_id');
             $table->string('created_by');
             $table->string('updated_by')->nullable();

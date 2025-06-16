@@ -70,15 +70,8 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Kode Transaksi</th>
                                 <th scope="col">Tanggal</th>
-                                <th scope="col">Nopol</th>
-                                <th scope="col">Supir</th>
-                                <th scope="col">Jarak</th>
-                                <th scope="col">Berat Kendaraan</th>
-                                <th scope="col">Berat Kotor</th>
-                                <th scope="col">Berat Bersih</th>
-                                <th scope="col">Premi Tonase</th>
-                                <th scope="col">Premi per rite</th>
-                                <th scope="col">Total Biaya</th>
+                                <th scope="col">Jumlah Rotasi</th>
+                                <th scope="col">Total Tonase</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -87,15 +80,8 @@
                                     <th scope="row" style="text-align: center">{{ $loop->iteration }}</th>
                                     <td>{{ $rotasiUnit->kode_transaksi }}</td>
                                     <td>{{ date_format(date_create($rotasiUnit->tanggal), 'd-m-Y') }}</td>
-                                    <td>{{ $rotasiUnit->nopol }}</td>
-                                    <td>{{ $rotasiUnit->supir }}</td>
-                                    <td>{{ $rotasiUnit->jarak }}</td>
-                                    <td>{{ $rotasiUnit->berat_kendaraan }}</td>
-                                    <td>{{ $rotasiUnit->berat_kotor }}</td>
-                                    <td>{{ $rotasiUnit->berat_bersih }}</td>
-                                    <td>{{ $rotasiUnit->premi_tonase }}</td>
-                                    <td>{{ $rotasiUnit->premi_per_rite }}</td>
-                                    <td>{{ $rotasiUnit->total_biaya }}</td>
+                                    <td>{{ number_format($rotasiUnit->jumlah_rotasi) }}</td>
+                                    <td>{{ number_format($rotasiUnit->total_tonase) }}</td>
                                 </tr>
                             @endforeach
 

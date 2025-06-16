@@ -38,10 +38,10 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <label>Nopol</label>
-                        <input type="text" class="form-control" name="nopol" id="nopol" placeholder="Nopol"
-                            value="{{ $rotasiUnit->nopol }}">
-                        @error('nopol')
+                        <label>Jumlah Rotasi</label>
+                        <input type="text" class="form-control" name="jumlah_rotasi" id="jumlah_rotasi"
+                            placeholder="Jumlah Rotasi" value="{{ $rotasiUnit->jumlah_rotasi }}">
+                        @error('jumlah_rotasi')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
                             </div>
@@ -51,66 +51,10 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <label>Supir</label>
-                        <input type="text" class="form-control" name="supir"
-                            placeholder="Supir" value="{{ $rotasiUnit->supir }}">
-                        @error('supir')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                
-
-                <div class="card">
-                    <div class="card-body">
-                        <label>Berat Kendaraan</label>
-                        <input type="number" class="form-control" name="berat_kendaraan" id="berat_kendaraan" placeholder="Berat Kendaraan"
-                            value="{{ $rotasiUnit->berat_kendaraan }}">
-                        @error('berat_kendaraan')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <label>Berat Kotor</label>
-                        <input type="number" class="form-control" name="berat_kotor" id="berat_kotor"
-                            placeholder="Berat Kotor" value="{{ $rotasiUnit->berat_kotor }}">
-                        @error('berat_kotor')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <label>Berat Bersih</label>
-                        <input type="text" class="form-control" name="berat_bersih" id="berat_bersih"
-                            placeholder="Berat Bersih" value="{{ $rotasiUnit->berat_bersih }}" readonly>
-                        @error('berat_bersih')
-                            <div class="text-danger">
-                                <small>{{ $message }}</small>
-                            </div>
-                        @enderror
-                    </div>
-                </div>
-
-                
-
-                <div class="card">
-                    <div class="card-body">
-                        <label>Total Rotasi</label>
-                        <input type="text" class="form-control" name="total_rotasi" id="total_rotasi"
-                            placeholder="Total Rotasi" value="{{ $rotasiUnit->total_rotasi }}" readonly>
-                        @error('total_rotasi')
+                        <label>Total Tonase</label>
+                        <input type="text" class="form-control" name="total_tonase" id="total_tonase"
+                            placeholder="Total Tonase" value="{{ $rotasiUnit->total_tonase }}">
+                        @error('total_tonase')
                             <div class="text-danger">
                                 <small>{{ $message }}</small>
                             </div>
@@ -144,79 +88,44 @@
     </form>
 
     <script>
-        $("#berat_kotor").keyup(function (event) {
-            beratBersih();
-        });
-        $("#berat_kendaraan").keyup(function (event) {
-            beratBersih();
+        $(document).ready(function(){
+            jumlah();
         });
 
-        $("#premi_tonase").keyup(function (event) {
+        function jumlah() {
+            // format number
+            $('#jumlah_rotasi').val(function (index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    ;
+            });
+            $('#total_tonase').val(function (index, value) {
+                return value
+                    .replace(/\D/g, "")
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    ;
+            });
+        }
+
+        $("#jumlah_rotasi").keyup(function (event) {
             $(this).val(function (index, value) {
                 return value
                     .replace(/\D/g, "")
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     ;
             });
-            totalBiaya();
         });
-        $("#premi_per_rite").keyup(function (event) {
+        $("#total_tonase").keyup(function (event) {
             $(this).val(function (index, value) {
                 return value
                     .replace(/\D/g, "")
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                     ;
             });
-            totalBiaya();
         });
 
-        $('#nopol').change(function(){
-			totalRotasi();
-		});
-
-        $('#tanggal').change(function(){
-			totalRotasi();
-		});
-
-        function totalRotasi() {
-            let nopol = $("#nopol").val();
-			let tanggal = $("#tanggal").val();
-			$.ajax({
-				type   : "GET",
-				data   : {nopol: nopol, tanggal: tanggal},
-				url    : "{{ route('getTotalRotasi') }}",
-				cache  : false,
-				success: function(result){
-                    let data = $.parseJSON(result);
-					$('#total_rotasi').val(data);
-				}
-			});
-        }
-
-        function beratBersih() {
-            let berat_kotor = $("#berat_kotor").val();
-            let berat_kendaraan = $("#berat_kendaraan").val();
-            let berat_bersih = parseInt(berat_kotor) - parseInt(berat_kendaraan);
-            $("#berat_bersih").val(berat_bersih);
-        }
-
-        function totalBiaya() {
-            let berat_bersih = $("#berat_bersih").val();
-            let premi_tonase = $("#premi_tonase").val();
-            let premi_per_rite = $("#premi_per_rite").val();
-            let int_premi_tonase = premi_tonase.replace(/,/g, "");
-            let int_premi_per_rite = premi_per_rite.replace(/,/g, "");
-
-            let total_biaya = (berat_bersih * parseInt(int_premi_tonase)) + parseInt(int_premi_per_rite);
-
-            $('#total_biaya').val(total_biaya);
-            $('#total_biaya').val(function (index, value) {
-                return value
-                    .replace(/\D/g, "")
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    ;
-            });
-        }
+        
     </script>
 
 @endsection
